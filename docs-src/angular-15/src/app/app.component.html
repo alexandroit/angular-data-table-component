@@ -1,0 +1,399 @@
+<div class="shell">
+  <section class="hero">
+    <div class="hero-card hero-main">
+      <span class="badge">ANGULAR 15.2 · DATA TABLE</span>
+      <h1>@revivejs/angular-data-table-component</h1>
+      <p>
+        A community-style Angular data table component with sorting, row selection, expandable
+        content, client or server pagination, conditional styles, and a demo layout that tracks
+        the Angular release line.
+      </p>
+      <div class="feature-grid">
+        <div class="feature">
+          <strong>Declarative columns</strong>
+          Keep column definitions in TypeScript and let Angular templates handle the rich cells.
+        </div>
+        <div class="feature">
+          <strong>Native Angular patterns</strong>
+          Custom cells and expanded content use <code>TemplateRef</code>, not framework adapters.
+        </div>
+        <div class="feature">
+          <strong>Stateful table UX</strong>
+          Sorting, pagination, selection, and expandable rows are available out of the box.
+        </div>
+        <div class="feature">
+          <strong>Versioned docs</strong>
+          This repository follows the Angular major line with a dedicated docs build per version.
+        </div>
+      </div>
+      <div class="cta-row">
+        <a class="btn" href="#demos">See demos</a>
+        <a
+          class="btn secondary"
+          href="https://github.com/alexandroit/angular-data-table-component#readme"
+          target="_blank"
+          rel="noreferrer">
+          README
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-card hero-setup">
+      <h2>Setup in 3 steps</h2>
+
+      <div class="step">
+        <span class="step-num">1</span>
+        <div>
+          <strong>Install</strong>
+          <pre>{{ installCode }}</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-num">2</span>
+        <div>
+          <strong>Register the module</strong>
+          <pre>{{ setupCode }}</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-num">3</span>
+        <div>
+          <strong>Render the table</strong>
+          <pre>{{ basicCode }}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="layout" id="demos">
+    <div class="panels">
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Core — basic usage</h2>
+          <p>
+            Start with declarative columns and rows, then turn on the features you need with
+            inputs instead of rebuilding the table structure.
+          </p>
+        </div>
+        <div class="demo-grid">
+          <section class="demo-card">
+            <h3>Basic table</h3>
+            <p>A minimal setup with sorting-ready columns and client pagination.</p>
+            <pre class="code">{{ basicCode }}</pre>
+            <div class="table-frame">
+              <revive-data-table
+                title="Film catalog"
+                [columns]="basicColumns"
+                [data]="movies"
+                [pagination]="true"
+                (rowClicked)="onRowClick($event)">
+              </revive-data-table>
+            </div>
+          </section>
+
+          <section class="demo-card">
+            <h3>Sorting and search tools</h3>
+            <p>
+              Keep sorting in the table and search in your component state through a sub-header
+              template.
+            </p>
+            <pre class="code">{{ basicCode }}</pre>
+            <div class="table-frame">
+              <revive-data-table
+                title="Searchable releases"
+                [columns]="sortableColumns"
+                [data]="filteredMovies"
+                [pagination]="true"
+                [subHeader]="true"
+                [subHeaderTemplate]="searchTools"
+                (sortChange)="onSort('Searchable table', $event)"
+                (pageChange)="onPage($event)"
+                (rowsPerPageChange)="onRowsPerPage($event)">
+              </revive-data-table>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Selection and row events</h2>
+          <p>
+            The component emits selection state and row interaction events in a predictable Angular
+            shape.
+          </p>
+        </div>
+        <div class="demo-grid">
+          <section class="demo-card">
+            <h3>Selectable rows</h3>
+            <p>Turn on multi-select and keep the selected rows summary in component state.</p>
+            <pre class="code">{{ selectionCode }}</pre>
+            <div class="table-frame">
+              <revive-data-table
+                title="Review queue"
+                [columns]="selectableColumns"
+                [data]="movies"
+                [selectableRows]="true"
+                [selectableRowsHighlight]="true"
+                [pagination]="true"
+                (selectedRowsChange)="onSelectionChange($event)"
+                (sortChange)="onSort('Selection table', $event)">
+              </revive-data-table>
+            </div>
+            <p class="note">{{ selectionSummary }}</p>
+          </section>
+
+          <section class="demo-card">
+            <h3>Single selection mode</h3>
+            <p>Use radio-style selection when only one active record should be chosen.</p>
+            <pre class="code">[selectableRowsSingle]=\"true\"</pre>
+            <div class="table-frame">
+              <revive-data-table
+                title="Primary pick"
+                [columns]="selectableColumns"
+                [data]="movies"
+                [selectableRows]="true"
+                [selectableRowsSingle]="true"
+                [pagination]="true"
+                (selectedRowsChange)="onSelectionChange($event)">
+              </revive-data-table>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Custom cells and expandable rows</h2>
+          <p>
+            Angular templates are first-class here. Use template refs for richer cells and expanded
+            content instead of rebuilding the table component.
+          </p>
+        </div>
+        <div class="demo-grid">
+          <section class="demo-card">
+            <h3>Template-driven cells</h3>
+            <p>Status pills, compact currency blocks, and wrapped summaries all stay declarative.</p>
+            <pre class="code">{{ expansionCode }}</pre>
+            <div class="table-frame">
+              <revive-data-table
+                title="Editorial cuts"
+                [columns]="customColumns"
+                [data]="movies"
+                [expandableRows]="true"
+                [expandableRowTemplate]="movieDetail"
+                [conditionalRowStyles]="contextualStyles"
+                [pagination]="true"
+                [highlightOnHover]="true"
+                [pointerOnHover]="true"
+                (rowExpandToggled)="onExpand($event)"
+                (rowClicked)="onRowClick($event)">
+              </revive-data-table>
+            </div>
+          </section>
+
+          <section class="demo-card">
+            <h3>Dark theme + dense + fixed header</h3>
+            <p>
+              The built-in dark theme stays readable and works with dense rows and sticky headers.
+            </p>
+            <pre class="code">theme=\"dark\" [dense]=\"true\" [fixedHeader]=\"true\"</pre>
+            <div class="table-frame dark-frame">
+              <revive-data-table
+                title="Compact monitoring board"
+                theme="dark"
+                [columns]="compactColumns"
+                [data]="movies"
+                [pagination]="true"
+                [dense]="true"
+                [fixedHeader]="true"
+                fixedHeaderScrollHeight="280px"
+                [striped]="true"
+                [highlightOnHover]="true"
+                (sortChange)="onSort('Dark table', $event)">
+              </revive-data-table>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Server-style pagination</h2>
+          <p>
+            When you set <code>paginationServer</code>, the component stops slicing rows internally
+            and lets your container load the current page from an API.
+          </p>
+        </div>
+        <div class="demo-grid">
+          <section class="demo-card">
+            <h3>Remote page simulation</h3>
+            <p>
+              This demo simulates a remote API by slicing data after a short delay while keeping the
+              table footer fully interactive.
+            </p>
+            <pre class="code">{{ serverCode }}</pre>
+            <div class="table-frame">
+              <revive-data-table
+                title="Support tickets"
+                [columns]="serverColumns"
+                [data]="serverRows"
+                [pagination]="true"
+                [paginationServer]="true"
+                [paginationDefaultPage]="serverPage"
+                [paginationPerPage]="serverRowsPerPage"
+                [paginationTotalRows]="allTickets.length"
+                [progressPending]="serverLoading"
+                (pageChange)="onServerPage($event)"
+                (rowsPerPageChange)="onServerRowsPerPage($event)"
+                (sortChange)="onSort('Server table', $event)">
+              </revive-data-table>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="panel ref-panel">
+        <div class="panel-header">
+          <h2>Quick API reference</h2>
+        </div>
+        <div class="ref-grid">
+          <div class="ref-card">
+            <h4>Component inputs</h4>
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Input</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>columns</code></td><td>Declarative column definitions with selectors, sorting, and templates.</td></tr>
+                <tr><td><code>data</code></td><td>Row data to render.</td></tr>
+                <tr><td><code>selectableRows</code></td><td>Enables row selection.</td></tr>
+                <tr><td><code>expandableRows</code></td><td>Enables expandable detail rows.</td></tr>
+                <tr><td><code>expandableRowTemplate</code></td><td>Angular template used for expanded content.</td></tr>
+                <tr><td><code>pagination</code></td><td>Turns on built-in pagination UI.</td></tr>
+                <tr><td><code>paginationServer</code></td><td>Lets the container control which rows are currently loaded.</td></tr>
+                <tr><td><code>conditionalRowStyles</code></td><td>Applies row styles when predicates match.</td></tr>
+                <tr><td><code>theme</code></td><td>Switch between the <code>default</code> and <code>dark</code> themes.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ref-card">
+            <h4>Column capabilities</h4>
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>selector</code></td><td>Read values with a row function or a property key.</td></tr>
+                <tr><td><code>format</code></td><td>Return custom display values before rendering.</td></tr>
+                <tr><td><code>cellTemplate</code></td><td>Use an Angular template for richer cell layouts.</td></tr>
+                <tr><td><code>sortable</code></td><td>Turns on built-in sorting for that column.</td></tr>
+                <tr><td><code>sortFunction</code></td><td>Override the comparison logic for a specific column.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ref-card">
+            <h4>Outputs</h4>
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Output</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>sortChange</code></td><td>Fires with the current column, direction, and visible rows.</td></tr>
+                <tr><td><code>selectedRowsChange</code></td><td>Returns the selection state and selected rows array.</td></tr>
+                <tr><td><code>pageChange</code></td><td>Fires when the current page changes.</td></tr>
+                <tr><td><code>rowsPerPageChange</code></td><td>Fires when the footer page size changes.</td></tr>
+                <tr><td><code>rowClicked</code></td><td>Fires with the clicked row.</td></tr>
+                <tr><td><code>rowExpandToggled</code></td><td>Fires when an expandable row opens or closes.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="log-panel">
+      <h2>Event Log</h2>
+      <p>Interact with the demos to see Angular output events and table state changes here.</p>
+      <div class="log-controls">
+        <button class="ghost small" (click)="clearLog()">Clear</button>
+      </div>
+      <div class="log-list">
+        <div *ngFor="let entry of logEntries" class="log-entry">
+          {{ entry }}
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <footer class="footer">
+    <p>
+      <strong>@revivejs/angular-data-table-component</strong> keeps the table API declarative and
+      close to Angular templates, while still covering the everyday behavior people expect from a
+      modern data grid.
+    </p>
+  </footer>
+
+  <ng-template #searchTools>
+    <div class="toolbar">
+      <input
+        [ngModel]="searchTerm"
+        (ngModelChange)="onSearchTermChange($event)"
+        type="search"
+        placeholder="Filter by title, director, genre or status" />
+      <span class="toolbar-tip">Client-side filtering in the host component.</span>
+    </div>
+  </ng-template>
+
+  <ng-template #statusCell let-row let-value="value">
+    <span class="status-pill" [ngClass]="statusTone(row.status)">
+      {{ value }}
+    </span>
+  </ng-template>
+
+  <ng-template #budgetCell let-row>
+    <div class="metric-stack">
+      <strong>{{ formatMoney(row.budget) }}</strong>
+      <span>production</span>
+    </div>
+  </ng-template>
+
+  <ng-template #movieDetail let-row>
+    <div class="detail-grid">
+      <div>
+        <span class="detail-label">Director</span>
+        <strong>{{ row.director }}</strong>
+      </div>
+      <div>
+        <span class="detail-label">Genre</span>
+        <strong>{{ row.genre }}</strong>
+      </div>
+      <div>
+        <span class="detail-label">Rating</span>
+        <strong>{{ row.rating }}/10</strong>
+      </div>
+      <div>
+        <span class="detail-label">Budget</span>
+        <strong>{{ formatMoney(row.budget) }}</strong>
+      </div>
+      <div class="detail-summary">
+        <span class="detail-label">Summary</span>
+        <p>{{ row.summary }}</p>
+      </div>
+    </div>
+  </ng-template>
+</div>
+

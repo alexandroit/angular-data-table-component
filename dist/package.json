@@ -1,0 +1,70 @@
+{
+  "name": "@revivejs/angular-data-table-component",
+  "version": "15.0.0",
+  "description": "A maintained Angular 15 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
+  "keywords": [
+    "angular",
+    "angular15",
+    "angular-library",
+    "typescript",
+    "data-table",
+    "datatable",
+    "table",
+    "grid",
+    "sorting",
+    "pagination",
+    "selectable-rows",
+    "expandable-rows",
+    "conditional-styles",
+    "responsive",
+    "ui-component",
+    "component-library",
+    "revived",
+    "maintained",
+    "revivejs"
+  ],
+  "homepage": "https://alexandroit.github.io/angular-data-table-component/",
+  "bugs": {
+    "url": "https://github.com/alexandroit/angular-data-table-component/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexandroit/angular-data-table-component.git"
+  },
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "module": "fesm2015/revivejs-angular-data-table-component.mjs",
+  "es2020": "fesm2020/revivejs-angular-data-table-component.mjs",
+  "esm2020": "esm2020/revivejs-angular-data-table-component.mjs",
+  "fesm2020": "fesm2020/revivejs-angular-data-table-component.mjs",
+  "fesm2015": "fesm2015/revivejs-angular-data-table-component.mjs",
+  "typings": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=15.0.0 <16.0.0",
+    "@angular/core": ">=15.0.0 <16.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2020": "./esm2020/revivejs-angular-data-table-component.mjs",
+      "es2020": "./fesm2020/revivejs-angular-data-table-component.mjs",
+      "es2015": "./fesm2015/revivejs-angular-data-table-component.mjs",
+      "node": "./fesm2015/revivejs-angular-data-table-component.mjs",
+      "default": "./fesm2020/revivejs-angular-data-table-component.mjs"
+    }
+  }
+}

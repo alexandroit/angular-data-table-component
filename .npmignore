@@ -1,0 +1,15 @@
+docs-src/
+docs/
+node_modules/
+coverage/
+.angular/
+.tmp/
+.git/
+.github/
+.vscode/
+*.tgz
+.nvmrc
+src/
+ng-package.json
+tsconfig.json
+package-lock.json

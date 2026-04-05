@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "outDir": "../../out-tsc/angular-15",
+    "sourceMap": true,
+    "target": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "paths": {
+      "@revivejs/angular-data-table-component": [
+        "node_modules/@revivejs/angular-data-table-component"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "strictInjectionParameters": false,
+    "strictInputAccessModifiers": false,
+    "strictTemplates": false
+  }
+}

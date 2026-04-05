@@ -1,0 +1,8 @@
+node_modules/
+.angular/
+.tmp/
+coverage/
+*.tgz
+
+docs-src/angular-15/node_modules/
+docs-src/angular-15/package-lock.json

@@ -1,0 +1,4 @@
+export * from './lib/angular-data-table.module';
+export * from './lib/angular-data-table.component';
+export * from './lib/types';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9wdWJsaWMtYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLGNBQWMsaUNBQWlDLENBQUM7QUFDaEQsY0FBYyxvQ0FBb0MsQ0FBQztBQUNuRCxjQUFjLGFBQWEsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCAqIGZyb20gJy4vbGliL2FuZ3VsYXItZGF0YS10YWJsZS5tb2R1bGUnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvYW5ndWxhci1kYXRhLXRhYmxlLmNvbXBvbmVudCc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi90eXBlcyc7XG5cbiJdfQ==
