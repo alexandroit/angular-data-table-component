@@ -51,6 +51,7 @@ pre {
   border: 1px solid rgba(191, 206, 223, 0.8);
   border-radius: 24px;
   box-shadow: 0 24px 60px rgba(23, 50, 77, 0.12);
+  min-width: 0;
 }
 
 .hero-card {
@@ -209,7 +210,17 @@ pre {
 
 .table-frame {
   margin-top: 1rem;
-  overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-frame revive-data-table {
+  display: block;
+  min-width: 0;
+  width: 100%;
 }
 
 .dark-frame {
@@ -335,6 +346,12 @@ pre {
 }
 
 .log-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: calc(100vh - 2.4rem);
+  min-width: 0;
+  overflow: hidden;
   padding: 1.25rem;
   position: sticky;
   top: 1.2rem;
@@ -367,6 +384,8 @@ pre {
 .log-list {
   display: grid;
   gap: 0.55rem;
+  max-height: calc(100vh - 12rem);
+  overflow-y: auto;
 }
 
 .log-entry {
@@ -398,7 +417,20 @@ pre {
     grid-template-columns: 1fr;
   }
 
+  .layout {
+    gap: 1rem;
+  }
+
+  .panels,
+  .demo-card,
+  .table-frame,
   .log-panel {
+    min-width: 0;
+  }
+
+  .log-panel {
+    max-height: min(360px, 50vh);
+    order: 2;
     position: static;
   }
 
@@ -419,6 +451,14 @@ pre {
   .log-panel {
     border-radius: 18px;
     padding: 1rem;
+  }
+
+  .demo-card {
+    padding: 0.9rem;
+  }
+
+  .table-frame {
+    border-radius: 16px;
   }
 
   .cta-row {
