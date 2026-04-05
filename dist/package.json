@@ -1,7 +1,7 @@
 {
   "name": "@revivejs/angular-data-table-component",
-  "version": "19.0.0",
-  "description": "A maintained Angular 19 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
+  "version": "20.0.0",
+  "description": "A maintained Angular 20 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
   "keywords": [
     "angular",
     "angular15",
@@ -9,6 +9,7 @@
     "angular17",
     "angular18",
     "angular19",
+    "angular20",
     "angular-library",
     "typescript",
     "data-table",
@@ -45,7 +46,6 @@
   "main": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
   "module": "fesm2022/revivejs-angular-data-table-component.mjs",
   "es2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
-  "esm2022": "./dist/esm2022/revivejs-angular-data-table-component.mjs",
   "fesm2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
   "typings": "index.d.ts",
   "types": "./dist/index.d.ts",
@@ -53,8 +53,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@angular/common": ">=15.0.0 <20.0.0",
-    "@angular/core": ">=15.0.0 <20.0.0"
+    "@angular/common": ">=15.0.0 <21.0.0",
+    "@angular/core": ">=15.0.0 <21.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

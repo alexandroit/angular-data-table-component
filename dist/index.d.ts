@@ -1,5 +1,224 @@
-/**
- * Generated bundle index. Do not edit.
- */
-/// <amd-module name="@revivejs/angular-data-table-component" />
-export * from './public-api';
+import * as i0 from '@angular/core';
+import { TemplateRef, OnChanges, EventEmitter, SimpleChanges } from '@angular/core';
+import * as i2 from '@angular/common';
+
+type Primitive = string | number | boolean | null | undefined;
+type DataTableSortOrder = 'asc' | 'desc';
+type DataTableThemeName = 'default' | 'dark';
+type DataTableSelector<T> = keyof T | ((row: T, rowIndex?: number) => unknown);
+type DataTableFormatter<T> = (row: T, rowIndex: number) => unknown;
+interface DataTableContextMessage {
+    singular: string;
+    plural: string;
+    message: string;
+}
+interface DataTableCellContext<T> {
+    $implicit: T;
+    row: T;
+    rowIndex: number;
+    column: DataTableColumn<T>;
+    value: unknown;
+}
+interface DataTableExpandableContext<T> {
+    $implicit: T;
+    row: T;
+    rowIndex: number;
+}
+interface ConditionalStyle<T> {
+    when: (row: T) => boolean;
+    style?: Record<string, string | number> | ((row: T) => Record<string, string | number>);
+    className?: string | ((row: T) => string);
+}
+interface DataTableColumn<T> {
+    id?: string | number;
+    name: string | number;
+    selector?: DataTableSelector<T>;
+    sortable?: boolean;
+    sortField?: string;
+    sortFunction?: (a: T, b: T) => number;
+    format?: DataTableFormatter<T>;
+    cellTemplate?: TemplateRef<DataTableCellContext<T>>;
+    className?: string;
+    headerClassName?: string;
+    style?: Record<string, string | number>;
+    headerStyle?: Record<string, string | number>;
+    minWidth?: string;
+    maxWidth?: string;
+    width?: string;
+    right?: boolean;
+    center?: boolean;
+    wrap?: boolean;
+    omit?: boolean;
+}
+interface DataTableSortEvent<T> {
+    column: DataTableColumn<T>;
+    direction: DataTableSortOrder;
+    rows: T[];
+}
+interface DataTableSelectionState<T> {
+    allSelected: boolean;
+    selectedCount: number;
+    selectedRows: T[];
+}
+interface DataTablePageEvent {
+    page: number;
+    totalRows: number;
+}
+interface DataTableRowsPerPageEvent {
+    rowsPerPage: number;
+    currentPage: number;
+}
+interface DataTableExpandEvent<T> {
+    expanded: boolean;
+    row: T;
+}
+
+declare class DataTableComponent<T extends Record<string, unknown> = Record<string, unknown>> implements OnChanges {
+    columns: DataTableColumn<T>[];
+    data: T[];
+    keyField: string;
+    title: string;
+    ariaLabel: string;
+    pagination: boolean;
+    paginationServer: boolean;
+    paginationDefaultPage: number;
+    paginationPerPage: number;
+    paginationTotalRows: number;
+    paginationRowsPerPageOptions: number[];
+    selectableRows: boolean;
+    selectableRowsSingle: boolean;
+    selectableRowsHighlight: boolean;
+    selectableRowsNoSelectAll: boolean;
+    selectableRowsVisibleOnly: boolean;
+    clearSelectedRows: boolean;
+    selectableRowSelected: ((row: T) => boolean) | null;
+    selectableRowDisabled: ((row: T) => boolean) | null;
+    expandableRows: boolean;
+    expandableRowsHideExpander: boolean;
+    expandOnRowClicked: boolean;
+    expandOnRowDoubleClicked: boolean;
+    expandableRowDisabled: ((row: T) => boolean) | null;
+    expandableRowExpanded: ((row: T) => boolean) | null;
+    expandableRowTemplate: TemplateRef<DataTableExpandableContext<T>> | null;
+    striped: boolean;
+    highlightOnHover: boolean;
+    pointerOnHover: boolean;
+    dense: boolean;
+    responsive: boolean;
+    progressPending: boolean;
+    noHeader: boolean;
+    noTableHead: boolean;
+    noContextMenu: boolean;
+    fixedHeader: boolean;
+    fixedHeaderScrollHeight: string;
+    subHeader: boolean;
+    subHeaderTemplate: TemplateRef<unknown> | null;
+    noDataText: string;
+    conditionalRowStyles: ConditionalStyle<T>[];
+    defaultSortFieldId: string | number | null;
+    defaultSortAsc: boolean;
+    sortServer: boolean;
+    theme: DataTableThemeName;
+    contextMessage: DataTableContextMessage;
+    sortChange: EventEmitter<DataTableSortEvent<T>>;
+    selectedRowsChange: EventEmitter<DataTableSelectionState<T>>;
+    pageChange: EventEmitter<DataTablePageEvent>;
+    rowsPerPageChange: EventEmitter<DataTableRowsPerPageEvent>;
+    rowClicked: EventEmitter<T>;
+    rowDoubleClicked: EventEmitter<T>;
+    rowMouseEnter: EventEmitter<T>;
+    rowMouseLeave: EventEmitter<T>;
+    rowExpandToggled: EventEmitter<DataTableExpandEvent<T>>;
+    currentPage: number;
+    rowsPerPage: number;
+    sortDirection: DataTableSortOrder;
+    activeSortColumn: DataTableColumn<T> | null;
+    private readonly selectedKeys;
+    private readonly expandedKeys;
+    ngOnChanges(changes: SimpleChanges): void;
+    get visibleColumns(): DataTableColumn<T>[];
+    get shellClassName(): string;
+    get sortedRows(): T[];
+    get displayedRows(): T[];
+    get hasRows(): boolean;
+    get totalRows(): number;
+    get totalPages(): number;
+    get startRow(): number;
+    get endRow(): number;
+    get selectedRows(): T[];
+    get selectedCount(): number;
+    get allRowsSelected(): boolean;
+    get showContextBar(): boolean;
+    get showPagination(): boolean;
+    get selectionScopeRows(): T[];
+    readonly trackByColumn: (index: number, column: DataTableColumn<T>) => string | number;
+    readonly trackByRow: (index: number, row: T) => string | number;
+    getCellValue(row: T, column: DataTableColumn<T>, rowIndex: number): unknown;
+    getCellText(row: T, column: DataTableColumn<T>, rowIndex: number): string;
+    getCellContext(row: T, column: DataTableColumn<T>, rowIndex: number): {
+        $implicit: T;
+        row: T;
+        rowIndex: number;
+        column: DataTableColumn<T>;
+        value: unknown;
+    };
+    getExpandableContext(row: T, rowIndex: number): {
+        $implicit: T;
+        row: T;
+        rowIndex: number;
+    };
+    getHeaderStyle(column: DataTableColumn<T>): {
+        width: string;
+        minWidth: string;
+        maxWidth: string;
+    };
+    getCellStyle(column: DataTableColumn<T>): {
+        width: string;
+        minWidth: string;
+        maxWidth: string;
+    };
+    getWrapperClassName(): string;
+    getScrollClassName(): string;
+    getScrollStyleAttribute(): string;
+    getSortButtonClassName(column: DataTableColumn<T>): string;
+    getSortIndicatorClassName(column: DataTableColumn<T>): string;
+    getHeaderClassName(column: DataTableColumn<T>): string;
+    getCellClassName(column: DataTableColumn<T>): string;
+    getRowClassNames(row: T): string[];
+    getRowClassName(row: T): string;
+    getRowStyle(row: T): Record<string, string | number>;
+    getHeaderStyleAttribute(column: DataTableColumn<T>): string;
+    getCellStyleAttribute(column: DataTableColumn<T>): string;
+    getRowStyleAttribute(row: T): string;
+    isRowSelected(row: T): boolean;
+    isRowExpanded(row: T): boolean;
+    isSelectableDisabled(row: T): boolean;
+    isExpandableDisabled(row: T): boolean;
+    toggleSort(column: DataTableColumn<T>): void;
+    toggleAllRows(checked: boolean): void;
+    toggleRowSelection(row: T): void;
+    toggleRowExpansion(row: T): void;
+    handleRowClick(row: T): void;
+    handleRowDoubleClick(row: T): void;
+    handleMouseEnter(row: T): void;
+    handleMouseLeave(row: T): void;
+    changePage(page: number): void;
+    changeRowsPerPage(rowsPerPage: number): void;
+    private applyDefaultSort;
+    private syncProgrammaticSelection;
+    private syncProgrammaticExpansion;
+    private emitSelectionState;
+    private ensureValidPage;
+    private getRowKey;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DataTableComponent<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataTableComponent<any>, "revive-data-table", never, { "columns": { "alias": "columns"; "required": false; }; "data": { "alias": "data"; "required": false; }; "keyField": { "alias": "keyField"; "required": false; }; "title": { "alias": "title"; "required": false; }; "ariaLabel": { "alias": "ariaLabel"; "required": false; }; "pagination": { "alias": "pagination"; "required": false; }; "paginationServer": { "alias": "paginationServer"; "required": false; }; "paginationDefaultPage": { "alias": "paginationDefaultPage"; "required": false; }; "paginationPerPage": { "alias": "paginationPerPage"; "required": false; }; "paginationTotalRows": { "alias": "paginationTotalRows"; "required": false; }; "paginationRowsPerPageOptions": { "alias": "paginationRowsPerPageOptions"; "required": false; }; "selectableRows": { "alias": "selectableRows"; "required": false; }; "selectableRowsSingle": { "alias": "selectableRowsSingle"; "required": false; }; "selectableRowsHighlight": { "alias": "selectableRowsHighlight"; "required": false; }; "selectableRowsNoSelectAll": { "alias": "selectableRowsNoSelectAll"; "required": false; }; "selectableRowsVisibleOnly": { "alias": "selectableRowsVisibleOnly"; "required": false; }; "clearSelectedRows": { "alias": "clearSelectedRows"; "required": false; }; "selectableRowSelected": { "alias": "selectableRowSelected"; "required": false; }; "selectableRowDisabled": { "alias": "selectableRowDisabled"; "required": false; }; "expandableRows": { "alias": "expandableRows"; "required": false; }; "expandableRowsHideExpander": { "alias": "expandableRowsHideExpander"; "required": false; }; "expandOnRowClicked": { "alias": "expandOnRowClicked"; "required": false; }; "expandOnRowDoubleClicked": { "alias": "expandOnRowDoubleClicked"; "required": false; }; "expandableRowDisabled": { "alias": "expandableRowDisabled"; "required": false; }; "expandableRowExpanded": { "alias": "expandableRowExpanded"; "required": false; }; "expandableRowTemplate": { "alias": "expandableRowTemplate"; "required": false; }; "striped": { "alias": "striped"; "required": false; }; "highlightOnHover": { "alias": "highlightOnHover"; "required": false; }; "pointerOnHover": { "alias": "pointerOnHover"; "required": false; }; "dense": { "alias": "dense"; "required": false; }; "responsive": { "alias": "responsive"; "required": false; }; "progressPending": { "alias": "progressPending"; "required": false; }; "noHeader": { "alias": "noHeader"; "required": false; }; "noTableHead": { "alias": "noTableHead"; "required": false; }; "noContextMenu": { "alias": "noContextMenu"; "required": false; }; "fixedHeader": { "alias": "fixedHeader"; "required": false; }; "fixedHeaderScrollHeight": { "alias": "fixedHeaderScrollHeight"; "required": false; }; "subHeader": { "alias": "subHeader"; "required": false; }; "subHeaderTemplate": { "alias": "subHeaderTemplate"; "required": false; }; "noDataText": { "alias": "noDataText"; "required": false; }; "conditionalRowStyles": { "alias": "conditionalRowStyles"; "required": false; }; "defaultSortFieldId": { "alias": "defaultSortFieldId"; "required": false; }; "defaultSortAsc": { "alias": "defaultSortAsc"; "required": false; }; "sortServer": { "alias": "sortServer"; "required": false; }; "theme": { "alias": "theme"; "required": false; }; "contextMessage": { "alias": "contextMessage"; "required": false; }; }, { "sortChange": "sortChange"; "selectedRowsChange": "selectedRowsChange"; "pageChange": "pageChange"; "rowsPerPageChange": "rowsPerPageChange"; "rowClicked": "rowClicked"; "rowDoubleClicked": "rowDoubleClicked"; "rowMouseEnter": "rowMouseEnter"; "rowMouseLeave": "rowMouseLeave"; "rowExpandToggled": "rowExpandToggled"; }, never, never, false, never>;
+}
+
+declare class DataTableModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<DataTableModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<DataTableModule, [typeof DataTableComponent], [typeof i2.CommonModule], [typeof DataTableComponent]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<DataTableModule>;
+}
+
+export { DataTableComponent, DataTableModule };
+export type { ConditionalStyle, DataTableCellContext, DataTableColumn, DataTableContextMessage, DataTableExpandEvent, DataTableExpandableContext, DataTableFormatter, DataTablePageEvent, DataTableRowsPerPageEvent, DataTableSelectionState, DataTableSelector, DataTableSortEvent, DataTableSortOrder, DataTableThemeName, Primitive };
