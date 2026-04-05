@@ -1,7 +1,7 @@
 {
   "name": "@revivejs/angular-data-table-component",
-  "version": "20.0.0",
-  "description": "A maintained Angular 20 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
+  "version": "21.0.0",
+  "description": "A maintained Angular 21 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
   "keywords": [
     "angular",
     "angular15",
@@ -10,6 +10,7 @@
     "angular18",
     "angular19",
     "angular20",
+    "angular21",
     "angular-library",
     "typescript",
     "data-table",
@@ -47,8 +48,8 @@
   "module": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
   "es2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
   "fesm2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
-  "typings": "./dist/index.d.ts",
-  "types": "./dist/index.d.ts",
+  "typings": "./dist/types/revivejs-angular-data-table-component.d.ts",
+  "types": "./dist/types/revivejs-angular-data-table-component.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -66,21 +67,23 @@
     "build:docs:angular-19": "cd docs-src/angular-19 && npm run build",
     "docs:install:angular-20": "cd docs-src/angular-20 && npm install --ignore-scripts",
     "build:docs:angular-20": "cd docs-src/angular-20 && npm run build",
-    "build:docs": "npm run build:docs:angular-20"
+    "docs:install:angular-21": "cd docs-src/angular-21 && npm install --ignore-scripts",
+    "build:docs:angular-21": "cd docs-src/angular-21 && npm run build",
+    "build:docs": "npm run build:docs:angular-21"
   },
   "peerDependencies": {
-    "@angular/common": ">=15.0.0 <21.0.0",
-    "@angular/core": ">=15.0.0 <21.0.0"
+    "@angular/common": ">=15.0.0 <22.0.0",
+    "@angular/core": ">=15.0.0 <22.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/common": "20.3.18",
-    "@angular/compiler": "20.3.18",
-    "@angular/compiler-cli": "20.3.18",
-    "@angular/core": "20.3.18",
-    "ng-packagr": "20.3.2",
+    "@angular/common": "21.2.7",
+    "@angular/compiler": "21.2.7",
+    "@angular/compiler-cli": "21.2.7",
+    "@angular/core": "21.2.7",
+    "ng-packagr": "21.2.2",
     "typescript": "~5.9.3"
   }
 }

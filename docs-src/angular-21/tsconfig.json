@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "outDir": "../../out-tsc/angular-21",
+    "sourceMap": true,
+    "target": "es2022",
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "paths": {
+      "@revivejs/angular-data-table-component": [
+        "node_modules/@revivejs/angular-data-table-component"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "strictInjectionParameters": false,
+    "strictInputAccessModifiers": false,
+    "strictTemplates": false
+  }
+}
