@@ -26,6 +26,7 @@ import { clamp, resolveCellValue, sortRows, styleObjectToString, toCellText } fr
 
 @Component({
   selector: 'revive-data-table',
+  standalone: false,
   template: DATA_TABLE_TEMPLATE,
   styleUrls: ['./angular-data-table.component.css'],
   changeDetection: ChangeDetectionStrategy.Default

@@ -1,16 +1,16 @@
 # @revivejs/angular-data-table-component
 
-> A maintained **Angular 18 data table component** with sorting, row selection, expandable rows, client or server pagination, conditional styles, and versioned live demos.
+> A maintained **Angular 19 data table component** with sorting, row selection, expandable rows, client or server pagination, conditional styles, and versioned live demos.
 
 [![npm version](https://img.shields.io/npm/v/@revivejs/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@revivejs/angular-data-table-component)
 [![npm downloads](https://img.shields.io/npm/dt/@revivejs/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@revivejs/angular-data-table-component)
 [![license](https://img.shields.io/npm/l/@revivejs/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/master/LICENSE)
-[![Angular 18](https://img.shields.io/badge/Angular-18.2-red?style=flat-square&logo=angular)](https://angular.io)
-[![TypeScript 5.5](https://img.shields.io/badge/TypeScript-5.5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![Angular 19](https://img.shields.io/badge/Angular-19.2-red?style=flat-square&logo=angular)](https://angular.io)
+[![TypeScript 5.8](https://img.shields.io/badge/TypeScript-5.8-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 
 **[Documentation & Live Demos](https://alexandroit.github.io/angular-data-table-component/)** | **[npm](https://www.npmjs.com/package/@revivejs/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
 
-**Latest version:** `18.0.0`
+**Latest version:** `19.0.0`
 
 ## Why this library?
 
@@ -27,6 +27,7 @@ The repository starts with the Angular 15 line and is structured to grow sequent
 
 | Package version | Angular version | TypeScript | Demo link |
 | :---: | :---: | :---: | :--- |
+| **19.0.0** | **19.2.x** | **5.8.x** | [Angular 19 demo](https://alexandroit.github.io/angular-data-table-component/angular-19/) |
 | **18.0.0** | **18.2.x** | **5.5.x** | [Angular 18 demo](https://alexandroit.github.io/angular-data-table-component/angular-18/) |
 | **17.0.0** | **17.3.x** | **5.4.x** | [Angular 17 demo](https://alexandroit.github.io/angular-data-table-component/angular-17/) |
 | **16.0.0** | **16.2.x** | **5.1.x** | [Angular 16 demo](https://alexandroit.github.io/angular-data-table-component/angular-16/) |
@@ -126,6 +127,12 @@ export class AppComponent {
 | `rowExpandToggled` | `{ expanded, row }` | Fires when a detail row is opened or closed. |
 
 ## Changelog
+
+### 19.0.0
+- Updated the library and docs app to Angular 19.2.x
+- Added a versioned Angular 19 demo app
+- Marked the table component and docs root component with `standalone: false` for NgModule compatibility
+- Expanded peer dependency support to Angular 15 through Angular 19
 
 ### 18.0.0
 - Updated the library and docs app to Angular 18.2.x
