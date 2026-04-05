@@ -1,12 +1,13 @@
 {
   "name": "@revivejs/angular-data-table-component",
-  "version": "17.0.0",
-  "description": "A maintained Angular 17 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
+  "version": "18.0.0",
+  "description": "A maintained Angular 18 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
   "keywords": [
     "angular",
     "angular15",
     "angular16",
     "angular17",
+    "angular18",
     "angular-library",
     "typescript",
     "data-table",
@@ -58,21 +59,23 @@
     "build:docs:angular-16": "cd docs-src/angular-16 && npm run build",
     "docs:install:angular-17": "cd docs-src/angular-17 && npm install --ignore-scripts",
     "build:docs:angular-17": "cd docs-src/angular-17 && npm run build",
-    "build:docs": "npm run build:docs:angular-17"
+    "docs:install:angular-18": "cd docs-src/angular-18 && npm install --ignore-scripts",
+    "build:docs:angular-18": "cd docs-src/angular-18 && npm run build",
+    "build:docs": "npm run build:docs:angular-18"
   },
   "peerDependencies": {
-    "@angular/common": ">=15.0.0 <18.0.0",
-    "@angular/core": ">=15.0.0 <18.0.0"
+    "@angular/common": ">=15.0.0 <19.0.0",
+    "@angular/core": ">=15.0.0 <19.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/common": "17.3.12",
-    "@angular/compiler": "17.3.12",
-    "@angular/compiler-cli": "17.3.12",
-    "@angular/core": "17.3.12",
-    "ng-packagr": "17.3.0",
-    "typescript": "~5.4.5"
+    "@angular/common": "18.2.14",
+    "@angular/compiler": "18.2.14",
+    "@angular/compiler-cli": "18.2.14",
+    "@angular/core": "18.2.14",
+    "ng-packagr": "18.2.1",
+    "typescript": "~5.5.4"
   }
 }
