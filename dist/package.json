@@ -1,10 +1,11 @@
 {
   "name": "@revivejs/angular-data-table-component",
-  "version": "15.0.0",
-  "description": "A maintained Angular 15 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
+  "version": "16.0.0",
+  "description": "A maintained Angular 16 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
   "keywords": [
     "angular",
     "angular15",
+    "angular16",
     "angular-library",
     "typescript",
     "data-table",
@@ -38,18 +39,19 @@
     "LICENSE"
   ],
   "sideEffects": false,
-  "module": "fesm2015/revivejs-angular-data-table-component.mjs",
-  "es2020": "fesm2020/revivejs-angular-data-table-component.mjs",
-  "esm2020": "esm2020/revivejs-angular-data-table-component.mjs",
-  "fesm2020": "fesm2020/revivejs-angular-data-table-component.mjs",
-  "fesm2015": "fesm2015/revivejs-angular-data-table-component.mjs",
+  "main": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
+  "module": "fesm2022/revivejs-angular-data-table-component.mjs",
+  "es2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
+  "esm2022": "./dist/esm2022/revivejs-angular-data-table-component.mjs",
+  "fesm2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
   "typings": "index.d.ts",
+  "types": "./dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "@angular/common": ">=15.0.0 <16.0.0",
-    "@angular/core": ">=15.0.0 <16.0.0"
+    "@angular/common": ">=15.0.0 <17.0.0",
+    "@angular/core": ">=15.0.0 <17.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
@@ -60,11 +62,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/revivejs-angular-data-table-component.mjs",
-      "es2020": "./fesm2020/revivejs-angular-data-table-component.mjs",
-      "es2015": "./fesm2015/revivejs-angular-data-table-component.mjs",
-      "node": "./fesm2015/revivejs-angular-data-table-component.mjs",
-      "default": "./fesm2020/revivejs-angular-data-table-component.mjs"
+      "esm2022": "./esm2022/revivejs-angular-data-table-component.mjs",
+      "esm": "./esm2022/revivejs-angular-data-table-component.mjs",
+      "default": "./fesm2022/revivejs-angular-data-table-component.mjs"
     }
   }
 }
