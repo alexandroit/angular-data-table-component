@@ -1,33 +1,35 @@
 <div class="shell">
   <section class="hero">
     <div class="hero-card hero-main">
-      <span class="badge">ANGULAR 16.2 · DATA TABLE</span>
-      <h1>@revivejs/angular-data-table-component</h1>
+      <span class="badge">ANGULAR {{ angularLine }} · DATA TABLE</span>
+      <h1>&#64;revivejs/angular-data-table-component</h1>
       <p>
-        A community-style Angular data table component with sorting, row selection, expandable
-        content, client or server pagination, conditional styles, and a demo layout that tracks
-        the Angular release line.
+        A maintained Angular data table component with a full Angular-first example explorer:
+        sorting, selection, expansion, pagination, conditional rows, themes, loading states,
+        and template-driven cells across every maintained Angular line.
       </p>
+
       <div class="feature-grid">
         <div class="feature">
-          <strong>Declarative columns</strong>
-          Keep column definitions in TypeScript and let Angular templates handle the rich cells.
+          <strong>Story-rich docs</strong>
+          The docs now cover the full Angular API surface instead of a short flat sample list.
         </div>
         <div class="feature">
-          <strong>Native Angular patterns</strong>
-          Custom cells and expanded content use <code>TemplateRef</code>, not framework adapters.
+          <strong>Template-native cells</strong>
+          Rich cells and expanded content use <code>TemplateRef</code> instead of framework adapters.
         </div>
         <div class="feature">
-          <strong>Stateful table UX</strong>
-          Sorting, pagination, selection, and expandable rows are available out of the box.
+          <strong>Table workflows</strong>
+          Sorting, pagination, selection, expansion, hover states, and context bars all stay visible.
         </div>
         <div class="feature">
           <strong>Versioned docs</strong>
-          This repository follows the Angular major line with a dedicated docs build per version.
+          Each maintained Angular release line keeps its own docs app and compiled history.
         </div>
       </div>
+
       <div class="cta-row">
-        <a class="btn" href="#demos">See demos</a>
+        <a class="btn" href="#examples">Explore examples</a>
         <a
           class="btn secondary"
           href="https://github.com/alexandroit/angular-data-table-component#readme"
@@ -61,207 +63,593 @@
         <span class="step-num">3</span>
         <div>
           <strong>Render the table</strong>
-          <pre>{{ basicCode }}</pre>
+          <pre>{{ renderCode }}</pre>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="layout" id="demos">
+  <section class="layout" id="examples">
     <div class="panels">
       <article class="panel">
         <div class="panel-header">
-          <h2>Core — basic usage</h2>
+          <h2>Example explorer</h2>
           <p>
-            Start with declarative columns and rows, then turn on the features you need with
-            inputs instead of rebuilding the table structure.
+            This gallery rebuilds the docs into a navigable explorer so the Angular API surface is
+            easy to browse on desktop and mobile while staying faithful to the real component
+            capabilities.
           </p>
         </div>
-        <div class="demo-grid">
-          <section class="demo-card">
-            <h3>Basic table</h3>
-            <p>A minimal setup with sorting-ready columns and client pagination.</p>
-            <pre class="code">{{ basicCode }}</pre>
-            <div class="table-frame">
-              <revive-data-table
-                title="Film catalog"
-                [columns]="basicColumns"
-                [data]="movies"
-                [pagination]="true"
-                (rowClicked)="onRowClick($event)">
-              </revive-data-table>
-            </div>
-          </section>
 
-          <section class="demo-card">
-            <h3>Sorting and search tools</h3>
-            <p>
-              Keep sorting in the table and search in your component state through a sub-header
-              template.
-            </p>
-            <pre class="code">{{ basicCode }}</pre>
-            <div class="table-frame">
-              <revive-data-table
-                title="Searchable releases"
-                [columns]="sortableColumns"
-                [data]="filteredMovies"
-                [pagination]="true"
-                [subHeader]="true"
-                [subHeaderTemplate]="searchTools"
-                (sortChange)="onSort('Searchable table', $event)"
-                (pageChange)="onPage($event)"
-                (rowsPerPageChange)="onRowsPerPage($event)">
-              </revive-data-table>
+        <div class="example-explorer">
+          <aside class="demo-nav">
+            <section class="demo-group" *ngFor="let group of demoGroups; trackBy: trackByGroup">
+              <h3>{{ group.title }}</h3>
+              <div class="demo-list">
+                <button
+                  *ngFor="let demo of group.demos; trackBy: trackByDemo"
+                  type="button"
+                  class="demo-link"
+                  [class.active]="demo.id === selectedDemoId"
+                  (click)="selectDemo(demo.id)">
+                  {{ demo.title }}
+                </button>
+              </div>
+            </section>
+          </aside>
+
+          <div class="demo-stage">
+            <div class="demo-stage-header">
+              <div class="demo-breadcrumb">
+                <span class="meta-pill">{{ selectedDemo.category }}</span>
+                <span class="meta-pill light">{{ selectedDemo.title }}</span>
+              </div>
+              <h3>{{ selectedDemo.title }}</h3>
+              <p>{{ selectedDemo.summary }}</p>
             </div>
-          </section>
+
+            <pre class="code">{{ selectedDemo.code }}</pre>
+
+            <div class="table-host" [ngSwitch]="selectedDemo.id">
+              <ng-container *ngSwitchCase="'kitchen-sink'">
+                <div class="demo-stack">
+                  <div class="toggle-grid">
+                    <label class="toggle-card" *ngFor="let toggle of kitchenToggles">
+                      <input
+                        type="checkbox"
+                        [checked]="kitchenSettings[toggle.key]"
+                        (change)="toggleKitchenSetting(toggle.key)" />
+                      <span>{{ toggle.label }}</span>
+                    </label>
+                  </div>
+
+                  <p class="demo-note">
+                    The Kitchen Sink keeps the docs honest: all core table flags can be combined in
+                    one Angular view without adapters.
+                  </p>
+
+                  <revive-data-table
+                    title="Kitchen Sink movie list"
+                    [columns]="kitchenColumns"
+                    [data]="kitchenRows"
+                    [selectableRows]="kitchenSettings.selectableRows"
+                    [selectableRowsSingle]="kitchenSettings.selectableRowsSingle"
+                    [selectableRowsNoSelectAll]="kitchenSettings.selectableRowsNoSelectAll"
+                    [selectableRowsVisibleOnly]="kitchenSettings.selectableRowsVisibleOnly"
+                    [selectableRowsHighlight]="kitchenSettings.selectableRowsHighlight"
+                    [expandableRows]="kitchenSettings.expandableRows"
+                    [expandOnRowClicked]="kitchenSettings.expandOnRowClicked"
+                    [expandOnRowDoubleClicked]="kitchenSettings.expandOnRowDoubleClicked"
+                    [expandableRowsHideExpander]="kitchenSettings.expandableRowsHideExpander"
+                    [expandableRowTemplate]="movieDetail"
+                    [pagination]="kitchenSettings.pagination"
+                    [striped]="kitchenSettings.striped"
+                    [highlightOnHover]="kitchenSettings.highlightOnHover"
+                    [pointerOnHover]="kitchenSettings.pointerOnHover"
+                    [dense]="kitchenSettings.dense"
+                    [responsive]="kitchenSettings.responsive"
+                    [fixedHeader]="kitchenSettings.fixedHeader"
+                    fixedHeaderScrollHeight="280px"
+                    [subHeader]="kitchenSettings.subHeader"
+                    [subHeaderTemplate]="kitchenTools"
+                    [noHeader]="kitchenSettings.noHeader"
+                    [noTableHead]="kitchenSettings.noTableHead"
+                    [noContextMenu]="kitchenSettings.noContextMenu"
+                    [progressPending]="kitchenSettings.progressPending"
+                    [contextMessage]="reviewContextMessage"
+                    (sortChange)="onSort('Kitchen Sink', $event)"
+                    (selectedRowsChange)="onBasicSelectionChange($event)"
+                    (rowClicked)="onRowClick('Kitchen Sink', $event)"
+                    (rowExpandToggled)="onExpand('Kitchen Sink', $event)"
+                    (pageChange)="onPage('Kitchen Sink', $event)"
+                    (rowsPerPageChange)="onRowsPerPage('Kitchen Sink', $event)">
+                  </revive-data-table>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'basic-table'">
+                <revive-data-table
+                  title="Film catalog"
+                  [columns]="basicColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  (rowClicked)="onRowClick('Basic table', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'filtering'">
+                <div class="demo-stack">
+                  <p class="demo-note">
+                    Filter state stays in the Angular component while the table continues handling
+                    sorting and pagination.
+                  </p>
+                  <revive-data-table
+                    title="Searchable releases"
+                    [columns]="sortableColumns"
+                    [data]="filteredMovies"
+                    [pagination]="true"
+                    [subHeader]="true"
+                    [subHeaderTemplate]="filterTools"
+                    (sortChange)="onSort('Filtering', $event)"
+                    (pageChange)="onPage('Filtering', $event)"
+                    (rowsPerPageChange)="onRowsPerPage('Filtering', $event)">
+                  </revive-data-table>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'sorting-basic'">
+                <revive-data-table
+                  title="Basic sorting"
+                  [columns]="sortableColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  (sortChange)="onSort('Basic sorting', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'sorting-default'">
+                <revive-data-table
+                  title="Default sort by rating"
+                  [columns]="defaultSortColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [defaultSortFieldId]="'rating'"
+                  [defaultSortAsc]="false"
+                  (sortChange)="onSort('Default sort', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'sorting-custom'">
+                <revive-data-table
+                  title="Custom title sort"
+                  [columns]="customSortColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  (sortChange)="onSort('Custom sort', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'sorting-server'">
+                <revive-data-table
+                  title="Server-style sorting"
+                  [columns]="sortableColumns"
+                  [data]="remoteSortRows"
+                  [pagination]="true"
+                  [sortServer]="true"
+                  [progressPending]="remoteSortLoading"
+                  (sortChange)="onRemoteSort($event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'pagination-basic'">
+                <revive-data-table
+                  title="Basic pagination"
+                  [columns]="basicColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  (pageChange)="onPage('Basic pagination', $event)"
+                  (rowsPerPageChange)="onRowsPerPage('Basic pagination', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'pagination-options'">
+                <revive-data-table
+                  title="Rows per page options"
+                  [columns]="basicColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [paginationPerPage]="5"
+                  [paginationRowsPerPageOptions]="[5, 8, 12]"
+                  (pageChange)="onPage('Pagination options', $event)"
+                  (rowsPerPageChange)="onRowsPerPage('Pagination options', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'pagination-remote'">
+                <revive-data-table
+                  title="Support tickets"
+                  [columns]="serverColumns"
+                  [data]="serverRows"
+                  [pagination]="true"
+                  [paginationServer]="true"
+                  [paginationDefaultPage]="serverPage"
+                  [paginationPerPage]="serverRowsPerPage"
+                  [paginationRowsPerPageOptions]="[5, 10, 15]"
+                  [paginationTotalRows]="allTickets.length"
+                  [progressPending]="serverLoading"
+                  (pageChange)="onServerPage($event)"
+                  (rowsPerPageChange)="onServerRowsPerPage($event)"
+                  (sortChange)="onSort('Remote pagination', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'fixed-header'">
+                <revive-data-table
+                  title="Fixed header"
+                  [columns]="sortableColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [fixedHeader]="true"
+                  fixedHeaderScrollHeight="280px"
+                  [highlightOnHover]="true"
+                  (sortChange)="onSort('Fixed header', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-basic'">
+                <div class="demo-stack">
+                  <revive-data-table
+                    title="Selectable rows"
+                    [columns]="selectionColumns"
+                    [data]="movies"
+                    [selectableRows]="true"
+                    [pagination]="true"
+                    [selectableRowsHighlight]="true"
+                    (selectedRowsChange)="onBasicSelectionChange($event)">
+                  </revive-data-table>
+                  <p class="demo-note">{{ basicSelectionSummary }}</p>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-single'">
+                <div class="demo-stack">
+                  <revive-data-table
+                    title="Single selection"
+                    [columns]="selectionColumns"
+                    [data]="movies"
+                    [selectableRows]="true"
+                    [selectableRowsSingle]="true"
+                    [pagination]="true"
+                    (selectedRowsChange)="onSingleSelectionChange($event)">
+                  </revive-data-table>
+                  <p class="demo-note">{{ singleSelectionSummary }}</p>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-preselected'">
+                <revive-data-table
+                  title="Pre selected rows"
+                  [columns]="selectionColumns"
+                  [data]="movies"
+                  [selectableRows]="true"
+                  [selectableRowSelected]="isPreselectedMovie"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-predisabled'">
+                <revive-data-table
+                  title="Pre disabled rows"
+                  [columns]="selectionStatusColumns"
+                  [data]="movies"
+                  [selectableRows]="true"
+                  [selectableRowDisabled]="isSelectionDisabled"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-visible-only'">
+                <div class="demo-stack">
+                  <revive-data-table
+                    title="Visible-page selection"
+                    [columns]="selectionColumns"
+                    [data]="movies"
+                    [selectableRows]="true"
+                    [selectableRowsVisibleOnly]="true"
+                    [pagination]="true"
+                    [paginationPerPage]="5"
+                    (selectedRowsChange)="onVisibleSelectionChange($event)">
+                  </revive-data-table>
+                  <p class="demo-note">{{ visibleSelectionSummary }}</p>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-manage'">
+                <div class="demo-stack">
+                  <div class="toolbar toolbar-inline">
+                    <button
+                      type="button"
+                      class="mini-button danger"
+                      [disabled]="!managedSelectedRows.length"
+                      (click)="deleteManagedSelection()">
+                      Delete selected
+                    </button>
+                    <button
+                      type="button"
+                      class="mini-button"
+                      [disabled]="!managedSelectedRows.length"
+                      (click)="clearManagedSelection()">
+                      Clear selection
+                    </button>
+                  </div>
+
+                  <revive-data-table
+                    title="Manage selections"
+                    [columns]="selectionColumns"
+                    [data]="managedRows"
+                    [selectableRows]="true"
+                    [pagination]="true"
+                    [clearSelectedRows]="managedClearSelection"
+                    (selectedRowsChange)="onManagedSelectionChange($event)">
+                  </revive-data-table>
+
+                  <p class="demo-note">{{ managedSelectionSummary }}</p>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'selectable-context-message'">
+                <revive-data-table
+                  title="Custom context message"
+                  [columns]="selectionColumns"
+                  [data]="movies"
+                  [selectableRows]="true"
+                  [pagination]="true"
+                  [contextMessage]="reviewContextMessage"
+                  (selectedRowsChange)="onBasicSelectionChange($event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'expandable-basic'">
+                <revive-data-table
+                  title="Expandable rows"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [expandableRows]="true"
+                  [expandableRowTemplate]="movieDetail"
+                  [pagination]="true"
+                  (rowExpandToggled)="onExpand('Expandable', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'expandable-row-click'">
+                <revive-data-table
+                  title="Expand on row click"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [expandableRows]="true"
+                  [expandableRowTemplate]="movieDetail"
+                  [expandOnRowClicked]="true"
+                  [pagination]="true"
+                  (rowExpandToggled)="onExpand('Expand on row click', $event)"
+                  (rowClicked)="onRowClick('Expand on row click', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'expandable-preexpanded'">
+                <revive-data-table
+                  title="Pre expanded"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [expandableRows]="true"
+                  [expandableRowTemplate]="movieDetail"
+                  [expandableRowExpanded]="isPreExpandedMovie"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'expandable-predisabled'">
+                <revive-data-table
+                  title="Pre disabled expansion"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [expandableRows]="true"
+                  [expandableRowTemplate]="movieDetail"
+                  [expandableRowDisabled]="isExpansionDisabled"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'expandable-hide-expander'">
+                <revive-data-table
+                  title="Hide expander"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [expandableRows]="true"
+                  [expandableRowTemplate]="movieDetail"
+                  [expandableRowsHideExpander]="true"
+                  [expandOnRowClicked]="true"
+                  [pagination]="true"
+                  (rowExpandToggled)="onExpand('Hide expander', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'columns-template-cells'">
+                <revive-data-table
+                  title="Template-driven cells"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'columns-formatters'">
+                <revive-data-table
+                  title="Formatter columns"
+                  [columns]="formatterColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  (sortChange)="onSort('Formatters', $event)">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'columns-omit'">
+                <revive-data-table
+                  title="Omit column"
+                  [columns]="omitColumns"
+                  [data]="movies"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'columns-omit-dynamic'">
+                <div class="demo-stack">
+                  <div class="toolbar toolbar-inline">
+                    <button type="button" class="mini-button" (click)="toggleDirectorColumn()">
+                      {{ hideDirectorColumn ? 'Show director column' : 'Hide director column' }}
+                    </button>
+                  </div>
+
+                  <revive-data-table
+                    title="Dynamic omit"
+                    [columns]="dynamicOmitColumns"
+                    [data]="movies"
+                    [pagination]="true">
+                  </revive-data-table>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'columns-alignment'">
+                <revive-data-table
+                  title="Alignment and wrap"
+                  [columns]="alignmentColumns"
+                  [data]="movies"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'conditional-rows'">
+                <revive-data-table
+                  title="Conditional rows"
+                  [columns]="customColumns"
+                  [data]="movies"
+                  [conditionalRowStyles]="contextualStyles"
+                  [pagination]="true"
+                  [highlightOnHover]="true"
+                  [pointerOnHover]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'loading-pending'">
+                <div class="demo-stack">
+                  <div class="toolbar toolbar-inline">
+                    <button type="button" class="mini-button" (click)="restartLoadingDemo()">Restart loading</button>
+                  </div>
+
+                  <revive-data-table
+                    title="Loading pending"
+                    [columns]="basicColumns"
+                    [data]="loadingRows"
+                    [pagination]="true"
+                    [progressPending]="loadingPending">
+                  </revive-data-table>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'loading-empty'">
+                <revive-data-table
+                  title="Empty state"
+                  [columns]="basicColumns"
+                  [data]="[]"
+                  [pagination]="true"
+                  noDataText="No archived releases found.">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'theme-dark'">
+                <revive-data-table
+                  title="Dark theme"
+                  theme="dark"
+                  [columns]="compactColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [highlightOnHover]="true"
+                  [pointerOnHover]="true"
+                  [expandableRows]="true"
+                  [expandableRowTemplate]="movieDetail"
+                  [selectableRows]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'theme-dense'">
+                <revive-data-table
+                  title="Dense and striped"
+                  [columns]="compactColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [dense]="true"
+                  [striped]="true"
+                  [highlightOnHover]="true"
+                  [pointerOnHover]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'headers-subheader'">
+                <revive-data-table
+                  title="Subheader tools"
+                  [columns]="sortableColumns"
+                  [data]="filteredMovies"
+                  [pagination]="true"
+                  [subHeader]="true"
+                  [subHeaderTemplate]="filterTools">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'headers-no-header'">
+                <revive-data-table
+                  title="No header"
+                  [columns]="basicColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [noHeader]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'headers-no-table-head'">
+                <revive-data-table
+                  title="No table head"
+                  [columns]="basicColumns"
+                  [data]="movies"
+                  [pagination]="true"
+                  [noTableHead]="true"
+                  [selectableRows]="true">
+                </revive-data-table>
+              </ng-container>
+
+              <ng-container *ngSwitchDefault>
+                <revive-data-table
+                  title="Film catalog"
+                  [columns]="basicColumns"
+                  [data]="movies"
+                  [pagination]="true">
+                </revive-data-table>
+              </ng-container>
+            </div>
+          </div>
         </div>
       </article>
 
       <article class="panel">
         <div class="panel-header">
-          <h2>Selection and row events</h2>
+          <h2>API reference</h2>
           <p>
-            The component emits selection state and row interaction events in a predictable Angular
-            shape.
+            These inputs, column fields, and outputs are the levers that show up repeatedly across
+            the Angular example tree.
           </p>
         </div>
-        <div class="demo-grid">
-          <section class="demo-card">
-            <h3>Selectable rows</h3>
-            <p>Turn on multi-select and keep the selected rows summary in component state.</p>
-            <pre class="code">{{ selectionCode }}</pre>
-            <div class="table-frame">
-              <revive-data-table
-                title="Review queue"
-                [columns]="selectableColumns"
-                [data]="movies"
-                [selectableRows]="true"
-                [selectableRowsHighlight]="true"
-                [pagination]="true"
-                (selectedRowsChange)="onSelectionChange($event)"
-                (sortChange)="onSort('Selection table', $event)">
-              </revive-data-table>
-            </div>
-            <p class="note">{{ selectionSummary }}</p>
-          </section>
 
-          <section class="demo-card">
-            <h3>Single selection mode</h3>
-            <p>Use radio-style selection when only one active record should be chosen.</p>
-            <pre class="code">[selectableRowsSingle]=\"true\"</pre>
-            <div class="table-frame">
-              <revive-data-table
-                title="Primary pick"
-                [columns]="selectableColumns"
-                [data]="movies"
-                [selectableRows]="true"
-                [selectableRowsSingle]="true"
-                [pagination]="true"
-                (selectedRowsChange)="onSelectionChange($event)">
-              </revive-data-table>
-            </div>
-          </section>
-        </div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-header">
-          <h2>Custom cells and expandable rows</h2>
-          <p>
-            Angular templates are first-class here. Use template refs for richer cells and expanded
-            content instead of rebuilding the table component.
-          </p>
-        </div>
-        <div class="demo-grid">
-          <section class="demo-card">
-            <h3>Template-driven cells</h3>
-            <p>Status pills, compact currency blocks, and wrapped summaries all stay declarative.</p>
-            <pre class="code">{{ expansionCode }}</pre>
-            <div class="table-frame">
-              <revive-data-table
-                title="Editorial cuts"
-                [columns]="customColumns"
-                [data]="movies"
-                [expandableRows]="true"
-                [expandableRowTemplate]="movieDetail"
-                [conditionalRowStyles]="contextualStyles"
-                [pagination]="true"
-                [highlightOnHover]="true"
-                [pointerOnHover]="true"
-                (rowExpandToggled)="onExpand($event)"
-                (rowClicked)="onRowClick($event)">
-              </revive-data-table>
-            </div>
-          </section>
-
-          <section class="demo-card">
-            <h3>Dark theme + dense + fixed header</h3>
-            <p>
-              The built-in dark theme stays readable and works with dense rows and sticky headers.
-            </p>
-            <pre class="code">theme=\"dark\" [dense]=\"true\" [fixedHeader]=\"true\"</pre>
-            <div class="table-frame dark-frame">
-              <revive-data-table
-                title="Compact monitoring board"
-                theme="dark"
-                [columns]="compactColumns"
-                [data]="movies"
-                [pagination]="true"
-                [dense]="true"
-                [fixedHeader]="true"
-                fixedHeaderScrollHeight="280px"
-                [striped]="true"
-                [highlightOnHover]="true"
-                (sortChange)="onSort('Dark table', $event)">
-              </revive-data-table>
-            </div>
-          </section>
-        </div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-header">
-          <h2>Server-style pagination</h2>
-          <p>
-            When you set <code>paginationServer</code>, the component stops slicing rows internally
-            and lets your container load the current page from an API.
-          </p>
-        </div>
-        <div class="demo-grid">
-          <section class="demo-card">
-            <h3>Remote page simulation</h3>
-            <p>
-              This demo simulates a remote API by slicing data after a short delay while keeping the
-              table footer fully interactive.
-            </p>
-            <pre class="code">{{ serverCode }}</pre>
-            <div class="table-frame">
-              <revive-data-table
-                title="Support tickets"
-                [columns]="serverColumns"
-                [data]="serverRows"
-                [pagination]="true"
-                [paginationServer]="true"
-                [paginationDefaultPage]="serverPage"
-                [paginationPerPage]="serverRowsPerPage"
-                [paginationTotalRows]="allTickets.length"
-                [progressPending]="serverLoading"
-                (pageChange)="onServerPage($event)"
-                (rowsPerPageChange)="onServerRowsPerPage($event)"
-                (sortChange)="onSort('Server table', $event)">
-              </revive-data-table>
-            </div>
-          </section>
-        </div>
-      </article>
-
-      <article class="panel ref-panel">
-        <div class="panel-header">
-          <h2>Quick API reference</h2>
-        </div>
         <div class="ref-grid">
           <div class="ref-card">
-            <h4>Component inputs</h4>
+            <h4>Core inputs</h4>
             <table class="api-table">
               <thead>
                 <tr>
@@ -270,15 +658,32 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td><code>columns</code></td><td>Declarative column definitions with selectors, sorting, and templates.</td></tr>
-                <tr><td><code>data</code></td><td>Row data to render.</td></tr>
-                <tr><td><code>selectableRows</code></td><td>Enables row selection.</td></tr>
+                <tr><td><code>columns</code></td><td>Declarative column definitions with selectors, sort rules, and optional templates.</td></tr>
+                <tr><td><code>data</code></td><td>The row array to render for the current view.</td></tr>
+                <tr><td><code>pagination</code></td><td>Turns on the built-in footer pagination UI.</td></tr>
+                <tr><td><code>paginationServer</code></td><td>Stops client slicing so the host component controls which rows are loaded.</td></tr>
+                <tr><td><code>sortServer</code></td><td>Leaves sorting to the host component while still exposing the sort event payload.</td></tr>
+                <tr><td><code>theme</code></td><td>Switch between the <code>default</code> and <code>dark</code> presets.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ref-card">
+            <h4>Selection and expansion</h4>
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Input</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>selectableRows</code></td><td>Enables checkbox or radio row selection.</td></tr>
+                <tr><td><code>selectableRowsSingle</code></td><td>Restricts selection to a single active row.</td></tr>
+                <tr><td><code>selectableRowSelected</code></td><td>Programmatically preselect rows from host rules.</td></tr>
+                <tr><td><code>selectableRowDisabled</code></td><td>Disables rows without removing them from the dataset.</td></tr>
                 <tr><td><code>expandableRows</code></td><td>Enables expandable detail rows.</td></tr>
-                <tr><td><code>expandableRowTemplate</code></td><td>Angular template used for expanded content.</td></tr>
-                <tr><td><code>pagination</code></td><td>Turns on built-in pagination UI.</td></tr>
-                <tr><td><code>paginationServer</code></td><td>Lets the container control which rows are currently loaded.</td></tr>
-                <tr><td><code>conditionalRowStyles</code></td><td>Applies row styles when predicates match.</td></tr>
-                <tr><td><code>theme</code></td><td>Switch between the <code>default</code> and <code>dark</code> themes.</td></tr>
+                <tr><td><code>expandableRowTemplate</code></td><td>Angular template used to render expanded row content.</td></tr>
               </tbody>
             </table>
           </div>
@@ -293,11 +698,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td><code>selector</code></td><td>Read values with a row function or a property key.</td></tr>
-                <tr><td><code>format</code></td><td>Return custom display values before rendering.</td></tr>
+                <tr><td><code>selector</code></td><td>Read values through a property key or a row function.</td></tr>
+                <tr><td><code>format</code></td><td>Return custom display text without a full template.</td></tr>
                 <tr><td><code>cellTemplate</code></td><td>Use an Angular template for richer cell layouts.</td></tr>
-                <tr><td><code>sortable</code></td><td>Turns on built-in sorting for that column.</td></tr>
-                <tr><td><code>sortFunction</code></td><td>Override the comparison logic for a specific column.</td></tr>
+                <tr><td><code>sortFunction</code></td><td>Override comparison logic for a single column.</td></tr>
+                <tr><td><code>omit</code></td><td>Hide a column while keeping it in the declarative config.</td></tr>
+                <tr><td><code>wrap / right / center</code></td><td>Control cell alignment and text wrapping declaratively.</td></tr>
               </tbody>
             </table>
           </div>
@@ -316,8 +722,8 @@
                 <tr><td><code>selectedRowsChange</code></td><td>Returns the selection state and selected rows array.</td></tr>
                 <tr><td><code>pageChange</code></td><td>Fires when the current page changes.</td></tr>
                 <tr><td><code>rowsPerPageChange</code></td><td>Fires when the footer page size changes.</td></tr>
-                <tr><td><code>rowClicked</code></td><td>Fires with the clicked row.</td></tr>
-                <tr><td><code>rowExpandToggled</code></td><td>Fires when an expandable row opens or closes.</td></tr>
+                <tr><td><code>rowClicked</code></td><td>Fires when a row is clicked.</td></tr>
+                <tr><td><code>rowExpandToggled</code></td><td>Fires when a detail row opens or closes.</td></tr>
               </tbody>
             </table>
           </div>
@@ -325,36 +731,65 @@
       </article>
     </div>
 
-    <aside class="log-panel">
-      <h2>Event Log</h2>
-      <p>Interact with the demos to see Angular output events and table state changes here.</p>
-      <div class="log-controls">
-        <button class="ghost small" (click)="clearLog()">Clear</button>
-      </div>
-      <div class="log-list">
-        <div *ngFor="let entry of logEntries" class="log-entry">
-          {{ entry }}
+    <aside class="sidebar">
+      <section class="panel log-panel">
+        <div class="log-header">
+          <div>
+            <h2>Event Log</h2>
+            <p>Interact with the demos to watch Angular events and host-side table workflows appear here.</p>
+          </div>
+          <button class="clear-btn" type="button" (click)="clearLog()">Clear</button>
         </div>
-      </div>
+
+        <div class="log-list">
+          <div *ngFor="let entry of logEntries" class="log-entry">
+            {{ entry }}
+          </div>
+        </div>
+
+        <div class="release-card">
+          <h3>Release line</h3>
+          <p>This docs build is pinned to the same Angular release line and package version published on npm.</p>
+          <div class="api-row">
+            <strong>Package line</strong>
+            <span>{{ packageLine }}</span>
+          </div>
+          <div class="api-row">
+            <strong>Angular compatibility</strong>
+            <span>{{ angularLine }}</span>
+          </div>
+          <div class="api-row">
+            <strong>Docs path</strong>
+            <span>{{ docsPath }}/</span>
+          </div>
+          <div class="api-row">
+            <strong>Pattern</strong>
+            <span>versioned docs-src + compiled docs history</span>
+          </div>
+        </div>
+      </section>
     </aside>
   </section>
 
-  <footer class="footer">
-    <p>
-      <strong>@revivejs/angular-data-table-component</strong> keeps the table API declarative and
-      close to Angular templates, while still covering the everyday behavior people expect from a
-      modern data grid.
-    </p>
-  </footer>
-
-  <ng-template #searchTools>
-    <div class="toolbar">
+  <ng-template #kitchenTools>
+    <div class="toolbar toolbar-inline">
       <input
-        [ngModel]="searchTerm"
-        (ngModelChange)="onSearchTermChange($event)"
+        [ngModel]="kitchenSearchTerm"
+        (ngModelChange)="onKitchenSearchTermChange($event)"
         type="search"
-        placeholder="Filter by title, director, genre or status" />
-      <span class="toolbar-tip">Client-side filtering in the host component.</span>
+        placeholder="Search titles, directors, genres, or status" />
+      <button type="button" class="mini-button" (click)="onKitchenSearchTermChange('')">Clear</button>
+    </div>
+  </ng-template>
+
+  <ng-template #filterTools>
+    <div class="toolbar toolbar-inline">
+      <input
+        [ngModel]="filterSearchTerm"
+        (ngModelChange)="onFilterSearchTermChange($event)"
+        type="search"
+        placeholder="Filter by title, director, genre, status, or summary" />
+      <button type="button" class="mini-button" (click)="onFilterSearchTermChange('')">Clear</button>
     </div>
   </ng-template>
 
@@ -367,8 +802,20 @@
   <ng-template #budgetCell let-row>
     <div class="metric-stack">
       <strong>{{ formatMoney(row.budget) }}</strong>
-      <span>production</span>
+      <span>{{ row.genre }}</span>
     </div>
+  </ng-template>
+
+  <ng-template #ticketPriorityCell let-row let-value="value">
+    <span class="priority-pill" [ngClass]="priorityTone(row.priority)">
+      {{ value }}
+    </span>
+  </ng-template>
+
+  <ng-template #ticketStatusCell let-row let-value="value">
+    <span class="priority-pill status-tone" [ngClass]="ticketStatusTone(row.status)">
+      {{ value }}
+    </span>
   </ng-template>
 
   <ng-template #movieDetail let-row>
@@ -383,7 +830,7 @@
       </div>
       <div>
         <span class="detail-label">Rating</span>
-        <strong>{{ row.rating }}/10</strong>
+        <strong>{{ formatRating(row.rating) }}</strong>
       </div>
       <div>
         <span class="detail-label">Budget</span>
