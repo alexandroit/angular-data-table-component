@@ -47276,7 +47276,7 @@ const VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_1__.Version('15.2.10'
 
 /***/ 7775:
 /*!*********************************************************************************************************************!*\
-  !*** ./node_modules/@revivejs/angular-data-table-component/dist/fesm2020/revivejs-angular-data-table-component.mjs ***!
+  !*** ./node_modules/@stackline/angular-data-table-component/dist/fesm2020/revivejs-angular-data-table-component.mjs ***!
   \*********************************************************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 

@@ -60304,7 +60304,7 @@ class EmulatedEncapsulationDomRenderer2 extends NoneEncapsulationDomRenderer {
 
 /***/ 5304
 /*!*********************************************************************************************************************!*\
-  !*** ./node_modules/@revivejs/angular-data-table-component/dist/fesm2022/revivejs-angular-data-table-component.mjs ***!
+  !*** ./node_modules/@stackline/angular-data-table-component/dist/fesm2022/revivejs-angular-data-table-component.mjs ***!
   \*********************************************************************************************************************/
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 

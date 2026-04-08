@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 4363);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 9748);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ 4456);
-/* harmony import */ var _revivejs_angular_data_table_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @revivejs/angular-data-table-component */ 5304);
+/* harmony import */ var _revivejs_angular_data_table_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @stackline/angular-data-table-component */ 5304);
 
 
 
@@ -982,8 +982,8 @@ function AppComponent_ng_template_373_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](row_r42.summary);
   }
 }
-const INSTALL_CODE = 'npm install @revivejs/angular-data-table-component';
-const SETUP_CODE = `import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { DataTableModule } from '@revivejs/angular-data-table-component';\n\n@NgModule({\n  imports: [BrowserModule, DataTableModule]\n})\nexport class AppModule {}`;
+const INSTALL_CODE = 'npm install @stackline/angular-data-table-component';
+const SETUP_CODE = `import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { DataTableModule } from '@stackline/angular-data-table-component';\n\n@NgModule({\n  imports: [BrowserModule, DataTableModule]\n})\nexport class AppModule {}`;
 const RENDER_CODE = `<revive-data-table\n  [columns]="columns"\n  [data]="rows"\n  [pagination]="true">\n</revive-data-table>`;
 const DEMO_GROUPS = [{
   title: 'Getting Started',
@@ -2156,7 +2156,7 @@ class AppComponent {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h1");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6, "@revivejs/angular-data-table-component");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6, "@stackline/angular-data-table-component");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "p");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](8, " A maintained Angular data table component with a full Angular-first example explorer: sorting, selection, expansion, pagination, conditional rows, themes, loading states, and template-driven cells across every maintained Angular line. ");
@@ -2615,7 +2615,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ 9748);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ 4456);
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ 4967);
-/* harmony import */ var _revivejs_angular_data_table_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @revivejs/angular-data-table-component */ 5304);
+/* harmony import */ var _revivejs_angular_data_table_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @stackline/angular-data-table-component */ 5304);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ 92);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 6124);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 4363);

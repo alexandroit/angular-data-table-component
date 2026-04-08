@@ -1,5 +1,5 @@
 {
-  "name": "@revivejs/angular-data-table-component",
+  "name": "@stackline/angular-data-table-component",
   "version": "21.0.0",
   "description": "A maintained Angular 21 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
   "keywords": [
