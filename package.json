@@ -1,5 +1,5 @@
 {
-  "name": "@revivejs/angular-data-table-component",
+  "name": "@stackline/angular-data-table-component",
   "version": "21.0.0",
   "description": "A maintained Angular 21 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
   "keywords": [
@@ -72,8 +72,8 @@
     "build:docs": "npm run build:docs:angular-21"
   },
   "peerDependencies": {
-    "@angular/common": ">=15.0.0 <22.0.0",
-    "@angular/core": ">=15.0.0 <22.0.0"
+    "@angular/common": ">=21.0.0 <22.0.0",
+    "@angular/core": ">=21.0.0 <22.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

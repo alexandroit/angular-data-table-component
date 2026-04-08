@@ -1,20 +1,20 @@
-# @revivejs/angular-data-table-component
+# @stackline/angular-data-table-component
 
 > A maintained **Angular 21 data table component** with sorting, row selection, expandable rows, client or server pagination, conditional styles, and versioned live demos.
 
-[![npm version](https://img.shields.io/npm/v/@revivejs/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@revivejs/angular-data-table-component)
-[![npm downloads](https://img.shields.io/npm/dt/@revivejs/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@revivejs/angular-data-table-component)
-[![license](https://img.shields.io/npm/l/@revivejs/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
+[![npm downloads](https://img.shields.io/npm/dt/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
+[![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/master/LICENSE)
 [![Angular 21](https://img.shields.io/badge/Angular-21.2-red?style=flat-square&logo=angular)](https://angular.io)
 [![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 
-**[Documentation & Live Demos](https://alexandroit.github.io/angular-data-table-component/)** | **[npm](https://www.npmjs.com/package/@revivejs/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
+**[Documentation & Live Demos](https://alexandroit.github.io/angular-data-table-component/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
 
 **Latest version:** `21.0.0`
 
 ## Why this library?
 
-`@revivejs/angular-data-table-component` ports the practical data-table surface from the React project into an Angular-friendly API and project structure:
+`@stackline/angular-data-table-component` ports the practical data-table surface from the React project into an Angular-friendly API and project structure:
 
 - declarative column definitions
 - Angular templates for custom cells and expandable content
@@ -23,30 +23,35 @@
 
 The repository starts with the Angular 15 line and is structured to grow sequentially through Angular 21.
 
-## Supported Angular Versions
+## Angular Version Compatibility
 
-| Package version | Angular version | TypeScript | Demo link |
-| :---: | :---: | :---: | :--- |
-| **21.0.0** | **21.2.x** | **5.9.x** | [Angular 21 demo](https://alexandroit.github.io/angular-data-table-component/angular-21/) |
-| **20.0.0** | **20.3.x** | **5.9.x** | [Angular 20 demo](https://alexandroit.github.io/angular-data-table-component/angular-20/) |
-| **19.0.0** | **19.2.x** | **5.8.x** | [Angular 19 demo](https://alexandroit.github.io/angular-data-table-component/angular-19/) |
-| **18.0.0** | **18.2.x** | **5.5.x** | [Angular 18 demo](https://alexandroit.github.io/angular-data-table-component/angular-18/) |
-| **17.0.0** | **17.3.x** | **5.4.x** | [Angular 17 demo](https://alexandroit.github.io/angular-data-table-component/angular-17/) |
-| **16.0.0** | **16.2.x** | **5.1.x** | [Angular 16 demo](https://alexandroit.github.io/angular-data-table-component/angular-16/) |
-| **15.0.0** | **15.2.x** | **4.9.x** | [Angular 15 demo](https://alexandroit.github.io/angular-data-table-component/angular-15/) |
+Each package family only installs on its matching Angular family. Framework major and package major are not always the same package number, so use the package family column below.
+
+| Package family | Framework family | Peer range | Tested release window | Demo link |
+| :---: | :---: | :---: | :---: | :--- |
+| **21.x** | **Angular 21 only** | **`>=21.0.0 <22.0.0`** | **21.0.0 -> 21.2.8** | [Angular 21 family docs](https://alexandroit.github.io/angular-data-table-component/angular-21/) |
+| **20.x** | **Angular 20 only** | **`>=20.0.0 <21.0.0`** | **20.0.0 -> 20.3.18** | [Angular 20 family docs](https://alexandroit.github.io/angular-data-table-component/angular-20/) |
+| **19.x** | **Angular 19 only** | **`>=19.0.0 <20.0.0`** | **19.0.0 -> 19.2.20** | [Angular 19 family docs](https://alexandroit.github.io/angular-data-table-component/angular-19/) |
+| **18.x** | **Angular 18 only** | **`>=18.0.0 <19.0.0`** | **18.0.0 -> 18.2.14** | [Angular 18 family docs](https://alexandroit.github.io/angular-data-table-component/angular-18/) |
+| **17.x** | **Angular 17 only** | **`>=17.0.0 <18.0.0`** | **17.0.0 -> 17.3.12** | [Angular 17 family docs](https://alexandroit.github.io/angular-data-table-component/angular-17/) |
+| **16.x** | **Angular 16 only** | **`>=16.0.0 <17.0.0`** | **16.0.0 -> 16.2.12** | [Angular 16 family docs](https://alexandroit.github.io/angular-data-table-component/angular-16/) |
+| **15.x** | **Angular 15 only** | **`>=15.0.0 <16.0.0`** | **15.0.0 -> 15.2.10** | [Angular 15 family docs](https://alexandroit.github.io/angular-data-table-component/angular-15/) |
+
 
 ## Installation
 
 ```bash
-npm install @revivejs/angular-data-table-component
+npm install @stackline/angular-data-table-component
 ```
+
+Choose the package family from the compatibility table above. Each published family is locked to one framework major only.
 
 ## Basic Usage
 
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { DataTableModule } from '@revivejs/angular-data-table-component';
+import { DataTableModule } from '@stackline/angular-data-table-component';
 
 import { AppComponent } from './app.component';
 
@@ -60,7 +65,7 @@ export class AppModule {}
 
 ```ts
 import { Component } from '@angular/core';
-import { DataTableColumn } from '@revivejs/angular-data-table-component';
+import { DataTableColumn } from '@stackline/angular-data-table-component';
 
 type Movie = {
   id: number;

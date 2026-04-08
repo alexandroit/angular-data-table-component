@@ -17,7 +17,7 @@ import {
   DataTableSelectionState,
   DataTableSortEvent,
   DataTableSortOrder
-} from '@revivejs/angular-data-table-component';
+} from '@stackline/angular-data-table-component';
 import { ANGULAR_LINE, DOCS_PATH, PACKAGE_LINE } from './docs-meta';
 
 type MovieStatus = 'stable' | 'review' | 'critical';
@@ -88,9 +88,9 @@ type KitchenSettingToggle = {
   label: string;
 };
 
-const INSTALL_CODE = 'npm install @revivejs/angular-data-table-component';
+const INSTALL_CODE = 'npm install @stackline/angular-data-table-component@18';
 
-const SETUP_CODE = `import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { DataTableModule } from '@revivejs/angular-data-table-component';\n\n@NgModule({\n  imports: [BrowserModule, DataTableModule]\n})\nexport class AppModule {}`;
+const SETUP_CODE = `import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { DataTableModule } from '@stackline/angular-data-table-component';\n\n@NgModule({\n  imports: [BrowserModule, DataTableModule]\n})\nexport class AppModule {}`;
 
 const RENDER_CODE = `<revive-data-table\n  [columns]="columns"\n  [data]="rows"\n  [pagination]="true">\n</revive-data-table>`;
 

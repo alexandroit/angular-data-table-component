@@ -1,0 +1,15 @@
+{
+  "packageName": "@stackline/angular-data-table-component",
+  "projectRoot": "angular-data-table-component/angular-data-table-component",
+  "framework": "angular",
+  "family": "angular-18",
+  "major": 18,
+  "exactVersion": "18.2.5",
+  "installMode": "npm-install",
+  "localInstallSource": "../../../dist",
+  "expectedExports": [],
+  "installCommand": "npm install --ignore-scripts",
+  "validateCommand": "npm run validate",
+  "buildCommand": "npm run build",
+  "generatedAt": "2026-04-08T22:22:35.261Z"
+}

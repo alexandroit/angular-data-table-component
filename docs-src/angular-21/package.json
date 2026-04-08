@@ -1,5 +1,5 @@
 {
-  "name": "@revivejs/angular-data-table-component-docs-angular21",
+  "name": "@stackline/angular-data-table-component-docs-angular21",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@angular/forms": "21.2.7",
     "@angular/platform-browser": "21.2.7",
     "@angular/platform-browser-dynamic": "21.2.7",
-    "@revivejs/angular-data-table-component": "^21.0.0",
+    "@stackline/angular-data-table-component": "^21.0.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.16.1"

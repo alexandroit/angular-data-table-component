@@ -1,5 +1,5 @@
 {
-  "name": "@revivejs/angular-data-table-component-docs-angular16",
+  "name": "@stackline/angular-data-table-component-docs-angular16",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@angular/forms": "16.2.12",
     "@angular/platform-browser": "16.2.12",
     "@angular/platform-browser-dynamic": "16.2.12",
-    "@revivejs/angular-data-table-component": "^16.0.0",
+    "@stackline/angular-data-table-component": "^16.0.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.3"
