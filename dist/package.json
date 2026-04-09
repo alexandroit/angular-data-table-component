@@ -37,18 +37,13 @@
     "url": "git+https://github.com/alexandroit/angular-data-table-component.git"
   },
   "license": "MIT",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
   "sideEffects": false,
-  "main": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
+  "main": "./fesm2022/stackline-angular-data-table-component.mjs",
   "module": "fesm2022/stackline-angular-data-table-component.mjs",
-  "es2022": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
-  "fesm2022": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
+  "es2022": "./fesm2022/stackline-angular-data-table-component.mjs",
+  "fesm2022": "./fesm2022/stackline-angular-data-table-component.mjs",
   "typings": "types/stackline-angular-data-table-component.d.ts",
-  "types": "./dist/types/stackline-angular-data-table-component.d.ts",
+  "types": "./types/stackline-angular-data-table-component.d.ts",
   "publishConfig": {
     "access": "public"
   },
