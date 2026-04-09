@@ -5525,7 +5525,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ɵparseCookieValue": () => (/* reexport safe */ _xhr_chunk_mjs__WEBPACK_IMPORTED_MODULE_8__.parseCookieValue),
 /* harmony export */   "ɵsetRootDomAdapter": () => (/* reexport safe */ _platform_location_chunk_mjs__WEBPACK_IMPORTED_MODULE_3__.setRootDomAdapter)
 /* harmony export */ });
-/* harmony import */ var _storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
+/* harmony import */ var _storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
 /* harmony import */ var _location_chunk_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_location-chunk.mjs */ 6223);
 /* harmony import */ var _common_module_chunk_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_common_module-chunk.mjs */ 9748);
 /* harmony import */ var _platform_location_chunk_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_platform_location-chunk.mjs */ 8963);
@@ -6850,7 +6850,7 @@ function assetPriorityCountBelowThreshold(_x) {
   return _assetPriorityCountBelowThreshold.apply(this, arguments);
 }
 function _assetPriorityCountBelowThreshold() {
-  _assetPriorityCountBelowThreshold = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (appRef) {
+  _assetPriorityCountBelowThreshold = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (appRef) {
     if (IMGS_WITH_PRIORITY_ATTR_COUNT === 0) {
       IMGS_WITH_PRIORITY_ATTR_COUNT++;
       yield appRef.whenStable();
@@ -7374,7 +7374,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ɵɵviewQuery": () => (/* binding */ ɵɵviewQuery),
 /* harmony export */   "ɵɵviewQuerySignal": () => (/* binding */ ɵɵviewQuerySignal)
 /* harmony export */ });
-/* harmony import */ var _storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
+/* harmony import */ var _storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
 /* harmony import */ var _effect_chunk2_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_effect-chunk2.mjs */ 4363);
 /* harmony import */ var _angular_core_primitives_signals__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_effect-chunk.mjs */ 9843);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 819);
@@ -16774,7 +16774,7 @@ function resolveComponentResources(_x) {
   return _resolveComponentResources.apply(this, arguments);
 }
 function _resolveComponentResources() {
-  _resolveComponentResources = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resourceResolver) {
+  _resolveComponentResources = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resourceResolver) {
     const currentQueue = componentResourceResolutionQueue;
     componentResourceResolutionQueue = new Map();
     const urlCache = new Map();
@@ -16788,7 +16788,7 @@ function _resolveComponentResources() {
       return promise;
     }
     const resolutionPromises = Array.from(currentQueue).map(/*#__PURE__*/function () {
-      var _ref = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* ([type, component]) {
+      var _ref = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* ([type, component]) {
         if (component.styleUrl && component.styleUrls?.length) {
           throw new Error('@Component cannot define both `styleUrl` and `styleUrls`. ' + 'Use `styleUrl` if the component has one stylesheet, or `styleUrls` if it has multiple');
         }
@@ -16857,7 +16857,7 @@ function unwrapResponse(_x2, _x3) {
   return _unwrapResponse.apply(this, arguments);
 }
 function _unwrapResponse() {
-  _unwrapResponse = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (url, response) {
+  _unwrapResponse = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (url, response) {
     if (typeof response === 'string') {
       return response;
     }
@@ -19926,7 +19926,7 @@ function triggerHydrationFromBlockName(_x4, _x5, _x6) {
   return _triggerHydrationFromBlockName.apply(this, arguments);
 }
 function _triggerHydrationFromBlockName() {
-  _triggerHydrationFromBlockName = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, blockName, replayQueuedEventsFn) {
+  _triggerHydrationFromBlockName = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, blockName, replayQueuedEventsFn) {
     const dehydratedBlockRegistry = injector.get(DEHYDRATED_BLOCK_REGISTRY);
     const blocksBeingHydrated = dehydratedBlockRegistry.hydrating;
     if (blocksBeingHydrated.has(blockName)) {
@@ -19948,7 +19948,7 @@ function _triggerHydrationFromBlockName() {
     if (dehydratedBlockRegistry.has(topmostParentBlock)) {
       yield triggerHydrationForBlockQueue(injector, hydrationQueue, replayQueuedEventsFn);
     } else {
-      dehydratedBlockRegistry.awaitParentBlock(topmostParentBlock, /*#__PURE__*/(0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      dehydratedBlockRegistry.awaitParentBlock(topmostParentBlock, /*#__PURE__*/(0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
         return yield triggerHydrationForBlockQueue(injector, hydrationQueue, replayQueuedEventsFn);
       }));
     }
@@ -19959,7 +19959,7 @@ function triggerHydrationForBlockQueue(_x7, _x8, _x9) {
   return _triggerHydrationForBlockQueue.apply(this, arguments);
 }
 function _triggerHydrationForBlockQueue() {
-  _triggerHydrationForBlockQueue = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, hydrationQueue, replayQueuedEventsFn) {
+  _triggerHydrationForBlockQueue = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, hydrationQueue, replayQueuedEventsFn) {
     const dehydratedBlockRegistry = injector.get(DEHYDRATED_BLOCK_REGISTRY);
     const blocksBeingHydrated = dehydratedBlockRegistry.hydrating;
     const pendingTasks = injector.get(_effect_chunk2_mjs__WEBPACK_IMPORTED_MODULE_1__.PendingTasksInternal);
@@ -20023,7 +20023,7 @@ function triggerResourceLoadingForHydration(_x0) {
   return _triggerResourceLoadingForHydration.apply(this, arguments);
 }
 function _triggerResourceLoadingForHydration() {
-  _triggerResourceLoadingForHydration = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (dehydratedBlock) {
+  _triggerResourceLoadingForHydration = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (dehydratedBlock) {
     const {
       tNode,
       lView
@@ -29573,7 +29573,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   resource: () => (/* binding */ resource),
 /* harmony export */   untracked: () => (/* binding */ untracked)
 /* harmony export */ });
-/* harmony import */ var _storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
+/* harmony import */ var _storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
 /* harmony import */ var _effect_chunk2_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_effect-chunk2.mjs */ 4363);
 /* harmony import */ var _effect_chunk_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_effect-chunk.mjs */ 9843);
 /* harmony import */ var _untracked_chunk_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_untracked-chunk.mjs */ 1817);
@@ -29860,7 +29860,7 @@ class ResourceImpl extends BaseWritableResource {
   }
   loadEffect() {
     var _this = this;
-    return (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const extRequest = _this.extRequest();
       const {
         status: currentStatus,
@@ -29928,7 +29928,7 @@ function getLoader(options) {
     return options.stream;
   }
   return /*#__PURE__*/function () {
-    var _ref = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (params) {
+    var _ref = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (params) {
       try {
         return (0,_effect_chunk2_mjs__WEBPACK_IMPORTED_MODULE_1__.signal)({
           value: yield options.loader(params)
@@ -39073,7 +39073,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   platformBrowser: () => (/* binding */ platformBrowser),
 /* harmony export */   provideProtractorTestingSupport: () => (/* binding */ provideProtractorTestingSupport)
 /* harmony export */ });
-/* harmony import */ var _storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
+/* harmony import */ var _storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ 316);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 4363);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ 9748);
@@ -39345,7 +39345,7 @@ function bootstrapApplication(_x, _x2, _x3) {
   return _bootstrapApplication.apply(this, arguments);
 }
 function _bootstrapApplication() {
-  _bootstrapApplication = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (rootComponent, options, context) {
+  _bootstrapApplication = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (rootComponent, options, context) {
     const config = {
       rootComponent,
       ...createProvidersConfig(options, context)
@@ -39361,7 +39361,7 @@ function createApplication(_x4, _x5) {
   return _createApplication.apply(this, arguments);
 }
 function _createApplication() {
-  _createApplication = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (options, context) {
+  _createApplication = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (options, context) {
     if ((typeof ngJitMode === 'undefined' || ngJitMode) && typeof fetch === 'function') {
       yield resolveJitResources();
     }
@@ -39380,7 +39380,7 @@ function resolveJitResources() {
   return _resolveJitResources.apply(this, arguments);
 }
 function _resolveJitResources() {
-  _resolveJitResources = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+  _resolveJitResources = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_21_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
     try {
       return yield (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.resolveComponentResources)(fetch);
     } catch (error) {
@@ -40202,7 +40202,7 @@ class EmulatedEncapsulationDomRenderer2 extends NoneEncapsulationDomRenderer {
 
 /***/ 5304
 /*!*********************************************************************************************************************!*\
-  !*** ./node_modules/@stackline/angular-data-table-component/dist/fesm2022/revivejs-angular-data-table-component.mjs ***!
+  !*** ./node_modules/@stackline/angular-data-table-component/dist/fesm2022/stackline-angular-data-table-component.mjs ***!
   \*********************************************************************************************************************/
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -42099,4 +42099,3 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
 /***/ }
 
 }]);
-//# sourceMappingURL=vendor.js.map

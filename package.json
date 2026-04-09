@@ -26,8 +26,7 @@
     "ui-component",
     "component-library",
     "revived",
-    "maintained",
-    "revivejs"
+    "maintained"
   ],
   "homepage": "https://alexandroit.github.io/angular-data-table-component/",
   "bugs": {
@@ -44,12 +43,12 @@
     "LICENSE"
   ],
   "sideEffects": false,
-  "main": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
-  "module": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
-  "es2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
-  "fesm2022": "./dist/fesm2022/revivejs-angular-data-table-component.mjs",
-  "typings": "./dist/types/revivejs-angular-data-table-component.d.ts",
-  "types": "./dist/types/revivejs-angular-data-table-component.d.ts",
+  "main": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
+  "module": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
+  "es2022": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
+  "fesm2022": "./dist/fesm2022/stackline-angular-data-table-component.mjs",
+  "typings": "./dist/types/stackline-angular-data-table-component.d.ts",
+  "types": "./dist/types/stackline-angular-data-table-component.d.ts",
   "publishConfig": {
     "access": "public"
   },

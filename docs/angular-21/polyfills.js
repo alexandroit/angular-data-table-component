@@ -2497,4 +2497,3 @@ patchBrowser(Zone2);
 /******/ var __webpack_exports__ = (__webpack_exec__(4124));
 /******/ }
 ]);
-//# sourceMappingURL=polyfills.js.map

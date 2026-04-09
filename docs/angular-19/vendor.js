@@ -8306,7 +8306,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ɵɵviewQuery": () => (/* binding */ ɵɵviewQuery),
 /* harmony export */   "ɵɵviewQuerySignal": () => (/* binding */ ɵɵviewQuerySignal)
 /* harmony export */ });
-/* harmony import */ var _storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
+/* harmony import */ var _storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 9204);
 /* harmony import */ var _untracked_BKcld_ew_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core/primitives/signals */ 8008);
 /* harmony import */ var _primitives_di_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core/primitives/di */ 2867);
 /* harmony import */ var _angular_core_primitives_signals__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core/primitives/signals */ 5689);
@@ -14214,7 +14214,7 @@ class PendingTasks {
    */
   run(fn) {
     var _this = this;
-    return (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const removeTask = _this.add();
       try {
         return yield fn();
@@ -31883,7 +31883,7 @@ function triggerHydrationFromBlockName(_x, _x2, _x3) {
  * events.
  */
 function _triggerHydrationFromBlockName() {
-  _triggerHydrationFromBlockName = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, blockName, replayQueuedEventsFn) {
+  _triggerHydrationFromBlockName = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, blockName, replayQueuedEventsFn) {
     const dehydratedBlockRegistry = injector.get(DEHYDRATED_BLOCK_REGISTRY);
     const blocksBeingHydrated = dehydratedBlockRegistry.hydrating;
     // Make sure we don't hydrate/trigger the same thing multiple times
@@ -31923,7 +31923,7 @@ function _triggerHydrationFromBlockName() {
       // been navigated, etc. So we need to queue up the hydration process
       // so that it can be finished after the top block has had its defer
       // instruction executed.
-      dehydratedBlockRegistry.awaitParentBlock(topmostParentBlock, /*#__PURE__*/(0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      dehydratedBlockRegistry.awaitParentBlock(topmostParentBlock, /*#__PURE__*/(0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
         return yield triggerHydrationForBlockQueue(injector, hydrationQueue, replayQueuedEventsFn);
       }));
     }
@@ -31934,7 +31934,7 @@ function triggerHydrationForBlockQueue(_x4, _x5, _x6) {
   return _triggerHydrationForBlockQueue.apply(this, arguments);
 }
 function _triggerHydrationForBlockQueue() {
-  _triggerHydrationForBlockQueue = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, hydrationQueue, replayQueuedEventsFn) {
+  _triggerHydrationForBlockQueue = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (injector, hydrationQueue, replayQueuedEventsFn) {
     const dehydratedBlockRegistry = injector.get(DEHYDRATED_BLOCK_REGISTRY);
     const blocksBeingHydrated = dehydratedBlockRegistry.hydrating;
     // Indicate that we have some pending async work.
@@ -32031,7 +32031,7 @@ function triggerResourceLoadingForHydration(_x7) {
  * fetching and rendering
  */
 function _triggerResourceLoadingForHydration() {
-  _triggerResourceLoadingForHydration = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (dehydratedBlock) {
+  _triggerResourceLoadingForHydration = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (dehydratedBlock) {
     const {
       tNode,
       lView
@@ -47329,7 +47329,7 @@ class ResourceImpl extends BaseWritableResource {
   }
   loadEffect() {
     var _this2 = this;
-    return (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const extRequest = _this2.extRequest();
       // Capture the previous status before any state transitions. Note that this is `untracked` since
       // we do not want the effect to depend on the state of the resource, only on the request.
@@ -47421,7 +47421,7 @@ function getLoader(options) {
     return options.stream;
   }
   return /*#__PURE__*/function () {
-    var _ref = (0,_storage_data_github_revivejs_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (params) {
+    var _ref = (0,_storage_data_github_stackline_angular_data_table_component_angular_data_table_component_docs_src_angular_19_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (params) {
       try {
         return signal({
           value: yield options.loader(params)
@@ -60304,7 +60304,7 @@ class EmulatedEncapsulationDomRenderer2 extends NoneEncapsulationDomRenderer {
 
 /***/ 5304
 /*!*********************************************************************************************************************!*\
-  !*** ./node_modules/@stackline/angular-data-table-component/dist/fesm2022/revivejs-angular-data-table-component.mjs ***!
+  !*** ./node_modules/@stackline/angular-data-table-component/dist/fesm2022/stackline-angular-data-table-component.mjs ***!
   \*********************************************************************************************************************/
 (__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -62202,4 +62202,3 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
 /***/ }
 
 }]);
-//# sourceMappingURL=vendor.js.map

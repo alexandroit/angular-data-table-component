@@ -1,1 +1,0 @@
-{"version":3,"file":"styles.css","mappings":";;;AAAA;EACE,uBAAuB;AACzB;;AAEA;EACE,SAAS;EACT,iBAAiB;AACnB;;AAEA;EACE,sBAAsB;AACxB","sources":["./src/styles.css"],"sourcesContent":["html {\n  scroll-behavior: smooth;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n}\n\n* {\n  box-sizing: border-box;\n}\n\n"],"names":[],"sourceRoot":"webpack:///","x_google_ignoreList":[]}
