@@ -16,7 +16,7 @@
     ],
     "paths": {
       "@stackline/angular-data-table-component": [
-        "node_modules/@stackline/angular-data-table-component"
+        ".stackline-lib/public-api.ts"
       ]
     }
   },

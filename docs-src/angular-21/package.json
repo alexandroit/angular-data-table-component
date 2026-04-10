@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration development --output-path ../../docs/angular-21 --base-href ./"
+    "build": "node ../../scripts/sync-docs-source.mjs angular-21 && ng build --configuration development --output-path ../../docs/angular-21 --base-href ./"
   },
   "dependencies": {
     "@angular/animations": "21.2.7",

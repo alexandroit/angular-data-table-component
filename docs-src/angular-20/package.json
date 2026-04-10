@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration development --output-path ../../docs/angular-20 --base-href ./"
+    "build": "node ../../scripts/sync-docs-source.mjs angular-20 && ng build --configuration development --output-path ../../docs/angular-20 --base-href ./"
   },
   "dependencies": {
     "@angular/animations": "20.3.18",

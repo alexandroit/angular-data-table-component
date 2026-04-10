@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration development --output-path ../../docs/angular-15 --base-href ./"
+    "build": "node ../../scripts/sync-docs-source.mjs angular-15 && ng build --configuration development --output-path ../../docs/angular-15 --base-href ./"
   },
   "dependencies": {
     "@stackline/angular-data-table-component": "file:../..",
