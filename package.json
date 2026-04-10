@@ -68,7 +68,8 @@
     "build:docs:angular-20": "cd docs-src/angular-20 && npm run build",
     "docs:install:angular-21": "cd docs-src/angular-21 && npm install --ignore-scripts",
     "build:docs:angular-21": "cd docs-src/angular-21 && npm run build",
-    "build:docs": "npm run build:docs:angular-21"
+    "build:docs": "npm run build:docs:angular-21",
+    "test": "node --test tests/*.test.cjs"
   },
   "peerDependencies": {
     "@angular/common": ">=21.0.0 <22.0.0",
