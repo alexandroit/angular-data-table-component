@@ -92,7 +92,7 @@ const INSTALL_CODE = 'npm install @stackline/angular-data-table-component@16';
 
 const SETUP_CODE = `import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { DataTableModule } from '@stackline/angular-data-table-component';\n\n@NgModule({\n  imports: [BrowserModule, DataTableModule]\n})\nexport class AppModule {}`;
 
-const RENDER_CODE = `<revive-data-table\n  [columns]="columns"\n  [data]="rows"\n  [pagination]="true">\n</revive-data-table>`;
+const RENDER_CODE = `<stackline-data-table\n  [columns]="columns"\n  [data]="rows"\n  [pagination]="true">\n</stackline-data-table>`;
 
 const DEMO_GROUPS: DemoGroup[] = [
   {
@@ -105,7 +105,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         summary:
           'Toggle the main table behaviors together and validate how selection, expansion, pagination, headers, and hover states compose in Angular.',
         code:
-          `<revive-data-table\n  [columns]="kitchenColumns"\n  [data]="kitchenRows"\n  [selectableRows]="kitchenSettings.selectableRows"\n  [expandableRows]="kitchenSettings.expandableRows"\n  [pagination]="kitchenSettings.pagination">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="kitchenColumns"\n  [data]="kitchenRows"\n  [selectableRows]="kitchenSettings.selectableRows"\n  [expandableRows]="kitchenSettings.expandableRows"\n  [pagination]="kitchenSettings.pagination">\n</stackline-data-table>`
       }
     ]
   },
@@ -118,7 +118,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         title: 'Basic Table',
         summary: 'Start with a plain set of declarative columns and turn on pagination with no adapters.',
         code:
-          `<revive-data-table\n  [columns]="basicColumns"\n  [data]="movies"\n  [pagination]="true">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="basicColumns"\n  [data]="movies"\n  [pagination]="true">\n</stackline-data-table>`
       },
       {
         id: 'filtering',
@@ -127,7 +127,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         summary:
           'Keep search state in the Angular component while the table handles pagination and sorting.',
         code:
-          `<revive-data-table\n  [columns]="sortableColumns"\n  [data]="filteredMovies"\n  [pagination]="true"\n  [subHeader]="true"\n  [subHeaderTemplate]="filterTools">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="sortableColumns"\n  [data]="filteredMovies"\n  [pagination]="true"\n  [subHeader]="true"\n  [subHeaderTemplate]="filterTools">\n</stackline-data-table>`
       }
     ]
   },
@@ -140,7 +140,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         title: 'Basic',
         summary: 'Built-in sorting covers the common case with simple selectors.',
         code:
-          `<revive-data-table\n  [columns]="sortableColumns"\n  [data]="movies"\n  [pagination]="true">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="sortableColumns"\n  [data]="movies"\n  [pagination]="true">\n</stackline-data-table>`
       },
       {
         id: 'sorting-default',
@@ -164,7 +164,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         title: 'Server Sort',
         summary: 'Enable server-style sorting and update the rows in the host component after the event fires.',
         code:
-          `<revive-data-table\n  [columns]="sortableColumns"\n  [data]="remoteSortRows"\n  [sortServer]="true"\n  [progressPending]="remoteSortLoading"\n  (sortChange)="onRemoteSort($event)">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="sortableColumns"\n  [data]="remoteSortRows"\n  [sortServer]="true"\n  [progressPending]="remoteSortLoading"\n  (sortChange)="onRemoteSort($event)">\n</stackline-data-table>`
       }
     ]
   },
@@ -177,7 +177,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         title: 'Basic',
         summary: 'Client-side pagination keeps longer datasets readable with no extra host code.',
         code:
-          `<revive-data-table\n  [columns]="basicColumns"\n  [data]="movies"\n  [pagination]="true">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="basicColumns"\n  [data]="movies"\n  [pagination]="true">\n</stackline-data-table>`
       },
       {
         id: 'pagination-options',
@@ -194,7 +194,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         summary:
           'Simulate a remote API by slicing rows in the container after page and page-size events.',
         code:
-          `<revive-data-table\n  [columns]="serverColumns"\n  [data]="serverRows"\n  [pagination]="true"\n  [paginationServer]="true"\n  [paginationTotalRows]="allTickets.length"\n  (pageChange)="onServerPage($event)">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="serverColumns"\n  [data]="serverRows"\n  [pagination]="true"\n  [paginationServer]="true"\n  [paginationTotalRows]="allTickets.length"\n  (pageChange)="onServerPage($event)">\n</stackline-data-table>`
       },
       {
         id: 'fixed-header',
@@ -215,7 +215,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         title: 'Basic',
         summary: 'Selection state is emitted in a plain Angular shape with selected rows and counts.',
         code:
-          `<revive-data-table\n  [columns]="selectionColumns"\n  [data]="movies"\n  [selectableRows]="true"\n  (selectedRowsChange)="onBasicSelectionChange($event)">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="selectionColumns"\n  [data]="movies"\n  [selectableRows]="true"\n  (selectedRowsChange)="onBasicSelectionChange($event)">\n</stackline-data-table>`
       },
       {
         id: 'selectable-single',
@@ -276,7 +276,7 @@ const DEMO_GROUPS: DemoGroup[] = [
         title: 'Basic',
         summary: 'Template-driven expanded content keeps the main row layout compact.',
         code:
-          `<revive-data-table\n  [columns]="customColumns"\n  [data]="movies"\n  [expandableRows]="true"\n  [expandableRowTemplate]="movieDetail">\n</revive-data-table>`
+          `<stackline-data-table\n  [columns]="customColumns"\n  [data]="movies"\n  [expandableRows]="true"\n  [expandableRowTemplate]="movieDetail">\n</stackline-data-table>`
       },
       {
         id: 'expandable-row-click',

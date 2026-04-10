@@ -25,7 +25,7 @@ import { DATA_TABLE_TEMPLATE } from './angular-data-table.template';
 import { clamp, resolveCellValue, sortRows, styleObjectToString, toCellText } from './utils';
 
 @Component({
-  selector: 'revive-data-table',
+  selector: 'stackline-data-table',
   standalone: false,
   template: DATA_TABLE_TEMPLATE,
   styleUrls: ['./angular-data-table.component.css'],

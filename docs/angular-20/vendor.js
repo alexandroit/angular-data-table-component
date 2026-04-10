@@ -65278,7 +65278,7 @@ class DataTableComponent {
   };
   static ɵcmp = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({
     type: DataTableComponent,
-    selectors: [["revive-data-table"]],
+    selectors: [["stackline-data-table"]],
     inputs: {
       columns: "columns",
       data: "data",
@@ -65373,7 +65373,7 @@ class DataTableComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_2__.setClassMetadata(DataTableComponent, [{
     type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Component,
     args: [{
-      selector: 'revive-data-table',
+      selector: 'stackline-data-table',
       standalone: false,
       template: DATA_TABLE_TEMPLATE,
       changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_2__.ChangeDetectionStrategy.Default,

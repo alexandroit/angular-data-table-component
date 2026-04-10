@@ -76,11 +76,11 @@ type Movie = {
 @Component({
   selector: 'app-root',
   template: `
-    <revive-data-table
+    <stackline-data-table
       [columns]="columns"
       [data]="data"
       [pagination]="true">
-    </revive-data-table>
+    </stackline-data-table>
   `
 })
 export class AppComponent {
