@@ -8,7 +8,7 @@
 [![Angular 21](https://img.shields.io/badge/Angular-21.2-red?style=flat-square&logo=angular)](https://angular.io)
 [![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 
-**[Documentation & Live Demos](https://alexandroit.github.io/angular-data-table-component/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
+**[Documentation & Live Demos](https://alexandro.net/docs/angular/angular-data-table-component/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
 
 **Latest version:** `21.0.0`
 
@@ -29,13 +29,13 @@ Each package family only installs on its matching Angular family. Framework majo
 
 | Package family | Framework family | Peer range | Tested release window | Demo link |
 | :---: | :---: | :---: | :---: | :--- |
-| **21.x** | **Angular 21 only** | **`>=21.0.0 <22.0.0`** | **21.0.0 -> 21.2.8** | [Angular 21 family docs](https://alexandroit.github.io/angular-data-table-component/angular-21/) |
-| **20.x** | **Angular 20 only** | **`>=20.0.0 <21.0.0`** | **20.0.0 -> 20.3.18** | [Angular 20 family docs](https://alexandroit.github.io/angular-data-table-component/angular-20/) |
-| **19.x** | **Angular 19 only** | **`>=19.0.0 <20.0.0`** | **19.0.0 -> 19.2.20** | [Angular 19 family docs](https://alexandroit.github.io/angular-data-table-component/angular-19/) |
-| **18.x** | **Angular 18 only** | **`>=18.0.0 <19.0.0`** | **18.0.0 -> 18.2.14** | [Angular 18 family docs](https://alexandroit.github.io/angular-data-table-component/angular-18/) |
-| **17.x** | **Angular 17 only** | **`>=17.0.0 <18.0.0`** | **17.0.0 -> 17.3.12** | [Angular 17 family docs](https://alexandroit.github.io/angular-data-table-component/angular-17/) |
-| **16.x** | **Angular 16 only** | **`>=16.0.0 <17.0.0`** | **16.0.0 -> 16.2.12** | [Angular 16 family docs](https://alexandroit.github.io/angular-data-table-component/angular-16/) |
-| **15.x** | **Angular 15 only** | **`>=15.0.0 <16.0.0`** | **15.0.0 -> 15.2.10** | [Angular 15 family docs](https://alexandroit.github.io/angular-data-table-component/angular-15/) |
+| **21.x** | **Angular 21 only** | **`>=21.0.0 <22.0.0`** | **21.0.0 -> 21.2.8** | [Angular 21 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-21/) |
+| **20.x** | **Angular 20 only** | **`>=20.0.0 <21.0.0`** | **20.0.0 -> 20.3.18** | [Angular 20 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-20/) |
+| **19.x** | **Angular 19 only** | **`>=19.0.0 <20.0.0`** | **19.0.0 -> 19.2.20** | [Angular 19 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-19/) |
+| **18.x** | **Angular 18 only** | **`>=18.0.0 <19.0.0`** | **18.0.0 -> 18.2.14** | [Angular 18 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-18/) |
+| **17.x** | **Angular 17 only** | **`>=17.0.0 <18.0.0`** | **17.0.0 -> 17.3.12** | [Angular 17 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-17/) |
+| **16.x** | **Angular 16 only** | **`>=16.0.0 <17.0.0`** | **16.0.0 -> 16.2.12** | [Angular 16 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-16/) |
+| **15.x** | **Angular 15 only** | **`>=15.0.0 <16.0.0`** | **15.0.0 -> 15.2.10** | [Angular 15 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-15/) |
 
 
 ## Installation
