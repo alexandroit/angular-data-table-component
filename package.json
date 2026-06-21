@@ -54,6 +54,7 @@
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
+    "build:angular-2": "node scripts/build-angular-2-package.mjs",
     "docs:install:angular-15": "cd docs-src/angular-15 && npm install --ignore-scripts",
     "build:docs:angular-15": "cd docs-src/angular-15 && npm run build",
     "docs:install:angular-16": "cd docs-src/angular-16 && npm install --ignore-scripts",

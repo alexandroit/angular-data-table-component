@@ -1,0 +1,78 @@
+<template #orderDetail let-row="row">
+  <div class="detail-grid">
+    <div>
+      <strong>Customer</strong>
+      <span>{{ row.customer }}</span>
+    </div>
+    <div>
+      <strong>Region</strong>
+      <span>{{ row.region }}</span>
+    </div>
+    <div>
+      <strong>Channel</strong>
+      <span>{{ row.channel }}</span>
+    </div>
+    <div>
+      <strong>Notes</strong>
+      <span>{{ row.notes }}</span>
+    </div>
+  </div>
+</template>
+
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="control-field control-wide">
+        <span>Search</span>
+        <input type="search" [value]="kitchenGlobalFilter" (input)="setKitchenGlobalFilter($event.target.value)" />
+      </label>
+      <label class="control-field">
+        <span>Region</span>
+        <select [value]="kitchenRegionFilter" (change)="setKitchenRegionFilter($event.target.value)">
+          <option *ngFor="let region of regionOptions" [value]="region">{{ region || 'All regions' }}</option>
+        </select>
+      </label>
+      <label class="control-field">
+        <span>Status</span>
+        <select [value]="kitchenStatusFilter" (change)="setKitchenStatusFilter($event.target.value)">
+          <option *ngFor="let status of statusOptions" [value]="status">{{ status || 'All statuses' }}</option>
+        </select>
+      </label>
+      <label class="control-field">
+        <span>Group by</span>
+        <select [value]="kitchenGroupBy" (change)="setKitchenGroupBy($event.target.value)">
+          <option value="region">Region</option>
+          <option value="status">Status</option>
+          <option value="channel">Channel</option>
+        </select>
+      </label>
+      <label class="check-field inline-check">
+        <input type="checkbox" [checked]="isKitchenColumnVisible('channel')" (change)="setKitchenColumnVisible('channel', $event.target.checked)" />
+        <span>Channel column</span>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Kitchen sink"
+      [columns]="headerGroupColumns"
+      [data]="orders"
+      [globalFilter]="kitchenGlobalFilter"
+      [columnFilters]="kitchenColumnFilters"
+      [columnVisibility]="kitchenColumnVisibility"
+      [columnOrder]="kitchenColumnOrder"
+      [columnPinning]="columnPinningState"
+      [columnSizing]="columnSizingState"
+      [pinnedTopRows]="topPinnedOrders"
+      [selectableRows]="true"
+      [selectableRowsHighlight]="true"
+      [expandableRows]="true"
+      [expandableRowTemplate]="orderDetail"
+      [groupBy]="kitchenGroupBy"
+      [pagination]="true"
+      [paginationPerPage]="10"
+      [responsive]="true"
+      [highlightOnHover]="true"
+      [pointerOnHover]="true"
+      (tableStateChange)="record('kitchen table state', $event)">
+    </stackline-data-table>
+  </div>
+</example-shell>

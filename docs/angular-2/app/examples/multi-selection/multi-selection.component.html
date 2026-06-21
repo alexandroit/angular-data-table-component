@@ -1,0 +1,11 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Multi selection"
+    [columns]="orderColumns"
+    [data]="orders"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    [highlightOnHover]="true"
+    (selectedRowsChange)="record('multi selection', $event)">
+  </stackline-data-table>
+</example-shell>

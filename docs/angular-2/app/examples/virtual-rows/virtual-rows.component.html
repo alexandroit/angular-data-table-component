@@ -1,0 +1,13 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Virtual rows"
+    [columns]="largeColumns"
+    [data]="largeRows"
+    [virtualRows]="true"
+    [virtualStartIndex]="20"
+    [virtualRowCount]="12"
+    [fixedHeader]="true"
+    fixedHeaderScrollHeight="520px"
+    [striped]="true">
+  </stackline-data-table>
+</example-shell>

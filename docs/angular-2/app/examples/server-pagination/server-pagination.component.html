@@ -1,0 +1,15 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Server pagination simulation"
+    [columns]="orderColumns"
+    [data]="serverRows"
+    [pagination]="true"
+    [paginationServer]="true"
+    [paginationTotalRows]="orders.length"
+    [paginationDefaultPage]="serverPage"
+    [paginationPerPage]="serverRowsPerPage"
+    [paginationRowsPerPageOptions]="pageSizes"
+    (pageChange)="changeServerPage($event)"
+    (rowsPerPageChange)="changeServerRowsPerPage($event)">
+  </stackline-data-table>
+</example-shell>

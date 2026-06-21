@@ -1,0 +1,21 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar check-grid">
+      <label *ngFor="let column of visibilityColumns" class="check-field">
+        <input
+          type="checkbox"
+          [checked]="isDemoColumnVisible(column.id)"
+          (change)="setDemoColumnVisible(column.id, $event.target.checked)" />
+        <span>{{ column.label }}</span>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Column visibility"
+      [columns]="advancedColumns"
+      [data]="orders"
+      [columnVisibility]="columnVisibilityState"
+      [pagination]="true"
+      [paginationPerPage]="5">
+    </stackline-data-table>
+  </div>
+</example-shell>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>@stackline/angular-data-table-component Angular 2 Docs and Live Examples</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Angular 2 data table documentation and live examples for @stackline/angular-data-table-component 2.0.0, with sorting, selection, pagination, templates, image cells, headless custom HTML, and keyboard/ARIA behavior.">
+  <meta name="keywords" content="Angular 2 data table, Angular 2 datatable, Angular 2 grid, Stackline data table, sorting, pagination, row selection, headless table, image cells, custom templates, ARIA table">
+  <link rel="canonical" href="https://alexandro.net/docs/angular/angular-data-table-component/angular-2/">
+  <link rel="stylesheet" href="styles.css">
+  <script src="vendor/core-js/client/shim.min.js"></script>
+  <script src="vendor/zone.js/dist/zone.js"></script>
+  <script src="vendor/reflect-metadata/Reflect.js"></script>
+  <script src="vendor/systemjs/dist/system.src.js"></script>
+  <script src="systemjs.config.js"></script>
+  <script>
+    function showBootError(error) {
+      var target = document.getElementById('boot-error');
+      document.body.className = 'failed';
+      if (target) {
+        target.textContent = error && error.stack ? error.stack : String(error);
+      }
+    }
+    window.addEventListener('error', function (event) {
+      showBootError(event.error || event.message);
+    });
+    window.addEventListener('unhandledrejection', function (event) {
+      showBootError(event.reason || 'Unhandled promise rejection');
+    });
+    System.import('app').catch(function (error) {
+      console.error(error);
+      showBootError(error);
+    });
+  </script>
+</head>
+<body>
+  <stackline-test>
+    <section class="boot-card">Loading Angular 2 data table examples...</section>
+  </stackline-test>
+  <pre id="boot-error"></pre>
+</body>
+</html>

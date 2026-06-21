@@ -1,0 +1,10 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Column sizing"
+    [columns]="advancedColumns"
+    [data]="orders"
+    [columnSizing]="wideColumnSizingState"
+    [pagination]="true"
+    [paginationPerPage]="5">
+  </stackline-data-table>
+</example-shell>

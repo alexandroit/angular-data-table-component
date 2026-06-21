@@ -1,0 +1,12 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Locked rows"
+    [columns]="lockedColumns"
+    [data]="lockedRows"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    [selectableRowDisabled]="isLocked"
+    [highlightOnHover]="true"
+    (selectedRowsChange)="record('disabled selection', $event)">
+  </stackline-data-table>
+</example-shell>

@@ -1,0 +1,9 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Header groups"
+    [columns]="headerGroupColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="5">
+  </stackline-data-table>
+</example-shell>

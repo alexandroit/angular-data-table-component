@@ -1,0 +1,13 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Visible page selection"
+    [columns]="orderColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="4"
+    [selectableRows]="true"
+    [selectableRowsVisibleOnly]="true"
+    [selectableRowsHighlight]="true"
+    (selectedRowsChange)="record('visible page selection', $event)">
+  </stackline-data-table>
+</example-shell>

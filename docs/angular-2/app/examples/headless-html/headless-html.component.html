@@ -1,0 +1,77 @@
+<example-shell
+  [title]="title"
+  [summary]="summary"
+  [htmlSnippet]="htmlSnippet"
+  [tsSnippet]="tsSnippet"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <section class="headless-board" role="grid" aria-label="Headless projects">
+    <header class="headless-toolbar">
+      <label class="control-field">
+        <span>Search</span>
+        <input
+          type="search"
+          [value]="searchText"
+          placeholder="Search project, owner or status"
+          (input)="setSearch($event.target.value)" />
+      </label>
+      <label class="control-field">
+        <span>Status</span>
+        <select [value]="statusFilter" (change)="setStatus($event.target.value)">
+          <option value="">All statuses</option>
+          <option value="Ready">Ready</option>
+          <option value="Review">Review</option>
+          <option value="Blocked">Blocked</option>
+        </select>
+      </label>
+      <button type="button" class="ghost-button" (click)="headless.toggleAllVisibleRows()">
+        Toggle visible
+      </button>
+    </header>
+
+    <div class="headless-meta">
+      Showing {{ headless.startRow }}-{{ headless.endRow }} of {{ headless.totalRows }}
+      <span>{{ headless.selectedCount }} selected</span>
+    </div>
+
+    <div class="headless-sortbar" role="row">
+      <button
+        *ngFor="let column of headless.visibleColumns"
+        type="button"
+        [attr.aria-sort]="headless.getAriaSort(column)"
+        [attr.aria-label]="headless.getSortButtonAriaLabel(column)"
+        (click)="headless.toggleSort(column)">
+        {{ column.name }}
+      </button>
+    </div>
+
+    <div class="headless-grid">
+      <article
+        *ngFor="let row of headless.displayedRows"
+        role="row"
+        tabindex="0"
+        class="headless-card"
+        [class.selected]="headless.isRowSelected(row)"
+        [attr.aria-selected]="headless.isRowSelected(row)"
+        (click)="headless.toggleRowSelection(row)"
+        (keydown)="activateCard($event, row)">
+        <div>
+          <strong>{{ row.name }}</strong>
+          <small>{{ row.owner }}</small>
+        </div>
+        <span class="status-badge" [class.status-paid]="row.status === 'Ready'" [class.status-review]="row.status === 'Review'" [class.status-pending]="row.status === 'Blocked'">
+          {{ row.status }}
+        </span>
+        <meter min="0" max="100" [value]="row.score"></meter>
+        <b>{{ row.score }}</b>
+      </article>
+    </div>
+
+    <footer class="headless-pager">
+      <button type="button" [disabled]="headless.currentPage <= 1" (click)="headless.changePage(headless.currentPage - 1)">Prev</button>
+      <span>Page {{ headless.currentPage }} of {{ headless.totalPages }}</span>
+      <button type="button" [disabled]="headless.currentPage >= headless.totalPages" (click)="headless.changePage(headless.currentPage + 1)">Next</button>
+    </footer>
+  </section>
+</example-shell>

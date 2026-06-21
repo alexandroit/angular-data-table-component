@@ -1,0 +1,27 @@
+<template #statusCell let-row="row" let-value="value">
+  <span class="status-badge" [class.status-paid]="value === 'Paid'" [class.status-review]="value === 'Review'" [class.status-pending]="value === 'Pending'">
+    {{ value }}
+  </span>
+</template>
+
+<template #customerCell let-row="row">
+  <span class="customer-cell">
+    <strong>{{ row.customer }}</strong>
+    <small>{{ row.region }} · {{ row.channel }}</small>
+  </span>
+</template>
+
+<template #totalCell let-row="row">
+  <span class="money-cell">{{ formatTotal(row) }}</span>
+</template>
+
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Template cells"
+    [columns]="templateColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    [highlightOnHover]="true">
+  </stackline-data-table>
+</example-shell>

@@ -3,6 +3,7 @@ node_modules/
 .tmp/
 coverage/
 *.tgz
+.stackline-build/
 
 docs-src/angular-15/node_modules/
 docs-src/angular-15/package-lock.json

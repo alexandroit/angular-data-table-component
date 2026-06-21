@@ -1,0 +1,29 @@
+<example-shell
+  [title]="title"
+  [summary]="summary"
+  [htmlSnippet]="htmlSnippet"
+  [tsSnippet]="tsSnippet"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <stackline-data-table
+    title="Orders"
+    ariaLabel="Orders table"
+    [columns]="orderColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    [paginationRowsPerPageOptions]="pageSizes"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    [striped]="true"
+    [highlightOnHover]="true"
+    [pointerOnHover]="true"
+    defaultSortFieldId="order"
+    (selectedRowsChange)="record('basic selection', $event)"
+    (sortChange)="record('basic sort', $event)"
+    (pageChange)="record('basic page', $event)"
+    (rowsPerPageChange)="record('basic rowsPerPage', $event)"
+    (rowClicked)="record('basic rowClicked', $event)">
+  </stackline-data-table>
+</example-shell>

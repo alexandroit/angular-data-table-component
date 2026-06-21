@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "system",
+    "moduleResolution": "node",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "rootDir": "src",
+    "outDir": "../../.stackline-build/angular-data-table-lines/angular-2",
+    "lib": [
+      "es5",
+      "dom",
+      "es2015.core"
+    ]
+  },
+  "files": [
+    "src/index.ts",
+    "src/angular-data-table.module.ts",
+    "src/angular-data-table.component.ts",
+    "src/angular-data-table.template.ts",
+    "src/angular-data-table.styles.ts",
+    "src/types.ts",
+    "src/utils.ts",
+    "src/headless-data-table.ts"
+  ]
+}

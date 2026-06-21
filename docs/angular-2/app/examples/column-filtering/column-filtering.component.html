@@ -1,0 +1,28 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="control-field">
+        <span>Status combobox</span>
+        <select [value]="columnStatusFilterValue" (change)="setColumnStatusFilter($event.target.value)">
+          <option *ngFor="let status of statusOptions" [value]="status">{{ status || 'All statuses' }}</option>
+        </select>
+      </label>
+      <label class="control-field">
+        <span>Region combobox</span>
+        <select [value]="columnRegionFilterValue" (change)="setColumnRegionFilter($event.target.value)">
+          <option *ngFor="let region of regionOptions" [value]="region">{{ region || 'All regions' }}</option>
+        </select>
+      </label>
+      <button type="button" class="ghost-button" (click)="clearColumnFilters()">Clear</button>
+    </div>
+    <stackline-data-table
+      title="Column filters"
+      [columns]="advancedColumns"
+      [data]="orders"
+      [columnFilters]="statusColumnFilters"
+      [pagination]="true"
+      [paginationPerPage]="5"
+      [highlightOnHover]="true">
+    </stackline-data-table>
+  </div>
+</example-shell>

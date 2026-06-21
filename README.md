@@ -1,27 +1,32 @@
 # @stackline/angular-data-table-component
 
-> A maintained **Angular 21 data table component** with sorting, row selection, expandable rows, client or server pagination, conditional styles, and versioned live demos.
+> A maintained Angular data table component with Angular-versioned release lines, starting with Angular 2 support and growing through modern Angular families.
 
 [![npm version](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
 [![npm downloads](https://img.shields.io/npm/dt/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
 [![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/master/LICENSE)
+[![Angular 2](https://img.shields.io/badge/Angular-2.x-red?style=flat-square&logo=angular)](https://alexandro.net/docs/angular/angular-data-table-component/angular-2/)
 [![Angular 21](https://img.shields.io/badge/Angular-21.2-red?style=flat-square&logo=angular)](https://angular.io)
 [![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![Reddit community](https://img.shields.io/badge/community-r%2FStackline-ff4500?style=flat-square&logo=reddit&logoColor=white)](https://www.reddit.com/r/Stackline/)
 
-**[Documentation & Live Demos](https://alexandro.net/docs/angular/angular-data-table-component/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
+**[Documentation & Live Demos](https://alexandro.net/docs/angular/angular-data-table-component/)** | **[Angular 2 Demo](https://alexandro.net/docs/angular/angular-data-table-component/angular-2/)** | **[StackBlitz Angular 2](https://stackblitz.com/github/alexandroit/stackline-angular-data-table-angular-2?file=src%2Fapp%2Fexamples%2Fbasic%2Fbasic.component.ts&initialpath=%2Fbasic&startScript=start)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)** | **[Community Discussions](https://www.reddit.com/r/Stackline/)**
 
-**Latest version:** `21.0.0`
+**First published release line:** `2.0.0` for Angular `2.x`
 
 ## Why this library?
 
-`@stackline/angular-data-table-component` ports the practical data-table surface from the React project into an Angular-friendly API and project structure:
+`@stackline/angular-data-table-component` keeps data-heavy Angular screens practical across versioned Stackline release lines:
 
 - declarative column definitions
-- Angular templates for custom cells and expandable content
-- built-in sorting, selection, expansion, and pagination
+- Angular templates for custom cells, image/media cells, and expandable content
+- built-in sorting, selection, expansion, filtering, grouping, and pagination
+- large-data and server-pagination patterns
+- headless custom HTML controller for advanced layouts
+- keyboard/ARIA focused behavior
 - versioned demos that follow the Angular release line
 
-The repository starts with the Angular 15 line and is structured to grow sequentially through Angular 21.
+The first production package line is Angular 2, built for legacy applications that still use classic NgModule imports and SystemJS. The repository also contains modern Angular work that will continue to be released one Angular family at a time.
 
 ## Angular Version Compatibility
 
@@ -29,6 +34,7 @@ Each package family only installs on its matching Angular family. Framework majo
 
 | Package family | Framework family | Peer range | Tested release window | Demo link |
 | :---: | :---: | :---: | :---: | :--- |
+| **2.x** | **Angular 2 only** | **`>=2.0.0 <3.0.0`** | **2.4.10** | [Angular 2 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-2/) |
 | **21.x** | **Angular 21 only** | **`>=21.0.0 <22.0.0`** | **21.0.0 -> 21.2.8** | [Angular 21 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-21/) |
 | **20.x** | **Angular 20 only** | **`>=20.0.0 <21.0.0`** | **20.0.0 -> 20.3.18** | [Angular 20 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-20/) |
 | **19.x** | **Angular 19 only** | **`>=19.0.0 <20.0.0`** | **19.0.0 -> 19.2.20** | [Angular 19 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-19/) |
@@ -45,6 +51,12 @@ npm install @stackline/angular-data-table-component
 ```
 
 Choose the package family from the compatibility table above. Each published family is locked to one framework major only.
+
+For Angular 2:
+
+```bash
+npm install @stackline/angular-data-table-component@2.0.0 --save-exact
+```
 
 ## Basic Usage
 
@@ -103,6 +115,8 @@ export class AppComponent {
 - Selectable rows with single or multi-select
 - Expandable rows with `TemplateRef`
 - Client or server-driven pagination
+- Image/media cells through `TemplateRef`
+- Headless custom HTML through `createDataTableController`
 - Conditional row styles
 - `default` and `dark` theme presets
 - Responsive wrapper with fixed-header support
@@ -134,6 +148,12 @@ export class AppComponent {
 | `rowExpandToggled` | `{ expanded, row }` | Fires when a detail row is opened or closed. |
 
 ## Changelog
+
+### 2.0.0
+- Added the Angular 2 package line for Angular `2.x`
+- Added SystemJS-friendly package output
+- Added a clean Angular 2.4.10 validation app with one component per example
+- Added sorting, selection, pagination, large-data pagination, filtering, grouping, pinning, sizing, templates, image cells, expandable rows, keyboard/ARIA behavior, and headless custom HTML support
 
 ### 21.0.0
 - Updated the library and docs app to Angular 21.2.x

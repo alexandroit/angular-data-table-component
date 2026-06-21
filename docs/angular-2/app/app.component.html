@@ -1,0 +1,69 @@
+<main class="page">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Angular {{ angularVersion }} runtime</p>
+      <h1>@stackline/angular-data-table-component {{ packageVersion }}</h1>
+      <p class="hero-copy">Clean Angular 2 SystemJS app with one focused component per feature.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="stackblitz-link" [href]="stackBlitzUrl" target="_blank" rel="noopener">
+        Open StackBlitz
+      </a>
+      <span class="version-pill">Human organized live matrix</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="nav" aria-label="Examples">
+      <button
+        *ngFor="let example of examples"
+        type="button"
+        [class.active]="activeExample === example.id"
+        (click)="setExample(example.id)">
+        <span>{{ example.order }}</span>
+        {{ example.title }}
+      </button>
+    </nav>
+
+    <section class="content" [ngSwitch]="activeExample">
+      <basic-example *ngSwitchCase="'basic'"></basic-example>
+      <sorting-example *ngSwitchCase="'sorting'"></sorting-example>
+      <multi-selection-example *ngSwitchCase="'multi-selection'"></multi-selection-example>
+      <single-selection-example *ngSwitchCase="'single-selection'"></single-selection-example>
+      <programmatic-selection-example *ngSwitchCase="'programmatic-selection'"></programmatic-selection-example>
+      <disabled-selection-example *ngSwitchCase="'disabled-selection'"></disabled-selection-example>
+      <client-pagination-example *ngSwitchCase="'client-pagination'"></client-pagination-example>
+      <server-pagination-example *ngSwitchCase="'server-pagination'"></server-pagination-example>
+      <visible-page-selection-example *ngSwitchCase="'visible-page-selection'"></visible-page-selection-example>
+      <fixed-header-example *ngSwitchCase="'fixed-header'"></fixed-header-example>
+      <conditional-styles-example *ngSwitchCase="'conditional-styles'"></conditional-styles-example>
+      <cell-templates-example *ngSwitchCase="'cell-templates'"></cell-templates-example>
+      <expandable-rows-example *ngSwitchCase="'expandable-rows'"></expandable-rows-example>
+      <expand-on-click-example *ngSwitchCase="'expand-on-click'"></expand-on-click-example>
+      <row-events-example *ngSwitchCase="'row-events'"></row-events-example>
+      <dense-example *ngSwitchCase="'dense'"></dense-example>
+      <dark-example *ngSwitchCase="'dark'"></dark-example>
+      <loading-example *ngSwitchCase="'loading'"></loading-example>
+      <empty-example *ngSwitchCase="'empty'"></empty-example>
+      <headerless-example *ngSwitchCase="'headerless'"></headerless-example>
+      <responsive-wrap-example *ngSwitchCase="'responsive-wrap'"></responsive-wrap-example>
+      <global-filtering-example *ngSwitchCase="'global-filtering'"></global-filtering-example>
+      <column-filtering-example *ngSwitchCase="'column-filtering'"></column-filtering-example>
+      <column-visibility-example *ngSwitchCase="'column-visibility'"></column-visibility-example>
+      <column-ordering-example *ngSwitchCase="'column-ordering'"></column-ordering-example>
+      <column-pinning-example *ngSwitchCase="'column-pinning'"></column-pinning-example>
+      <row-pinning-example *ngSwitchCase="'row-pinning'"></row-pinning-example>
+      <grouping-example *ngSwitchCase="'grouping'"></grouping-example>
+      <header-groups-example *ngSwitchCase="'header-groups'"></header-groups-example>
+      <faceting-example *ngSwitchCase="'faceting'"></faceting-example>
+      <column-sizing-example *ngSwitchCase="'column-sizing'"></column-sizing-example>
+      <virtual-rows-example *ngSwitchCase="'virtual-rows'"></virtual-rows-example>
+      <kitchen-sink-example *ngSwitchCase="'kitchen-sink'"></kitchen-sink-example>
+      <accessibility-keyboard-example *ngSwitchCase="'accessibility-keyboard'"></accessibility-keyboard-example>
+      <large-data-pagination-example *ngSwitchCase="'large-data-pagination'"></large-data-pagination-example>
+      <image-cells-example *ngSwitchCase="'image-cells'"></image-cells-example>
+      <headless-html-example *ngSwitchCase="'headless-html'"></headless-html-example>
+      <basic-example *ngSwitchDefault></basic-example>
+    </section>
+  </div>
+</main>

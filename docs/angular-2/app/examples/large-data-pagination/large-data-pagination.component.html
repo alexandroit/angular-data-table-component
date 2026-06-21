@@ -1,0 +1,58 @@
+<example-shell
+  [title]="title"
+  [summary]="summary"
+  [htmlSnippet]="htmlSnippet"
+  [tsSnippet]="tsSnippet"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar large-data-toolbar">
+      <div class="metric-tile">
+        <span>Total rows</span>
+        <strong>{{ largePage.totalRows }}</strong>
+      </div>
+      <div class="metric-tile">
+        <span>Rows in memory</span>
+        <strong>{{ largePage.rows.length }}</strong>
+      </div>
+      <div class="metric-tile">
+        <span>Current page</span>
+        <strong>{{ largePage.page }}</strong>
+      </div>
+      <div class="metric-tile">
+        <span>Page size</span>
+        <strong>{{ largePage.perPage }}</strong>
+      </div>
+      <div class="metric-tile">
+        <span>Server sort</span>
+        <strong>{{ sortField }} {{ sortDirection }}</strong>
+      </div>
+    </div>
+
+    <stackline-data-table
+      title="Large dataset"
+      ariaLabel="Large server paginated dataset"
+      [columns]="largeColumns"
+      [data]="largePage.rows"
+      [pagination]="true"
+      [paginationServer]="true"
+      [paginationTotalRows]="largePage.totalRows"
+      [paginationDefaultPage]="largePage.page"
+      [paginationPerPage]="largePage.perPage"
+      [paginationRowsPerPageOptions]="pageSizes"
+      [sortServer]="true"
+      [progressPending]="largePage.loading"
+      [striped]="true"
+      [highlightOnHover]="true"
+      [selectableRows]="true"
+      [selectableRowsVisibleOnly]="true"
+      [selectableRowsHighlight]="true"
+      keyField="id"
+      (pageChange)="loadPage($event.page, largePage.perPage)"
+      (rowsPerPageChange)="loadPage(1, $event.rowsPerPage)"
+      (selectedRowsChange)="record('large selection', $event)"
+      (sortChange)="sortLargeData($event)">
+    </stackline-data-table>
+  </div>
+</example-shell>

@@ -1,0 +1,13 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Row events"
+    [columns]="orderColumns"
+    [data]="orders"
+    [highlightOnHover]="true"
+    [pointerOnHover]="true"
+    (rowClicked)="record('rowClicked', $event)"
+    (rowDoubleClicked)="record('rowDoubleClicked', $event)"
+    (rowMouseEnter)="record('rowMouseEnter', $event)"
+    (rowMouseLeave)="record('rowMouseLeave', $event)">
+  </stackline-data-table>
+</example-shell>

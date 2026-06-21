@@ -1,0 +1,8 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Loading state"
+    [columns]="orderColumns"
+    [data]="orders"
+    [progressPending]="true">
+  </stackline-data-table>
+</example-shell>

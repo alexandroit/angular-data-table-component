@@ -1,0 +1,12 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Column pinning"
+    [columns]="advancedColumns"
+    [data]="orders"
+    [columnPinning]="columnPinningState"
+    [columnSizing]="columnSizingState"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    [responsive]="true">
+  </stackline-data-table>
+</example-shell>

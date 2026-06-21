@@ -1,0 +1,53 @@
+{
+  "name": "@stackline/angular-data-table-component",
+  "version": "2.0.0",
+  "description": "A maintained Angular 2 data table component with sorting, selection, expandable rows, server pagination, large-data pagination, image cells, headless custom HTML, templates, and keyboard/ARIA behavior.",
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular 2",
+    "angular-library",
+    "typescript",
+    "data-table",
+    "datatable",
+    "table",
+    "grid",
+    "sorting",
+    "pagination",
+    "server-pagination",
+    "large-data",
+    "large-data-pagination",
+    "selectable-rows",
+    "expandable-rows",
+    "headless",
+    "headless-table",
+    "custom-html",
+    "image-cells",
+    "cell-template",
+    "column-pinning",
+    "row-pinning",
+    "grouped-rows",
+    "keyboard",
+    "aria",
+    "accessibility-focused",
+    "responsive",
+    "ui-component",
+    "stackline"
+  ],
+  "license": "MIT",
+  "homepage": "https://alexandro.net/docs/angular/angular-data-table-component/angular-2/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandroit/angular-data-table-component.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alexandroit/angular-data-table-component/issues"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "peerDependencies": {
+    "@angular/common": ">=2.0.0 <3.0.0",
+    "@angular/core": ">=2.0.0 <3.0.0"
+  },
+  "sideEffects": false
+}

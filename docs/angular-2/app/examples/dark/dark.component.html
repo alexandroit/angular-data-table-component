@@ -1,0 +1,14 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Dark theme"
+    theme="dark"
+    [columns]="revenueColumns"
+    [data]="revenue"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    [fixedHeader]="true"
+    fixedHeaderScrollHeight="320px"
+    [striped]="true"
+    [highlightOnHover]="true">
+  </stackline-data-table>
+</example-shell>

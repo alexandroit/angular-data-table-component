@@ -1,0 +1,12 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Client pagination"
+    [columns]="orderColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="4"
+    [paginationRowsPerPageOptions]="pageSizes"
+    (pageChange)="record('client page', $event)"
+    (rowsPerPageChange)="record('client rowsPerPage', $event)">
+  </stackline-data-table>
+</example-shell>

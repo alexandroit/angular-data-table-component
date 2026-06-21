@@ -1,0 +1,42 @@
+<template #orderDetail let-row="row">
+  <div class="detail-grid">
+    <div>
+      <strong>Customer</strong>
+      <span>{{ row.customer }}</span>
+    </div>
+    <div>
+      <strong>Region</strong>
+      <span>{{ row.region }}</span>
+    </div>
+    <div>
+      <strong>Channel</strong>
+      <span>{{ row.channel }}</span>
+    </div>
+    <div>
+      <strong>Notes</strong>
+      <span>{{ row.notes }}</span>
+    </div>
+  </div>
+</template>
+
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Accessibility keyboard contract"
+    ariaLabel="Accessibility keyboard orders"
+    [columns]="orderColumns"
+    [data]="orders"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    [expandableRows]="true"
+    [expandableRowTemplate]="orderDetail"
+    [keyboardRows]="true"
+    [highlightOnHover]="true"
+    [pointerOnHover]="true"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    defaultSortFieldId="order"
+    (selectedRowsChange)="record('accessibility selection', $event)"
+    (rowExpandToggled)="record('accessibility expansion', $event)"
+    (sortChange)="record('accessibility sort', $event)">
+  </stackline-data-table>
+</example-shell>

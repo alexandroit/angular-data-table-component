@@ -1,0 +1,75 @@
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+    "use strict";
+    var __extends = (this && this.__extends) || (function () {
+        var extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return function (d, b) {
+            extendStatics(d, b);
+            function __() { this.constructor = d; }
+            d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+        };
+    })();
+    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __moduleName = context_1 && context_1.id;
+    var core_1, table_demo_data_1, table_example_base_1, ColumnOrderingExampleComponent;
+    return {
+        setters: [
+            function (core_1_1) {
+                core_1 = core_1_1;
+            },
+            function (table_demo_data_1_1) {
+                table_demo_data_1 = table_demo_data_1_1;
+            },
+            function (table_example_base_1_1) {
+                table_example_base_1 = table_example_base_1_1;
+            }
+        ],
+        execute: function () {
+            ColumnOrderingExampleComponent = (function (_super) {
+                __extends(ColumnOrderingExampleComponent, _super);
+                function ColumnOrderingExampleComponent() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.title = 'Column ordering';
+                    _this.summary = 'Render columns in a controlled order without mutating the source columns.';
+                    _this.advancedColumns = table_demo_data_1.getAdvancedColumns();
+                    _this.orders = table_demo_data_1.orders;
+                    _this.columnOrderPreset = 'customer-first';
+                    _this.columnOrderState = ['customer', 'order', 'region', 'status', 'total', 'channel'];
+                    _this.htmlSnippet = "<label>\n  Order preset\n  <select [value]=\"columnOrderPreset\" (change)=\"setColumnOrderPreset($event.target.value)\">\n    <option value=\"customer-first\">Customer first</option>\n    <option value=\"money-first\">Money first</option>\n    <option value=\"operations-first\">Operations first</option>\n  </select>\n</label>\n\n<stackline-data-table\n  title=\"Column ordering\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [columnOrder]=\"columnOrderState\">\n</stackline-data-table>";
+                    _this.tsSnippet = "columnOrderState = ['customer', 'order', 'region', 'status', 'total', 'channel'];\n\nsetColumnOrderPreset(preset: string) {\n  this.columnOrderState = preset === 'money-first'\n    ? ['total', 'order', 'customer', 'region', 'status', 'channel']\n    : ['customer', 'order', 'region', 'status', 'total', 'channel'];\n}";
+                    return _this;
+                }
+                ColumnOrderingExampleComponent.prototype.setColumnOrderPreset = function (preset) {
+                    this.columnOrderPreset = preset;
+                    if (preset === 'money-first') {
+                        this.columnOrderState = ['total', 'order', 'customer', 'region', 'status', 'channel'];
+                    }
+                    else if (preset === 'operations-first') {
+                        this.columnOrderState = ['status', 'channel', 'region', 'order', 'customer', 'total'];
+                    }
+                    else {
+                        this.columnOrderState = ['customer', 'order', 'region', 'status', 'total', 'channel'];
+                    }
+                    this.record('column order preset', { preset: preset, order: this.columnOrderState });
+                };
+                ColumnOrderingExampleComponent.prototype.getDataSnippet = function () {
+                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                };
+                ColumnOrderingExampleComponent = __decorate([
+                    core_1.Component({
+                        selector: 'column-ordering-example',
+                        templateUrl: 'app/examples/column-ordering/column-ordering.component.html'
+                    })
+                ], ColumnOrderingExampleComponent);
+                return ColumnOrderingExampleComponent;
+            }(table_example_base_1.TableExampleBase));
+            exports_1("ColumnOrderingExampleComponent", ColumnOrderingExampleComponent);
+        }
+    };
+});

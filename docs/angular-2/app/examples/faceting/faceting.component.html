@@ -1,0 +1,34 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo facet-demo">
+    <div class="filter-toolbar">
+      <label class="control-field control-wide">
+        <span>Facet search</span>
+        <input
+          type="search"
+          [value]="facetFilterText"
+          placeholder="Filter before reading facets"
+          (input)="setFacetFilter($event.target.value)" />
+      </label>
+      <label class="control-field">
+        <span>Status combobox</span>
+        <select [value]="facetStatusFilterValue" (change)="setFacetStatusFilter($event.target.value)">
+          <option *ngFor="let status of statusOptions" [value]="status">{{ status || 'All statuses' }}</option>
+        </select>
+      </label>
+    </div>
+    <stackline-data-table
+      #facetedTable
+      title="Faceted values"
+      [columns]="advancedColumns"
+      [data]="orders"
+      [globalFilter]="facetFilterText"
+      [columnFilters]="facetColumnFilters"
+      [pagination]="true"
+      [paginationPerPage]="5">
+    </stackline-data-table>
+    <div class="facet-panel">
+      <strong>Status facets</strong>
+      <pre>{{ getFacetSummary(facetedTable, 'status') }}</pre>
+    </div>
+  </div>
+</example-shell>

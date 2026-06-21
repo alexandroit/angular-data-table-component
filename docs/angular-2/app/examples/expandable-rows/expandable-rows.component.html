@@ -1,0 +1,34 @@
+<template #orderDetail let-row="row">
+  <div class="detail-grid">
+    <div>
+      <strong>Customer</strong>
+      <span>{{ row.customer }}</span>
+    </div>
+    <div>
+      <strong>Region</strong>
+      <span>{{ row.region }}</span>
+    </div>
+    <div>
+      <strong>Channel</strong>
+      <span>{{ row.channel }}</span>
+    </div>
+    <div>
+      <strong>Notes</strong>
+      <span>{{ row.notes }}</span>
+    </div>
+  </div>
+</template>
+
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Expandable order details"
+    [columns]="orderColumns"
+    [data]="orders"
+    [expandableRows]="true"
+    [expandableRowTemplate]="orderDetail"
+    [expandableRowExpanded]="isLargeOrder"
+    [highlightOnHover]="true"
+    [pointerOnHover]="true"
+    (rowExpandToggled)="record('row expanded', $event)">
+  </stackline-data-table>
+</example-shell>

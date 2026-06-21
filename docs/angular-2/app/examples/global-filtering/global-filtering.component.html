@@ -1,0 +1,25 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="control-field control-wide">
+        <span>Global search</span>
+        <input
+          type="search"
+          [value]="globalFilterText"
+          placeholder="Try Canada, Paid, Online..."
+          (input)="setGlobalFilter($event.target.value)" />
+      </label>
+      <button type="button" class="ghost-button" (click)="setGlobalFilter('')">Clear</button>
+    </div>
+    <stackline-data-table
+      title="Global filtering"
+      [columns]="advancedColumns"
+      [data]="orders"
+      [globalFilter]="globalFilterText"
+      [pagination]="true"
+      [paginationPerPage]="5"
+      [highlightOnHover]="true"
+      (tableStateChange)="record('global table state', $event)">
+    </stackline-data-table>
+  </div>
+</example-shell>

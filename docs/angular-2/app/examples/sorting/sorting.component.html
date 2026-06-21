@@ -1,0 +1,12 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Sortable inventory"
+    [columns]="inventoryColumns"
+    [data]="inventory"
+    defaultSortFieldId="stock"
+    [defaultSortAsc]="false"
+    [striped]="true"
+    [highlightOnHover]="true"
+    (sortChange)="record('inventory sort', $event)">
+  </stackline-data-table>
+</example-shell>

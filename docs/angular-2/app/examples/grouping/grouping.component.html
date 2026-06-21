@@ -1,0 +1,22 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="control-field">
+        <span>Group by</span>
+        <select [value]="groupByField" (change)="setGroupByField($event.target.value)">
+          <option value="region">Region</option>
+          <option value="status">Status</option>
+          <option value="channel">Channel</option>
+        </select>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Grouped rows"
+      [columns]="advancedColumns"
+      [data]="orders"
+      [groupBy]="groupByField"
+      [pagination]="true"
+      [paginationPerPage]="8">
+    </stackline-data-table>
+  </div>
+</example-shell>

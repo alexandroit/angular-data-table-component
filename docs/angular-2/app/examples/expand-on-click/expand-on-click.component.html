@@ -1,0 +1,35 @@
+<template #orderDetail let-row="row">
+  <div class="detail-grid">
+    <div>
+      <strong>Customer</strong>
+      <span>{{ row.customer }}</span>
+    </div>
+    <div>
+      <strong>Region</strong>
+      <span>{{ row.region }}</span>
+    </div>
+    <div>
+      <strong>Channel</strong>
+      <span>{{ row.channel }}</span>
+    </div>
+    <div>
+      <strong>Notes</strong>
+      <span>{{ row.notes }}</span>
+    </div>
+  </div>
+</template>
+
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Expand on row click"
+    [columns]="orderColumns"
+    [data]="orders"
+    [expandableRows]="true"
+    [expandableRowsHideExpander]="true"
+    [expandOnRowClicked]="true"
+    [expandableRowTemplate]="orderDetail"
+    [highlightOnHover]="true"
+    [pointerOnHover]="true"
+    (rowExpandToggled)="record('row click expansion', $event)">
+  </stackline-data-table>
+</example-shell>

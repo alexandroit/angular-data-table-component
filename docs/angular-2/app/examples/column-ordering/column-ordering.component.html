@@ -1,0 +1,22 @@
+<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="control-field">
+        <span>Order preset</span>
+        <select [value]="columnOrderPreset" (change)="setColumnOrderPreset($event.target.value)">
+          <option value="customer-first">Customer first</option>
+          <option value="money-first">Money first</option>
+          <option value="operations-first">Operations first</option>
+        </select>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Column ordering"
+      [columns]="advancedColumns"
+      [data]="orders"
+      [columnOrder]="columnOrderState"
+      [pagination]="true"
+      [paginationPerPage]="5">
+    </stackline-data-table>
+  </div>
+</example-shell>
