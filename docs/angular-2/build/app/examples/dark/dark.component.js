@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./dark.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./dark.sni
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, dark_snippets_1, table_demo_data_service_1, DarkExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, DarkExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./dark.sni
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (dark_snippets_1_1) {
-                dark_snippets_1 = dark_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./dark.sni
                     _this.summary = 'The legacy line keeps the same theme input.';
                     _this.revenueColumns = _this.demoData.getRevenueColumns();
                     _this.revenue = _this.demoData.getRevenue();
-                    _this.htmlSnippet = dark_snippets_1.DarkSnippets.html;
-                    _this.tsSnippet = dark_snippets_1.DarkSnippets.ts;
                     return _this;
                 }
                 DarkExampleComponent.prototype.getDataSnippet = function () {

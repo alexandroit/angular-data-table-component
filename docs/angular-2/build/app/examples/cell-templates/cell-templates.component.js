@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./cell-templates.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./cell-tem
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, cell_templates_snippets_1, table_demo_data_service_1, CellTemplatesExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, CellTemplatesExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./cell-tem
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (cell_templates_snippets_1_1) {
-                cell_templates_snippets_1 = cell_templates_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -47,8 +44,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./cell-tem
                     _this.summary = 'Angular TemplateRef cells for status, customer and money values.';
                     _this.orders = _this.demoData.getOrders();
                     _this.templateColumns = [];
-                    _this.htmlSnippet = cell_templates_snippets_1.CellTemplatesSnippets.html;
-                    _this.tsSnippet = cell_templates_snippets_1.CellTemplatesSnippets.ts;
                     return _this;
                 }
                 CellTemplatesExampleComponent.prototype.ngAfterViewInit = function () {

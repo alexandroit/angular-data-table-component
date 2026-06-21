@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./column-ordering.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./column-o
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, column_ordering_snippets_1, table_demo_data_service_1, ColumnOrderingExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ColumnOrderingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./column-o
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (column_ordering_snippets_1_1) {
-                column_ordering_snippets_1 = column_ordering_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -48,8 +45,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./column-o
                     _this.orders = _this.demoData.getOrders();
                     _this.columnOrderPreset = 'customer-first';
                     _this.columnOrderState = ['customer', 'order', 'region', 'status', 'total', 'channel'];
-                    _this.htmlSnippet = column_ordering_snippets_1.ColumnOrderingSnippets.html;
-                    _this.tsSnippet = column_ordering_snippets_1.ColumnOrderingSnippets.ts;
                     return _this;
                 }
                 ColumnOrderingExampleComponent.prototype.setColumnOrderPreset = function (preset) {

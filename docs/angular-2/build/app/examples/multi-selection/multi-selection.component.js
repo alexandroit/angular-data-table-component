@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./multi-selection.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./multi-se
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, multi_selection_snippets_1, table_demo_data_service_1, MultiSelectionExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, MultiSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./multi-se
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (multi_selection_snippets_1_1) {
-                multi_selection_snippets_1 = multi_selection_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./multi-se
                     _this.summary = 'Checkbox row selection with selected-row highlighting.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = multi_selection_snippets_1.MultiSelectionSnippets.html;
-                    _this.tsSnippet = multi_selection_snippets_1.MultiSelectionSnippets.ts;
                     return _this;
                 }
                 MultiSelectionExampleComponent.prototype.getDataSnippet = function () {

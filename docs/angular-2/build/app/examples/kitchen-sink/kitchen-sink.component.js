@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./kitchen-sink.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./kitchen-
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, kitchen_sink_snippets_1, table_demo_data_service_1, KitchenSinkExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, KitchenSinkExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./kitchen-
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (kitchen_sink_snippets_1_1) {
-                kitchen_sink_snippets_1 = kitchen_sink_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -58,8 +55,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./kitchen-
                     _this.columnPinningState = { left: ['order'], right: ['total'] };
                     _this.columnSizingState = { order: 130, customer: 240, total: 130 };
                     _this.topPinnedOrders = [];
-                    _this.htmlSnippet = kitchen_sink_snippets_1.KitchenSinkSnippets.html;
-                    _this.tsSnippet = kitchen_sink_snippets_1.KitchenSinkSnippets.ts;
                     return _this;
                 }
                 KitchenSinkExampleComponent.prototype.ngOnInit = function () {

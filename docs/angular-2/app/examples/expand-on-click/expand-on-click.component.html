@@ -19,7 +19,8 @@
   </div>
 </template>
 
-<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+<example-shell
+  exampleId="expand-on-click" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
   <stackline-data-table
     title="Expand on row click"
     [columns]="orderColumns"

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./expandable-rows.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./expandab
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, expandable_rows_snippets_1, table_demo_data_service_1, ExpandableRowsExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ExpandableRowsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./expandab
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (expandable_rows_snippets_1_1) {
-                expandable_rows_snippets_1 = expandable_rows_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./expandab
                     _this.summary = 'Expanded details rendered from an Angular template.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = expandable_rows_snippets_1.ExpandableRowsSnippets.html;
-                    _this.tsSnippet = expandable_rows_snippets_1.ExpandableRowsSnippets.ts;
                     return _this;
                 }
                 ExpandableRowsExampleComponent.prototype.isLargeOrder = function (row) {

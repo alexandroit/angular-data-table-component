@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./row-pinning.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./row-pinn
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, row_pinning_snippets_1, table_demo_data_service_1, RowPinningExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, RowPinningExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./row-pinn
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (row_pinning_snippets_1_1) {
-                row_pinning_snippets_1 = row_pinning_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -48,8 +45,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./row-pinn
                     _this.orders = _this.demoData.getOrders();
                     _this.topPinnedOrders = [];
                     _this.bottomPinnedOrders = [];
-                    _this.htmlSnippet = row_pinning_snippets_1.RowPinningSnippets.html;
-                    _this.tsSnippet = row_pinning_snippets_1.RowPinningSnippets.ts;
                     return _this;
                 }
                 RowPinningExampleComponent.prototype.ngOnInit = function () {

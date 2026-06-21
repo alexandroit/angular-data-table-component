@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./fixed-header.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./fixed-he
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, fixed_header_snippets_1, table_demo_data_service_1, FixedHeaderExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, FixedHeaderExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./fixed-he
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (fixed_header_snippets_1_1) {
-                fixed_header_snippets_1 = fixed_header_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./fixed-he
                     _this.summary = 'Scrollable table body with sticky header support.';
                     _this.revenueColumns = _this.demoData.getRevenueColumns();
                     _this.revenue = _this.demoData.getRevenue();
-                    _this.htmlSnippet = fixed_header_snippets_1.FixedHeaderSnippets.html;
-                    _this.tsSnippet = fixed_header_snippets_1.FixedHeaderSnippets.ts;
                     return _this;
                 }
                 FixedHeaderExampleComponent.prototype.getDataSnippet = function () {

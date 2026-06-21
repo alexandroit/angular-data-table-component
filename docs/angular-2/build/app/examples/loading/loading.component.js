@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./loading.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./loading.
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, loading_snippets_1, table_demo_data_service_1, LoadingExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, LoadingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./loading.
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (loading_snippets_1_1) {
-                loading_snippets_1 = loading_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./loading.
                     _this.summary = 'Progress state for async data loading.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = loading_snippets_1.LoadingSnippets.html;
-                    _this.tsSnippet = loading_snippets_1.LoadingSnippets.ts;
                     return _this;
                 }
                 LoadingExampleComponent.prototype.getDataSnippet = function () {

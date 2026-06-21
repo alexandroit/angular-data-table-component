@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./column-visibility.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./column-v
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, column_visibility_snippets_1, table_demo_data_service_1, ColumnVisibilityExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ColumnVisibilityExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./column-v
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (column_visibility_snippets_1_1) {
-                column_visibility_snippets_1 = column_visibility_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -48,8 +45,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./column-v
                     _this.orders = _this.demoData.getOrders();
                     _this.visibilityColumns = _this.demoData.getVisibilityColumns();
                     _this.columnVisibilityState = { channel: false };
-                    _this.htmlSnippet = column_visibility_snippets_1.ColumnVisibilitySnippets.html;
-                    _this.tsSnippet = column_visibility_snippets_1.ColumnVisibilitySnippets.ts;
                     return _this;
                 }
                 ColumnVisibilityExampleComponent.prototype.isDemoColumnVisible = function (columnId) {

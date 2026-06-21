@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./virtual-rows.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./virtual-
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, virtual_rows_snippets_1, table_demo_data_service_1, VirtualRowsExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, VirtualRowsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./virtual-
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (virtual_rows_snippets_1_1) {
-                virtual_rows_snippets_1 = virtual_rows_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./virtual-
                     _this.summary = 'Render a window of a larger row set for heavy legacy screens.';
                     _this.largeColumns = _this.demoData.getLargeColumns();
                     _this.largeRows = _this.demoData.buildLargeRows();
-                    _this.htmlSnippet = virtual_rows_snippets_1.VirtualRowsSnippets.html;
-                    _this.tsSnippet = virtual_rows_snippets_1.VirtualRowsSnippets.ts;
                     return _this;
                 }
                 VirtualRowsExampleComponent.prototype.getDataSnippet = function () {

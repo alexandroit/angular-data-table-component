@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./expand-on-click.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./expand-o
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, expand_on_click_snippets_1, table_demo_data_service_1, ExpandOnClickExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ExpandOnClickExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./expand-o
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (expand_on_click_snippets_1_1) {
-                expand_on_click_snippets_1 = expand_on_click_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./expand-o
                     _this.summary = 'Hide the expander and use row clicks to toggle details.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = expand_on_click_snippets_1.ExpandOnClickSnippets.html;
-                    _this.tsSnippet = expand_on_click_snippets_1.ExpandOnClickSnippets.ts;
                     return _this;
                 }
                 ExpandOnClickExampleComponent.prototype.getDataSnippet = function () {

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./header-groups.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./header-g
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, header_groups_snippets_1, table_demo_data_service_1, HeaderGroupsExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, HeaderGroupsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./header-g
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (header_groups_snippets_1_1) {
-                header_groups_snippets_1 = header_groups_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./header-g
                     _this.summary = 'Use nested column definitions to render grouped headers.';
                     _this.headerGroupColumns = _this.demoData.getHeaderGroupColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = header_groups_snippets_1.HeaderGroupsSnippets.html;
-                    _this.tsSnippet = header_groups_snippets_1.HeaderGroupsSnippets.ts;
                     return _this;
                 }
                 HeaderGroupsExampleComponent.prototype.getDataSnippet = function () {

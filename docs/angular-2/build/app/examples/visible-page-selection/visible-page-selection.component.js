@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./visible-page-selection.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./visible-
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, visible_page_selection_snippets_1, table_demo_data_service_1, VisiblePageSelectionExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, VisiblePageSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./visible-
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (visible_page_selection_snippets_1_1) {
-                visible_page_selection_snippets_1 = visible_page_selection_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./visible-
                     _this.summary = 'Select all only touches the currently rendered page.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = visible_page_selection_snippets_1.VisiblePageSelectionSnippets.html;
-                    _this.tsSnippet = visible_page_selection_snippets_1.VisiblePageSelectionSnippets.ts;
                     return _this;
                 }
                 VisiblePageSelectionExampleComponent.prototype.getDataSnippet = function () {

@@ -1,4 +1,5 @@
-<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+<example-shell
+  exampleId="column-visibility" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
   <div class="feature-demo">
     <div class="filter-toolbar check-grid">
       <label *ngFor="let column of visibilityColumns" class="check-field">

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./large-data-pagination.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./large-da
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, large_data_pagination_snippets_1, table_demo_data_service_1, LargeDataPaginationExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, LargeDataPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./large-da
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (large_data_pagination_snippets_1_1) {
-                large_data_pagination_snippets_1 = large_data_pagination_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -55,8 +52,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./large-da
                     _this.sortField = 'id';
                     _this.sortDirection = 'asc';
                     _this.pageSizes = [10, 25, 50, 100];
-                    _this.htmlSnippet = large_data_pagination_snippets_1.LargeDataPaginationSnippets.html;
-                    _this.tsSnippet = large_data_pagination_snippets_1.LargeDataPaginationSnippets.ts;
                     return _this;
                 }
                 LargeDataPaginationExampleComponent.prototype.ngOnInit = function () {

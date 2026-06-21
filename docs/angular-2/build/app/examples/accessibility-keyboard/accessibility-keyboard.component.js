@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./accessibility-keyboard.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./accessib
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, accessibility_keyboard_snippets_1, table_demo_data_service_1, AccessibilityKeyboardExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, AccessibilityKeyboardExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./accessib
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (accessibility_keyboard_snippets_1_1) {
-                accessibility_keyboard_snippets_1 = accessibility_keyboard_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./accessib
                     _this.summary = 'ARIA sort, labels, selected state, expanded state and row keyboard activation.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = accessibility_keyboard_snippets_1.AccessibilityKeyboardSnippets.html;
-                    _this.tsSnippet = accessibility_keyboard_snippets_1.AccessibilityKeyboardSnippets.ts;
                     return _this;
                 }
                 AccessibilityKeyboardExampleComponent.prototype.getDataSnippet = function () {

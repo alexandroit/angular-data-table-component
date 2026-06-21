@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./image-cells.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./image-ce
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, image_cells_snippets_1, table_demo_data_service_1, ImageCellsExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ImageCellsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./image-ce
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (image_cells_snippets_1_1) {
-                image_cells_snippets_1 = image_cells_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -47,8 +44,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./image-ce
                     _this.summary = 'Product and user-media cells rendered with Angular templates and local image assets.';
                     _this.imageColumns = [];
                     _this.products = _this.demoData.getProducts('app/assets/products');
-                    _this.htmlSnippet = image_cells_snippets_1.ImageCellsSnippets.html;
-                    _this.tsSnippet = image_cells_snippets_1.ImageCellsSnippets.ts;
                     return _this;
                 }
                 ImageCellsExampleComponent.prototype.ngAfterViewInit = function () {

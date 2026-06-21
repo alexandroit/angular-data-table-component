@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./row-events.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./row-even
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, row_events_snippets_1, table_demo_data_service_1, RowEventsExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, RowEventsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./row-even
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (row_events_snippets_1_1) {
-                row_events_snippets_1 = row_events_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./row-even
                     _this.summary = 'Click, double click, mouse enter and mouse leave outputs.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
-                    _this.htmlSnippet = row_events_snippets_1.RowEventsSnippets.html;
-                    _this.tsSnippet = row_events_snippets_1.RowEventsSnippets.ts;
                     return _this;
                 }
                 RowEventsExampleComponent.prototype.getDataSnippet = function () {

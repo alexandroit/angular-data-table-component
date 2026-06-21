@@ -19,7 +19,8 @@
   </div>
 </template>
 
-<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+<example-shell
+  exampleId="expandable-rows" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
   <stackline-data-table
     title="Expandable order details"
     [columns]="orderColumns"

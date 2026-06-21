@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./dense.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./dense.sn
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, dense_snippets_1, table_demo_data_service_1, DenseExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, DenseExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./dense.sn
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (dense_snippets_1_1) {
-                dense_snippets_1 = dense_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./dense.sn
                     _this.summary = 'Compact row height for operation-heavy screens.';
                     _this.ticketColumns = _this.demoData.getTicketColumns();
                     _this.tickets = _this.demoData.getTickets();
-                    _this.htmlSnippet = dense_snippets_1.DenseSnippets.html;
-                    _this.tsSnippet = dense_snippets_1.DenseSnippets.ts;
                     return _this;
                 }
                 DenseExampleComponent.prototype.getDataSnippet = function () {

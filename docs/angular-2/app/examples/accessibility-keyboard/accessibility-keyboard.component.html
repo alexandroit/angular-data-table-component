@@ -19,7 +19,8 @@
   </div>
 </template>
 
-<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+<example-shell
+  exampleId="accessibility-keyboard" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
   <stackline-data-table
     title="Accessibility keyboard contract"
     ariaLabel="Accessibility keyboard orders"

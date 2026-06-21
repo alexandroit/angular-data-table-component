@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./client-pagination.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./client-p
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, client_pagination_snippets_1, table_demo_data_service_1, ClientPaginationExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ClientPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./client-p
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (client_pagination_snippets_1_1) {
-                client_pagination_snippets_1 = client_pagination_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -47,8 +44,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./client-p
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.orders = _this.demoData.getOrders();
                     _this.pageSizes = _this.demoData.getPageSizes();
-                    _this.htmlSnippet = client_pagination_snippets_1.ClientPaginationSnippets.html;
-                    _this.tsSnippet = client_pagination_snippets_1.ClientPaginationSnippets.ts;
                     return _this;
                 }
                 ClientPaginationExampleComponent.prototype.getDataSnippet = function () {

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./conditional-styles.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./conditio
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, conditional_styles_snippets_1, table_demo_data_service_1, ConditionalStylesExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ConditionalStylesExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./conditio
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (conditional_styles_snippets_1_1) {
-                conditional_styles_snippets_1 = conditional_styles_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -54,8 +51,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./conditio
                             className: 'row-warning'
                         }
                     ];
-                    _this.htmlSnippet = conditional_styles_snippets_1.ConditionalStylesSnippets.html;
-                    _this.tsSnippet = conditional_styles_snippets_1.ConditionalStylesSnippets.ts;
                     return _this;
                 }
                 ConditionalStylesExampleComponent.prototype.getDataSnippet = function () {

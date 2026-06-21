@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./single-selection.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./single-s
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, single_selection_snippets_1, table_demo_data_service_1, SingleSelectionExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, SingleSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./single-s
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (single_selection_snippets_1_1) {
-                single_selection_snippets_1 = single_selection_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./single-s
                     _this.summary = 'Radio-style selection for one active item.';
                     _this.ticketColumns = _this.demoData.getTicketColumns();
                     _this.tickets = _this.demoData.getTickets();
-                    _this.htmlSnippet = single_selection_snippets_1.SingleSelectionSnippets.html;
-                    _this.tsSnippet = single_selection_snippets_1.SingleSelectionSnippets.ts;
                     return _this;
                 }
                 SingleSelectionExampleComponent.prototype.getDataSnippet = function () {

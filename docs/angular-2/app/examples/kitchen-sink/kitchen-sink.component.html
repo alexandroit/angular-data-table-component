@@ -19,7 +19,8 @@
   </div>
 </template>
 
-<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+<example-shell
+  exampleId="kitchen-sink" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
   <div class="feature-demo">
     <div class="filter-toolbar">
       <label class="control-field control-wide">

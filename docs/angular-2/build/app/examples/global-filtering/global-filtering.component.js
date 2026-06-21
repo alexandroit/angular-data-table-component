@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./global-filtering.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./global-f
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, global_filtering_snippets_1, table_demo_data_service_1, GlobalFilteringExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, GlobalFilteringExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./global-f
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (global_filtering_snippets_1_1) {
-                global_filtering_snippets_1 = global_filtering_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -47,8 +44,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./global-f
                     _this.advancedColumns = _this.demoData.getAdvancedColumns();
                     _this.orders = _this.demoData.getOrders();
                     _this.globalFilterText = 'canada';
-                    _this.htmlSnippet = global_filtering_snippets_1.GlobalFilteringSnippets.html;
-                    _this.tsSnippet = global_filtering_snippets_1.GlobalFilteringSnippets.ts;
                     return _this;
                 }
                 GlobalFilteringExampleComponent.prototype.setGlobalFilter = function (value) {

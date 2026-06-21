@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./server-pagination.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./server-p
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, server_pagination_snippets_1, table_demo_data_service_1, ServerPaginationExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, ServerPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./server-p
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (server_pagination_snippets_1_1) {
-                server_pagination_snippets_1 = server_pagination_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -50,8 +47,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./server-p
                     _this.serverPage = 1;
                     _this.serverRowsPerPage = 4;
                     _this.serverRows = [];
-                    _this.htmlSnippet = server_pagination_snippets_1.ServerPaginationSnippets.html;
-                    _this.tsSnippet = server_pagination_snippets_1.ServerPaginationSnippets.ts;
                     return _this;
                 }
                 ServerPaginationExampleComponent.prototype.ngOnInit = function () {

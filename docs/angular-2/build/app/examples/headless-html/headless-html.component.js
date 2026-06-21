@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@stackline/angular-data-table-component", "../../shared/table-example-base", "./headless-html.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@stackline/angular-data-table-component", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "@stackline/angular-data-table-component", "..
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, angular_data_table_component_1, table_example_base_1, headless_html_snippets_1, table_demo_data_service_1, HeadlessHtmlExampleComponent;
+    var core_1, angular_data_table_component_1, table_example_base_1, table_demo_data_service_1, HeadlessHtmlExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -31,9 +31,6 @@ System.register(["@angular/core", "@stackline/angular-data-table-component", "..
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (headless_html_snippets_1_1) {
-                headless_html_snippets_1 = headless_html_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -63,8 +60,6 @@ System.register(["@angular/core", "@stackline/angular-data-table-component", "..
                         { id: 5, name: 'Warehouse sync', status: 'Ready', owner: 'Lena', score: 81 },
                         { id: 6, name: 'Invoice matching', status: 'Review', owner: 'Maya', score: 74 }
                     ];
-                    _this.htmlSnippet = headless_html_snippets_1.HeadlessHtmlSnippets.html;
-                    _this.tsSnippet = headless_html_snippets_1.HeadlessHtmlSnippets.ts;
                     return _this;
                 }
                 HeadlessHtmlExampleComponent.prototype.ngOnInit = function () {

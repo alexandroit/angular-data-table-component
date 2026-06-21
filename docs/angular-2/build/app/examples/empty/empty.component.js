@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./empty.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./empty.sn
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, empty_snippets_1, table_demo_data_service_1, EmptyExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, EmptyExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./empty.sn
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (empty_snippets_1_1) {
-                empty_snippets_1 = empty_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -46,8 +43,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./empty.sn
                     _this.summary = 'Custom empty message when there are no rows.';
                     _this.orderColumns = _this.demoData.getOrderColumns();
                     _this.emptyRows = [];
-                    _this.htmlSnippet = empty_snippets_1.EmptySnippets.html;
-                    _this.tsSnippet = empty_snippets_1.EmptySnippets.ts;
                     return _this;
                 }
                 EmptyExampleComponent.prototype.getDataSnippet = function () {

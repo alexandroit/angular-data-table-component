@@ -15,7 +15,8 @@
   <span class="money-cell">{{ formatTotal(row) }}</span>
 </template>
 
-<example-shell [title]="title" [summary]="summary" [htmlSnippet]="htmlSnippet" [tsSnippet]="tsSnippet" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+<example-shell
+  exampleId="cell-templates" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
   <stackline-data-table
     title="Template cells"
     [columns]="templateColumns"

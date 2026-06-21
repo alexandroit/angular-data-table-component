@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-example-base", "./faceting.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-example-base", "./faceting
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_example_base_1, faceting_snippets_1, table_demo_data_service_1, FacetingExampleComponent;
+    var core_1, table_example_base_1, table_demo_data_service_1, FacetingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,9 +28,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./faceting
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
-            },
-            function (faceting_snippets_1_1) {
-                faceting_snippets_1 = faceting_snippets_1_1;
             },
             function (table_demo_data_service_1_1) {
                 table_demo_data_service_1 = table_demo_data_service_1_1;
@@ -50,8 +47,6 @@ System.register(["@angular/core", "../../shared/table-example-base", "./faceting
                     _this.facetFilterText = '';
                     _this.facetStatusFilterValue = '';
                     _this.facetColumnFilters = [];
-                    _this.htmlSnippet = faceting_snippets_1.FacetingSnippets.html;
-                    _this.tsSnippet = faceting_snippets_1.FacetingSnippets.ts;
                     return _this;
                 }
                 FacetingExampleComponent.prototype.setFacetFilter = function (value) {
