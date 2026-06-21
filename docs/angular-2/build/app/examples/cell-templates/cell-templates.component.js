@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./cell-templates.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./cell-templates.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,50 +20,52 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, cell_templates_snippets_1, CellTemplatesExampleComponent;
+    var core_1, table_example_base_1, cell_templates_snippets_1, table_demo_data_service_1, CellTemplatesExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (cell_templates_snippets_1_1) {
                 cell_templates_snippets_1 = cell_templates_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             CellTemplatesExampleComponent = (function (_super) {
                 __extends(CellTemplatesExampleComponent, _super);
-                function CellTemplatesExampleComponent(changeDetector) {
+                function CellTemplatesExampleComponent(changeDetector, demoData) {
                     var _this = _super.call(this) || this;
                     _this.changeDetector = changeDetector;
+                    _this.demoData = demoData;
                     _this.title = 'Custom cell templates';
                     _this.summary = 'Angular TemplateRef cells for status, customer and money values.';
-                    _this.orders = table_demo_data_1.orders;
+                    _this.orders = _this.demoData.getOrders();
                     _this.templateColumns = [];
                     _this.htmlSnippet = cell_templates_snippets_1.CellTemplatesSnippets.html;
                     _this.tsSnippet = cell_templates_snippets_1.CellTemplatesSnippets.ts;
                     return _this;
                 }
                 CellTemplatesExampleComponent.prototype.ngAfterViewInit = function () {
+                    var _this = this;
                     this.templateColumns = [
                         { id: 'order', name: 'Order', selector: 'order', sortable: true, width: '130px' },
                         { id: 'customer', name: 'Customer', selector: 'customer', cellTemplate: this.customerCellTemplate, wrap: true, minWidth: '220px' },
                         { id: 'status', name: 'Status', selector: 'status', cellTemplate: this.statusCellTemplate, center: true, width: '120px' },
-                        { id: 'total', name: 'Total', selector: table_demo_data_1.formatTotal, cellTemplate: this.totalCellTemplate, right: true, width: '130px' }
+                        { id: 'total', name: 'Total', selector: function (row) { return _this.demoData.formatTotal(row); }, cellTemplate: this.totalCellTemplate, right: true, width: '130px' }
                     ];
                     this.changeDetector.detectChanges();
                 };
                 CellTemplatesExampleComponent.prototype.formatTotal = function (row) {
-                    return table_demo_data_1.formatTotal(row);
+                    return this.demoData.formatTotal(row);
                 };
                 CellTemplatesExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                    return this.demoData.dataSnippet(this.orders.slice(0, 3));
                 };
                 __decorate([
                     core_1.ViewChild('statusCell'),
@@ -80,9 +82,10 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                 CellTemplatesExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'cell-templates-example',
-                        templateUrl: 'app/examples/cell-templates/cell-templates.component.html'
+                        templateUrl: 'app/examples/cell-templates/cell-templates.component.html',
+                        styleUrls: ['app/examples/cell-templates/cell-templates.component.css']
                     }),
-                    __metadata("design:paramtypes", [core_1.ChangeDetectorRef])
+                    __metadata("design:paramtypes", [core_1.ChangeDetectorRef, table_demo_data_service_1.TableDemoDataService])
                 ], CellTemplatesExampleComponent);
                 return CellTemplatesExampleComponent;
             }(table_example_base_1.TableExampleBase));

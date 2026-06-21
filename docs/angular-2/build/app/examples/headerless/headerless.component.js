@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./headerless.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./headerless.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,44 +16,50 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, headerless_snippets_1, HeaderlessExampleComponent;
+    var core_1, table_example_base_1, headerless_snippets_1, table_demo_data_service_1, HeaderlessExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (headerless_snippets_1_1) {
                 headerless_snippets_1 = headerless_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             HeaderlessExampleComponent = (function (_super) {
                 __extends(HeaderlessExampleComponent, _super);
-                function HeaderlessExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function HeaderlessExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Headerless table';
                     _this.summary = 'No title and no table head for compact embedded lists.';
-                    _this.orderColumns = table_demo_data_1.getOrderColumns();
-                    _this.orders = table_demo_data_1.orders;
+                    _this.orderColumns = _this.demoData.getOrderColumns();
+                    _this.orders = _this.demoData.getOrders();
                     _this.htmlSnippet = headerless_snippets_1.HeaderlessSnippets.html;
                     _this.tsSnippet = headerless_snippets_1.HeaderlessSnippets.ts;
                     return _this;
                 }
                 HeaderlessExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                    return this.demoData.dataSnippet(this.orders.slice(0, 3));
                 };
                 HeaderlessExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'headerless-example',
-                        templateUrl: 'app/examples/headerless/headerless.component.html'
-                    })
+                        templateUrl: 'app/examples/headerless/headerless.component.html',
+                        styleUrls: ['app/examples/headerless/headerless.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], HeaderlessExampleComponent);
                 return HeaderlessExampleComponent;
             }(table_example_base_1.TableExampleBase));

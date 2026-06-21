@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./conditional-styles.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./conditional-styles.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,32 +16,36 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, conditional_styles_snippets_1, ConditionalStylesExampleComponent;
+    var core_1, table_example_base_1, conditional_styles_snippets_1, table_demo_data_service_1, ConditionalStylesExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (conditional_styles_snippets_1_1) {
                 conditional_styles_snippets_1 = conditional_styles_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             ConditionalStylesExampleComponent = (function (_super) {
                 __extends(ConditionalStylesExampleComponent, _super);
-                function ConditionalStylesExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function ConditionalStylesExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Conditional styles';
                     _this.summary = 'Apply row classes or styles from row data.';
-                    _this.inventoryColumns = table_demo_data_1.getInventoryColumns();
-                    _this.inventory = table_demo_data_1.inventory;
+                    _this.inventoryColumns = _this.demoData.getInventoryColumns();
+                    _this.inventory = _this.demoData.getInventory();
                     _this.inventoryStyles = [
                         {
                             when: function (row) {
@@ -55,13 +59,15 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     return _this;
                 }
                 ConditionalStylesExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.inventory.slice(0, 3));
+                    return this.demoData.dataSnippet(this.inventory.slice(0, 3));
                 };
                 ConditionalStylesExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'conditional-styles-example',
-                        templateUrl: 'app/examples/conditional-styles/conditional-styles.component.html'
-                    })
+                        templateUrl: 'app/examples/conditional-styles/conditional-styles.component.html',
+                        styleUrls: ['app/examples/conditional-styles/conditional-styles.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], ConditionalStylesExampleComponent);
                 return ConditionalStylesExampleComponent;
             }(table_example_base_1.TableExampleBase));

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./large-data-pagination.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./large-data-pagination.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,31 +16,35 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, large_data_pagination_snippets_1, LargeDataPaginationExampleComponent;
+    var core_1, table_example_base_1, large_data_pagination_snippets_1, table_demo_data_service_1, LargeDataPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (large_data_pagination_snippets_1_1) {
                 large_data_pagination_snippets_1 = large_data_pagination_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             LargeDataPaginationExampleComponent = (function (_super) {
                 __extends(LargeDataPaginationExampleComponent, _super);
-                function LargeDataPaginationExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function LargeDataPaginationExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Large data pagination';
                     _this.summary = 'Server-style pagination with a large object-backed dataset and only the visible page in memory.';
-                    _this.largeColumns = table_demo_data_1.getLargeDataColumns();
+                    _this.largeColumns = _this.demoData.getLargeDataColumns();
                     _this.largePage = {
                         rows: [],
                         totalRows: 10000,
@@ -60,7 +64,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                 };
                 LargeDataPaginationExampleComponent.prototype.loadPage = function (page, perPage) {
                     this.largePage = {
-                        rows: table_demo_data_1.buildLargePage(page, perPage, this.largePage.totalRows, this.sortField, this.sortDirection),
+                        rows: this.demoData.buildLargePage(page, perPage, this.largePage.totalRows, this.sortField, this.sortDirection),
                         totalRows: this.largePage.totalRows,
                         page: page,
                         perPage: perPage,
@@ -83,7 +87,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     });
                 };
                 LargeDataPaginationExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet({
+                    return this.demoData.dataSnippet({
                         rows: this.largePage.rows.slice(0, 3),
                         totalRows: this.largePage.totalRows,
                         page: this.largePage.page,
@@ -96,8 +100,10 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                 LargeDataPaginationExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'large-data-pagination-example',
-                        templateUrl: 'app/examples/large-data-pagination/large-data-pagination.component.html'
-                    })
+                        templateUrl: 'app/examples/large-data-pagination/large-data-pagination.component.html',
+                        styleUrls: ['app/examples/large-data-pagination/large-data-pagination.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], LargeDataPaginationExampleComponent);
                 return LargeDataPaginationExampleComponent;
             }(table_example_base_1.TableExampleBase));

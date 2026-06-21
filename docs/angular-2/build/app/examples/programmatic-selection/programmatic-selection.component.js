@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./programmatic-selection.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./programmatic-selection.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,32 +16,36 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, programmatic_selection_snippets_1, ProgrammaticSelectionExampleComponent;
+    var core_1, table_example_base_1, programmatic_selection_snippets_1, table_demo_data_service_1, ProgrammaticSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (programmatic_selection_snippets_1_1) {
                 programmatic_selection_snippets_1 = programmatic_selection_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             ProgrammaticSelectionExampleComponent = (function (_super) {
                 __extends(ProgrammaticSelectionExampleComponent, _super);
-                function ProgrammaticSelectionExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function ProgrammaticSelectionExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Programmatic selection';
                     _this.summary = 'Preselect rows from a predicate supplied by the app.';
-                    _this.ticketColumns = table_demo_data_1.getTicketColumns();
-                    _this.tickets = table_demo_data_1.tickets;
+                    _this.ticketColumns = _this.demoData.getTicketColumns();
+                    _this.tickets = _this.demoData.getTickets();
                     _this.htmlSnippet = programmatic_selection_snippets_1.ProgrammaticSelectionSnippets.html;
                     _this.tsSnippet = programmatic_selection_snippets_1.ProgrammaticSelectionSnippets.ts;
                     return _this;
@@ -50,13 +54,15 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     return row.priority === 'High';
                 };
                 ProgrammaticSelectionExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.tickets.slice(0, 3));
+                    return this.demoData.dataSnippet(this.tickets.slice(0, 3));
                 };
                 ProgrammaticSelectionExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'programmatic-selection-example',
-                        templateUrl: 'app/examples/programmatic-selection/programmatic-selection.component.html'
-                    })
+                        templateUrl: 'app/examples/programmatic-selection/programmatic-selection.component.html',
+                        styleUrls: ['app/examples/programmatic-selection/programmatic-selection.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], ProgrammaticSelectionExampleComponent);
                 return ProgrammaticSelectionExampleComponent;
             }(table_example_base_1.TableExampleBase));

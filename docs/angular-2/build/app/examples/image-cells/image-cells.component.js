@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./image-cells.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./image-cells.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,37 +20,33 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, image_cells_snippets_1, ImageCellsExampleComponent;
+    var core_1, table_example_base_1, image_cells_snippets_1, table_demo_data_service_1, ImageCellsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (image_cells_snippets_1_1) {
                 image_cells_snippets_1 = image_cells_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             ImageCellsExampleComponent = (function (_super) {
                 __extends(ImageCellsExampleComponent, _super);
-                function ImageCellsExampleComponent(changeDetector) {
+                function ImageCellsExampleComponent(changeDetector, demoData) {
                     var _this = _super.call(this) || this;
                     _this.changeDetector = changeDetector;
+                    _this.demoData = demoData;
                     _this.title = 'Image cells';
                     _this.summary = 'Product and user-media cells rendered with Angular templates and local image assets.';
                     _this.imageColumns = [];
-                    _this.products = [
-                        { id: 1, name: 'Studio Camera', category: 'Media kit', stock: 18, owner: 'Maya', image: 'app/assets/products/camera.svg' },
-                        { id: 2, name: 'Audio Headphones', category: 'Support desk', stock: 7, owner: 'Theo', image: 'app/assets/products/headphones.svg' },
-                        { id: 3, name: 'Mechanical Keyboard', category: 'Workspace', stock: 31, owner: 'Iris', image: 'app/assets/products/keyboard.svg' },
-                        { id: 4, name: 'Ops Watch', category: 'Field team', stock: 12, owner: 'Noah', image: 'app/assets/products/watch.svg' }
-                    ];
+                    _this.products = _this.demoData.getProducts('app/assets/products');
                     _this.htmlSnippet = image_cells_snippets_1.ImageCellsSnippets.html;
                     _this.tsSnippet = image_cells_snippets_1.ImageCellsSnippets.ts;
                     return _this;
@@ -65,7 +61,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     this.changeDetector.detectChanges();
                 };
                 ImageCellsExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.products);
+                    return this.demoData.dataSnippet(this.products);
                 };
                 __decorate([
                     core_1.ViewChild('productCell'),
@@ -78,9 +74,10 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                 ImageCellsExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'image-cells-example',
-                        templateUrl: 'app/examples/image-cells/image-cells.component.html'
+                        templateUrl: 'app/examples/image-cells/image-cells.component.html',
+                        styleUrls: ['app/examples/image-cells/image-cells.component.css']
                     }),
-                    __metadata("design:paramtypes", [core_1.ChangeDetectorRef])
+                    __metadata("design:paramtypes", [core_1.ChangeDetectorRef, table_demo_data_service_1.TableDemoDataService])
                 ], ImageCellsExampleComponent);
                 return ImageCellsExampleComponent;
             }(table_example_base_1.TableExampleBase));

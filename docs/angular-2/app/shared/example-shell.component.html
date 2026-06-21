@@ -1,0 +1,39 @@
+<article class="example-card">
+  <div class="example-head">
+    <div class="example-title">
+      <p class="eyebrow">Live preview</p>
+      <h2>{{ title }}</h2>
+      <p>{{ summary }}</p>
+    </div>
+    <span class="status-pill">Angular 2.4.10</span>
+  </div>
+
+  <div class="preview">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="event-log">
+    <div>
+      <h3>Event log</h3>
+      <p>Latest component outputs from this Angular 2 live app.</p>
+    </div>
+    <button type="button" (click)="clear.emit(null)">Clear</button>
+    <pre>{{ eventLogText }}</pre>
+  </div>
+
+  <div class="code-grid">
+    <div class="code-panel">
+      <h3>HTML</h3>
+      <pre>{{ htmlSnippet }}</pre>
+    </div>
+    <div class="code-panel">
+      <h3>TS</h3>
+      <pre>{{ tsSnippet }}</pre>
+    </div>
+    <div class="code-panel">
+      <h3>Data</h3>
+      <pre>{{ dataSnippet }}</pre>
+    </div>
+  </div>
+</article>
+  

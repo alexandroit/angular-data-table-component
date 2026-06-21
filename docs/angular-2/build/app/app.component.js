@@ -71,7 +71,8 @@ System.register(["@angular/core", "./shared/example-menu"], function (exports_1,
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'stackline-test',
-                        templateUrl: 'app/app.component.html'
+                        templateUrl: 'app/app.component.html',
+                        styleUrls: ['app/app.component.css']
                     })
                 ], AppComponent);
                 return AppComponent;

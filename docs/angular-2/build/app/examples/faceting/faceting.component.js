@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./faceting.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./faceting.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,33 +16,37 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, faceting_snippets_1, FacetingExampleComponent;
+    var core_1, table_example_base_1, faceting_snippets_1, table_demo_data_service_1, FacetingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (faceting_snippets_1_1) {
                 faceting_snippets_1 = faceting_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             FacetingExampleComponent = (function (_super) {
                 __extends(FacetingExampleComponent, _super);
-                function FacetingExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function FacetingExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Faceted values';
                     _this.summary = 'Read unique value counts from the component after filtering.';
-                    _this.advancedColumns = table_demo_data_1.getAdvancedColumns();
-                    _this.orders = table_demo_data_1.orders;
-                    _this.statusOptions = table_demo_data_1.statusOptions;
+                    _this.advancedColumns = _this.demoData.getAdvancedColumns();
+                    _this.orders = _this.demoData.getOrders();
+                    _this.statusOptions = _this.demoData.getStatusOptions();
                     _this.facetFilterText = '';
                     _this.facetStatusFilterValue = '';
                     _this.facetColumnFilters = [];
@@ -64,13 +68,15 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     return JSON.stringify(facets, null, 2);
                 };
                 FacetingExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                    return this.demoData.dataSnippet(this.orders.slice(0, 3));
                 };
                 FacetingExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'faceting-example',
-                        templateUrl: 'app/examples/faceting/faceting.component.html'
-                    })
+                        templateUrl: 'app/examples/faceting/faceting.component.html',
+                        styleUrls: ['app/examples/faceting/faceting.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], FacetingExampleComponent);
                 return FacetingExampleComponent;
             }(table_example_base_1.TableExampleBase));

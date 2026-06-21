@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./loading.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./loading.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,44 +16,50 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, loading_snippets_1, LoadingExampleComponent;
+    var core_1, table_example_base_1, loading_snippets_1, table_demo_data_service_1, LoadingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (loading_snippets_1_1) {
                 loading_snippets_1 = loading_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             LoadingExampleComponent = (function (_super) {
                 __extends(LoadingExampleComponent, _super);
-                function LoadingExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function LoadingExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Loading state';
                     _this.summary = 'Progress state for async data loading.';
-                    _this.orderColumns = table_demo_data_1.getOrderColumns();
-                    _this.orders = table_demo_data_1.orders;
+                    _this.orderColumns = _this.demoData.getOrderColumns();
+                    _this.orders = _this.demoData.getOrders();
                     _this.htmlSnippet = loading_snippets_1.LoadingSnippets.html;
                     _this.tsSnippet = loading_snippets_1.LoadingSnippets.ts;
                     return _this;
                 }
                 LoadingExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                    return this.demoData.dataSnippet(this.orders.slice(0, 3));
                 };
                 LoadingExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'loading-example',
-                        templateUrl: 'app/examples/loading/loading.component.html'
-                    })
+                        templateUrl: 'app/examples/loading/loading.component.html',
+                        styleUrls: ['app/examples/loading/loading.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], LoadingExampleComponent);
                 return LoadingExampleComponent;
             }(table_example_base_1.TableExampleBase));

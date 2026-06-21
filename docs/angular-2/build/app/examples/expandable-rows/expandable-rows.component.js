@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./expandable-rows.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./expandable-rows.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,32 +16,36 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, expandable_rows_snippets_1, ExpandableRowsExampleComponent;
+    var core_1, table_example_base_1, expandable_rows_snippets_1, table_demo_data_service_1, ExpandableRowsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (expandable_rows_snippets_1_1) {
                 expandable_rows_snippets_1 = expandable_rows_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             ExpandableRowsExampleComponent = (function (_super) {
                 __extends(ExpandableRowsExampleComponent, _super);
-                function ExpandableRowsExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function ExpandableRowsExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Expandable rows';
                     _this.summary = 'Expanded details rendered from an Angular template.';
-                    _this.orderColumns = table_demo_data_1.getOrderColumns();
-                    _this.orders = table_demo_data_1.orders;
+                    _this.orderColumns = _this.demoData.getOrderColumns();
+                    _this.orders = _this.demoData.getOrders();
                     _this.htmlSnippet = expandable_rows_snippets_1.ExpandableRowsSnippets.html;
                     _this.tsSnippet = expandable_rows_snippets_1.ExpandableRowsSnippets.ts;
                     return _this;
@@ -50,13 +54,15 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     return row.total > 2000;
                 };
                 ExpandableRowsExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                    return this.demoData.dataSnippet(this.orders.slice(0, 3));
                 };
                 ExpandableRowsExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'expandable-rows-example',
-                        templateUrl: 'app/examples/expandable-rows/expandable-rows.component.html'
-                    })
+                        templateUrl: 'app/examples/expandable-rows/expandable-rows.component.html',
+                        styleUrls: ['app/examples/expandable-rows/expandable-rows.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], ExpandableRowsExampleComponent);
                 return ExpandableRowsExampleComponent;
             }(table_example_base_1.TableExampleBase));

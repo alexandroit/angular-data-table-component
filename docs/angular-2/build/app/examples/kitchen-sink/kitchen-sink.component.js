@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./kitchen-sink.snippets"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-example-base", "./kitchen-sink.snippets", "../../services/table-demo-data.service"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -16,34 +16,38 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, kitchen_sink_snippets_1, KitchenSinkExampleComponent;
+    var core_1, table_example_base_1, kitchen_sink_snippets_1, table_demo_data_service_1, KitchenSinkExampleComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (table_demo_data_1_1) {
-                table_demo_data_1 = table_demo_data_1_1;
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
             },
             function (kitchen_sink_snippets_1_1) {
                 kitchen_sink_snippets_1 = kitchen_sink_snippets_1_1;
+            },
+            function (table_demo_data_service_1_1) {
+                table_demo_data_service_1 = table_demo_data_service_1_1;
             }
         ],
         execute: function () {
             KitchenSinkExampleComponent = (function (_super) {
                 __extends(KitchenSinkExampleComponent, _super);
-                function KitchenSinkExampleComponent() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                function KitchenSinkExampleComponent(demoData) {
+                    var _this = _super.call(this) || this;
+                    _this.demoData = demoData;
                     _this.title = 'Kitchen sink';
                     _this.summary = 'Filtering, visibility, ordering, pinning, grouping, selection, expansion and pagination together.';
-                    _this.headerGroupColumns = table_demo_data_1.getHeaderGroupColumns();
-                    _this.orders = table_demo_data_1.orders;
-                    _this.regionOptions = table_demo_data_1.regionOptions;
-                    _this.statusOptions = table_demo_data_1.statusOptions;
+                    _this.headerGroupColumns = _this.demoData.getHeaderGroupColumns();
+                    _this.orders = _this.demoData.getOrders();
+                    _this.regionOptions = _this.demoData.getRegionOptions();
+                    _this.statusOptions = _this.demoData.getStatusOptions();
                     _this.kitchenGlobalFilter = 'paid';
                     _this.kitchenRegionFilter = 'Canada';
                     _this.kitchenStatusFilter = '';
@@ -81,7 +85,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     return this.kitchenColumnVisibility[columnId] !== false;
                 };
                 KitchenSinkExampleComponent.prototype.setKitchenColumnVisible = function (columnId, visible) {
-                    this.kitchenColumnVisibility = table_demo_data_1.cloneColumnVisibility(this.kitchenColumnVisibility, columnId, visible);
+                    this.kitchenColumnVisibility = this.demoData.cloneColumnVisibility(this.kitchenColumnVisibility, columnId, visible);
                     this.record('kitchen visibility', this.kitchenColumnVisibility);
                 };
                 KitchenSinkExampleComponent.prototype.syncKitchenFilters = function () {
@@ -96,13 +100,15 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     this.record('kitchen filters', filters);
                 };
                 KitchenSinkExampleComponent.prototype.getDataSnippet = function () {
-                    return table_demo_data_1.dataSnippet(this.orders.slice(0, 3));
+                    return this.demoData.dataSnippet(this.orders.slice(0, 3));
                 };
                 KitchenSinkExampleComponent = __decorate([
                     core_1.Component({
                         selector: 'kitchen-sink-example',
-                        templateUrl: 'app/examples/kitchen-sink/kitchen-sink.component.html'
-                    })
+                        templateUrl: 'app/examples/kitchen-sink/kitchen-sink.component.html',
+                        styleUrls: ['app/examples/kitchen-sink/kitchen-sink.component.css']
+                    }),
+                    __metadata("design:paramtypes", [table_demo_data_service_1.TableDemoDataService])
                 ], KitchenSinkExampleComponent);
                 return KitchenSinkExampleComponent;
             }(table_example_base_1.TableExampleBase));

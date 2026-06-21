@@ -60,7 +60,8 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                 ExampleShellComponent = __decorate([
                     core_1.Component({
                         selector: 'example-shell',
-                        template: "\n    <article class=\"example-card\">\n      <div class=\"example-head\">\n        <div class=\"example-title\">\n          <p class=\"eyebrow\">Live preview</p>\n          <h2>{{ title }}</h2>\n          <p>{{ summary }}</p>\n        </div>\n        <span class=\"status-pill\">Angular 2.4.10</span>\n      </div>\n\n      <div class=\"preview\">\n        <ng-content></ng-content>\n      </div>\n\n      <div class=\"event-log\">\n        <div>\n          <h3>Event log</h3>\n          <p>Latest component outputs from this Angular 2 live app.</p>\n        </div>\n        <button type=\"button\" (click)=\"clear.emit(null)\">Clear</button>\n        <pre>{{ eventLogText }}</pre>\n      </div>\n\n      <div class=\"code-grid\">\n        <div class=\"code-panel\">\n          <h3>HTML</h3>\n          <pre>{{ htmlSnippet }}</pre>\n        </div>\n        <div class=\"code-panel\">\n          <h3>TS</h3>\n          <pre>{{ tsSnippet }}</pre>\n        </div>\n        <div class=\"code-panel\">\n          <h3>Data</h3>\n          <pre>{{ dataSnippet }}</pre>\n        </div>\n      </div>\n    </article>\n  "
+                        templateUrl: 'app/shared/example-shell.component.html',
+                        styleUrls: ['app/shared/example-shell.component.css']
                     })
                 ], ExampleShellComponent);
                 return ExampleShellComponent;
