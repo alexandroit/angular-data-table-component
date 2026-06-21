@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./faceting.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, FacetingExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, faceting_snippets_1, FacetingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (faceting_snippets_1_1) {
+                faceting_snippets_1 = faceting_snippets_1_1;
             }
         ],
         execute: function () {
@@ -43,8 +46,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.facetFilterText = '';
                     _this.facetStatusFilterValue = '';
                     _this.facetColumnFilters = [];
-                    _this.htmlSnippet = "<stackline-data-table\n  #facetedTable\n  title=\"Faceted values\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [globalFilter]=\"facetFilterText\"\n  [columnFilters]=\"facetColumnFilters\">\n</stackline-data-table>\n\n{{ getFacetSummary(facetedTable, 'status') }}";
-                    _this.tsSnippet = "getFacetSummary(table: any, columnId: string) {\n  return JSON.stringify(table.getColumnUniqueValues(columnId), null, 2);\n}";
+                    _this.htmlSnippet = faceting_snippets_1.FacetingSnippets.html;
+                    _this.tsSnippet = faceting_snippets_1.FacetingSnippets.ts;
                     return _this;
                 }
                 FacetingExampleComponent.prototype.setFacetFilter = function (value) {

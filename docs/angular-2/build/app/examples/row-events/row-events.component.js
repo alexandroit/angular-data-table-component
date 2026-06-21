@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./row-events.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, RowEventsExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, row_events_snippets_1, RowEventsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (row_events_snippets_1_1) {
+                row_events_snippets_1 = row_events_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Click, double click, mouse enter and mouse leave outputs.';
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Row events\"\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  (rowClicked)=\"record('rowClicked', $event)\"\n  (rowDoubleClicked)=\"record('rowDoubleClicked', $event)\"\n  (rowMouseEnter)=\"record('rowMouseEnter', $event)\">\n</stackline-data-table>";
-                    _this.tsSnippet = "record(type: string, value: any) {\n  this.events.unshift(type + ': ' + JSON.stringify(value));\n}";
+                    _this.htmlSnippet = row_events_snippets_1.RowEventsSnippets.html;
+                    _this.tsSnippet = row_events_snippets_1.RowEventsSnippets.ts;
                     return _this;
                 }
                 RowEventsExampleComponent.prototype.getDataSnippet = function () {

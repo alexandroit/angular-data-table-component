@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./column-sizing.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ColumnSizingExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, column_sizing_snippets_1, ColumnSizingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (column_sizing_snippets_1_1) {
+                column_sizing_snippets_1 = column_sizing_snippets_1_1;
             }
         ],
         execute: function () {
@@ -40,8 +43,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.advancedColumns = table_demo_data_1.getAdvancedColumns();
                     _this.orders = table_demo_data_1.orders;
                     _this.wideColumnSizingState = { order: 180, customer: 320, region: 180, total: 180 };
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Column sizing\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [columnSizing]=\"wideColumnSizingState\">\n</stackline-data-table>";
-                    _this.tsSnippet = "wideColumnSizingState = { order: 180, customer: 320, region: 180, total: 180 };";
+                    _this.htmlSnippet = column_sizing_snippets_1.ColumnSizingSnippets.html;
+                    _this.tsSnippet = column_sizing_snippets_1.ColumnSizingSnippets.ts;
                     return _this;
                 }
                 ColumnSizingExampleComponent.prototype.getDataSnippet = function () {

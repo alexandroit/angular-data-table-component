@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./disabled-selection.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, DisabledSelectionExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, disabled_selection_snippets_1, DisabledSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (disabled_selection_snippets_1_1) {
+                disabled_selection_snippets_1 = disabled_selection_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Block selection for locked rows while keeping the table interactive.';
                     _this.lockedColumns = table_demo_data_1.getLockedColumns();
                     _this.lockedRows = table_demo_data_1.lockedRows;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Locked rows\"\n  [columns]=\"lockedColumns\"\n  [data]=\"lockedRows\"\n  [selectableRows]=\"true\"\n  [selectableRowDisabled]=\"isLocked\">\n</stackline-data-table>";
-                    _this.tsSnippet = "isLocked(row: any) {\n  return !!row.locked;\n}";
+                    _this.htmlSnippet = disabled_selection_snippets_1.DisabledSelectionSnippets.html;
+                    _this.tsSnippet = disabled_selection_snippets_1.DisabledSelectionSnippets.ts;
                     return _this;
                 }
                 DisabledSelectionExampleComponent.prototype.isLocked = function (row) {

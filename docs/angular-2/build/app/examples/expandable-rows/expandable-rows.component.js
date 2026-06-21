@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./expandable-rows.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ExpandableRowsExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, expandable_rows_snippets_1, ExpandableRowsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (expandable_rows_snippets_1_1) {
+                expandable_rows_snippets_1 = expandable_rows_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Expanded details rendered from an Angular template.';
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
-                    _this.htmlSnippet = "<template #orderDetail let-row=\"row\">\n  <div>{{ row.customer }} - {{ row.notes }}</div>\n</template>\n\n<stackline-data-table\n  title=\"Expandable order details\"\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  [expandableRows]=\"true\"\n  [expandableRowTemplate]=\"orderDetail\">\n</stackline-data-table>";
-                    _this.tsSnippet = "isLargeOrder(row: any) {\n  return row.total > 2000;\n}";
+                    _this.htmlSnippet = expandable_rows_snippets_1.ExpandableRowsSnippets.html;
+                    _this.tsSnippet = expandable_rows_snippets_1.ExpandableRowsSnippets.ts;
                     return _this;
                 }
                 ExpandableRowsExampleComponent.prototype.isLargeOrder = function (row) {

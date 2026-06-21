@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./expand-on-click.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ExpandOnClickExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, expand_on_click_snippets_1, ExpandOnClickExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (expand_on_click_snippets_1_1) {
+                expand_on_click_snippets_1 = expand_on_click_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Hide the expander and use row clicks to toggle details.';
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Expand on row click\"\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  [expandableRows]=\"true\"\n  [expandableRowsHideExpander]=\"true\"\n  [expandOnRowClicked]=\"true\"\n  [expandableRowTemplate]=\"orderDetail\">\n</stackline-data-table>";
-                    _this.tsSnippet = "// The row click output remains available while expansion is handled by the component.";
+                    _this.htmlSnippet = expand_on_click_snippets_1.ExpandOnClickSnippets.html;
+                    _this.tsSnippet = expand_on_click_snippets_1.ExpandOnClickSnippets.ts;
                     return _this;
                 }
                 ExpandOnClickExampleComponent.prototype.getDataSnippet = function () {

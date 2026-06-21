@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./header-groups.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, HeaderGroupsExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, header_groups_snippets_1, HeaderGroupsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (header_groups_snippets_1_1) {
+                header_groups_snippets_1 = header_groups_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Use nested column definitions to render grouped headers.';
                     _this.headerGroupColumns = table_demo_data_1.getHeaderGroupColumns();
                     _this.orders = table_demo_data_1.orders;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Header groups\"\n  [columns]=\"headerGroupColumns\"\n  [data]=\"orders\">\n</stackline-data-table>";
-                    _this.tsSnippet = "headerGroupColumns = [\n  { name: 'Order', columns: [{ id: 'order', name: 'Order', selector: 'order' }] },\n  { name: 'Customer', columns: [{ id: 'customer', name: 'Customer', selector: 'customer' }] }\n];";
+                    _this.htmlSnippet = header_groups_snippets_1.HeaderGroupsSnippets.html;
+                    _this.tsSnippet = header_groups_snippets_1.HeaderGroupsSnippets.ts;
                     return _this;
                 }
                 HeaderGroupsExampleComponent.prototype.getDataSnippet = function () {

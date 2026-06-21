@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./server-pagination.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ServerPaginationExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, server_pagination_snippets_1, ServerPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (server_pagination_snippets_1_1) {
+                server_pagination_snippets_1 = server_pagination_snippets_1_1;
             }
         ],
         execute: function () {
@@ -43,8 +46,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.serverPage = 1;
                     _this.serverRowsPerPage = 4;
                     _this.serverRows = [];
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Server pagination simulation\"\n  [columns]=\"orderColumns\"\n  [data]=\"serverRows\"\n  [pagination]=\"true\"\n  [paginationServer]=\"true\"\n  [paginationTotalRows]=\"orders.length\"\n  [paginationDefaultPage]=\"serverPage\"\n  [paginationPerPage]=\"serverRowsPerPage\"\n  (pageChange)=\"changeServerPage($event)\">\n</stackline-data-table>";
-                    _this.tsSnippet = "changeServerPage(event: any) {\n  this.serverPage = event.page;\n  this.updateServerRows();\n}\n\nupdateServerRows() {\n  var start = (this.serverPage - 1) * this.serverRowsPerPage;\n  this.serverRows = this.orders.slice(start, start + this.serverRowsPerPage);\n}";
+                    _this.htmlSnippet = server_pagination_snippets_1.ServerPaginationSnippets.html;
+                    _this.tsSnippet = server_pagination_snippets_1.ServerPaginationSnippets.ts;
                     return _this;
                 }
                 ServerPaginationExampleComponent.prototype.ngOnInit = function () {

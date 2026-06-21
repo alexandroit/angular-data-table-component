@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./headerless.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, HeaderlessExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, headerless_snippets_1, HeaderlessExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (headerless_snippets_1_1) {
+                headerless_snippets_1 = headerless_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'No title and no table head for compact embedded lists.';
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
-                    _this.htmlSnippet = "<stackline-data-table\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  [noHeader]=\"true\"\n  [noTableHead]=\"true\"\n  [dense]=\"true\">\n</stackline-data-table>";
-                    _this.tsSnippet = "orderColumns = getOrderColumns();\norders = orderRows;";
+                    _this.htmlSnippet = headerless_snippets_1.HeaderlessSnippets.html;
+                    _this.tsSnippet = headerless_snippets_1.HeaderlessSnippets.ts;
                     return _this;
                 }
                 HeaderlessExampleComponent.prototype.getDataSnippet = function () {

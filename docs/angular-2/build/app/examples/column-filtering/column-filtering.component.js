@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./column-filtering.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ColumnFilteringExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, column_filtering_snippets_1, ColumnFilteringExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (column_filtering_snippets_1_1) {
+                column_filtering_snippets_1 = column_filtering_snippets_1_1;
             }
         ],
         execute: function () {
@@ -44,8 +47,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.columnStatusFilterValue = 'Paid';
                     _this.columnRegionFilterValue = '';
                     _this.statusColumnFilters = [{ id: 'status', value: 'Paid' }];
-                    _this.htmlSnippet = "<label>\n  Status combobox\n  <select [value]=\"columnStatusFilterValue\" (change)=\"setColumnStatusFilter($event.target.value)\">\n    <option *ngFor=\"let status of statusOptions\" [value]=\"status\">{{ status || 'All statuses' }}</option>\n  </select>\n</label>\n\n<stackline-data-table\n  title=\"Column filters\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [columnFilters]=\"statusColumnFilters\">\n</stackline-data-table>";
-                    _this.tsSnippet = "statusColumnFilters = [{ id: 'status', value: 'Paid' }];\n\nsyncColumnFilters() {\n  var filters = [];\n  if (this.columnStatusFilterValue) filters.push({ id: 'status', value: this.columnStatusFilterValue });\n  if (this.columnRegionFilterValue) filters.push({ id: 'region', value: this.columnRegionFilterValue });\n  this.statusColumnFilters = filters;\n}";
+                    _this.htmlSnippet = column_filtering_snippets_1.ColumnFilteringSnippets.html;
+                    _this.tsSnippet = column_filtering_snippets_1.ColumnFilteringSnippets.ts;
                     return _this;
                 }
                 ColumnFilteringExampleComponent.prototype.setColumnStatusFilter = function (value) {

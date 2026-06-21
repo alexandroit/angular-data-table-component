@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./global-filtering.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, GlobalFilteringExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, global_filtering_snippets_1, GlobalFilteringExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (global_filtering_snippets_1_1) {
+                global_filtering_snippets_1 = global_filtering_snippets_1_1;
             }
         ],
         execute: function () {
@@ -40,8 +43,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.advancedColumns = table_demo_data_1.getAdvancedColumns();
                     _this.orders = table_demo_data_1.orders;
                     _this.globalFilterText = 'canada';
-                    _this.htmlSnippet = "<label>\n  Global search\n  <input\n    type=\"search\"\n    [value]=\"globalFilterText\"\n    (input)=\"setGlobalFilter($event.target.value)\" />\n</label>\n\n<stackline-data-table\n  title=\"Global filtering\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [globalFilter]=\"globalFilterText\">\n</stackline-data-table>";
-                    _this.tsSnippet = "globalFilterText = 'canada';\n\nsetGlobalFilter(value: string) {\n  this.globalFilterText = value || '';\n}";
+                    _this.htmlSnippet = global_filtering_snippets_1.GlobalFilteringSnippets.html;
+                    _this.tsSnippet = global_filtering_snippets_1.GlobalFilteringSnippets.ts;
                     return _this;
                 }
                 GlobalFilteringExampleComponent.prototype.setGlobalFilter = function (value) {

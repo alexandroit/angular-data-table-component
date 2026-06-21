@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@stackline/angular-data-table-component", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "@stackline/angular-data-table-component", "../../shared/table-demo-data", "../../shared/table-example-base", "./headless-html.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "@stackline/angular-data-table-component", "..
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, angular_data_table_component_1, table_demo_data_1, table_example_base_1, HeadlessHtmlExampleComponent;
+    var core_1, angular_data_table_component_1, table_demo_data_1, table_example_base_1, headless_html_snippets_1, HeadlessHtmlExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -31,6 +31,9 @@ System.register(["@angular/core", "@stackline/angular-data-table-component", "..
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (headless_html_snippets_1_1) {
+                headless_html_snippets_1 = headless_html_snippets_1_1;
             }
         ],
         execute: function () {
@@ -56,8 +59,8 @@ System.register(["@angular/core", "@stackline/angular-data-table-component", "..
                         { id: 5, name: 'Warehouse sync', status: 'Ready', owner: 'Lena', score: 81 },
                         { id: 6, name: 'Invoice matching', status: 'Review', owner: 'Maya', score: 74 }
                     ];
-                    _this.htmlSnippet = "<section class=\"headless-board\" role=\"grid\" aria-label=\"Headless projects\">\n  <header class=\"headless-toolbar\">\n    <input\n      type=\"search\"\n      [value]=\"searchText\"\n      (input)=\"setSearch($event.target.value)\" />\n    <button type=\"button\" (click)=\"headless.toggleAllVisibleRows()\">\n      Toggle visible\n    </button>\n  </header>\n\n  <div class=\"headless-sortbar\">\n    <button\n      *ngFor=\"let column of headless.visibleColumns\"\n      type=\"button\"\n      [attr.aria-sort]=\"headless.getAriaSort(column)\"\n      (click)=\"headless.toggleSort(column)\">\n      {{ column.name }}\n    </button>\n  </div>\n\n  <article\n    *ngFor=\"let row of headless.displayedRows\"\n    role=\"row\"\n    tabindex=\"0\"\n    [class.selected]=\"headless.isRowSelected(row)\"\n    [attr.aria-selected]=\"headless.isRowSelected(row)\"\n    (click)=\"headless.toggleRowSelection(row)\">\n    <strong>{{ row.name }}</strong>\n    <span>{{ row.status }}</span>\n    <small>{{ row.owner }} \u00B7 {{ row.score }}</small>\n  </article>\n</section>";
-                    _this.tsSnippet = "import { createDataTableController } from '@stackline/angular-data-table-component';\n\nngOnInit() {\n  this.headless = createDataTableController({\n    columns: this.columns,\n    data: this.rows,\n    selectableRows: true,\n    pagination: true,\n    perPage: 4\n  });\n}\n\nsetSearch(value: string) {\n  this.searchText = value || '';\n  this.headless.setGlobalFilter(this.searchText);\n}";
+                    _this.htmlSnippet = headless_html_snippets_1.HeadlessHtmlSnippets.html;
+                    _this.tsSnippet = headless_html_snippets_1.HeadlessHtmlSnippets.ts;
                     return _this;
                 }
                 HeadlessHtmlExampleComponent.prototype.ngOnInit = function () {

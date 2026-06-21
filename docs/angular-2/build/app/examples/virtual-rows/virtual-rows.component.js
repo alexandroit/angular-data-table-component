@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./virtual-rows.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, VirtualRowsExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, virtual_rows_snippets_1, VirtualRowsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (virtual_rows_snippets_1_1) {
+                virtual_rows_snippets_1 = virtual_rows_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Render a window of a larger row set for heavy legacy screens.';
                     _this.largeColumns = table_demo_data_1.getLargeColumns();
                     _this.largeRows = table_demo_data_1.buildLargeRows();
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Virtual rows\"\n  [columns]=\"largeColumns\"\n  [data]=\"largeRows\"\n  [virtualRows]=\"true\"\n  [virtualStartIndex]=\"20\"\n  [virtualRowCount]=\"12\">\n</stackline-data-table>";
-                    _this.tsSnippet = "largeRows = buildLargeRows();\nvirtualStartIndex = 20;\nvirtualRowCount = 12;";
+                    _this.htmlSnippet = virtual_rows_snippets_1.VirtualRowsSnippets.html;
+                    _this.tsSnippet = virtual_rows_snippets_1.VirtualRowsSnippets.ts;
                     return _this;
                 }
                 VirtualRowsExampleComponent.prototype.getDataSnippet = function () {

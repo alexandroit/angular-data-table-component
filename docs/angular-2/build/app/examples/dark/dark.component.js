@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./dark.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, DarkExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, dark_snippets_1, DarkExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (dark_snippets_1_1) {
+                dark_snippets_1 = dark_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'The legacy line keeps the same theme input.';
                     _this.revenueColumns = table_demo_data_1.getRevenueColumns();
                     _this.revenue = table_demo_data_1.revenue;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Dark theme\"\n  theme=\"dark\"\n  [columns]=\"revenueColumns\"\n  [data]=\"revenue\"\n  [pagination]=\"true\">\n</stackline-data-table>";
-                    _this.tsSnippet = "revenueColumns = getRevenueColumns();\nrevenue = revenueRows;";
+                    _this.htmlSnippet = dark_snippets_1.DarkSnippets.html;
+                    _this.tsSnippet = dark_snippets_1.DarkSnippets.ts;
                     return _this;
                 }
                 DarkExampleComponent.prototype.getDataSnippet = function () {

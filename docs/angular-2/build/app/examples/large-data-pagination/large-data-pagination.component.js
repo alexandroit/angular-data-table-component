@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./large-data-pagination.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, LargeDataPaginationExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, large_data_pagination_snippets_1, LargeDataPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (large_data_pagination_snippets_1_1) {
+                large_data_pagination_snippets_1 = large_data_pagination_snippets_1_1;
             }
         ],
         execute: function () {
@@ -48,8 +51,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.sortField = 'id';
                     _this.sortDirection = 'asc';
                     _this.pageSizes = [10, 25, 50, 100];
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Large dataset\"\n  [columns]=\"largeColumns\"\n  [data]=\"largePage.rows\"\n  [pagination]=\"true\"\n  [paginationServer]=\"true\"\n  [paginationTotalRows]=\"largePage.totalRows\"\n  [paginationDefaultPage]=\"largePage.page\"\n  [paginationPerPage]=\"largePage.perPage\"\n  [paginationRowsPerPageOptions]=\"pageSizes\"\n  [sortServer]=\"true\"\n  [progressPending]=\"largePage.loading\"\n  (pageChange)=\"loadPage($event.page, largePage.perPage)\"\n  (rowsPerPageChange)=\"loadPage(1, $event.rowsPerPage)\"\n  (sortChange)=\"sortLargeData($event)\">\n</stackline-data-table>";
-                    _this.tsSnippet = "largePage = {\n  rows: [],\n  totalRows: 10000,\n  page: 1,\n  perPage: 25,\n  loading: false\n};\nsortField = 'id';\nsortDirection = 'asc';\n\nloadPage(page: number, perPage: number) {\n  this.largePage = {\n    rows: fetchRowsFromApi(page, perPage, this.sortField, this.sortDirection),\n    totalRows: 10000,\n    page: page,\n    perPage: perPage,\n    loading: false\n  };\n}\n\nsortLargeData(event: any) {\n  this.sortField = event.column.id;\n  this.sortDirection = event.direction;\n  this.loadPage(1, this.largePage.perPage);\n}";
+                    _this.htmlSnippet = large_data_pagination_snippets_1.LargeDataPaginationSnippets.html;
+                    _this.tsSnippet = large_data_pagination_snippets_1.LargeDataPaginationSnippets.ts;
                     return _this;
                 }
                 LargeDataPaginationExampleComponent.prototype.ngOnInit = function () {

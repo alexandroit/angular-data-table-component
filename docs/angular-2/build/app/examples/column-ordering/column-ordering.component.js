@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./column-ordering.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ColumnOrderingExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, column_ordering_snippets_1, ColumnOrderingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (column_ordering_snippets_1_1) {
+                column_ordering_snippets_1 = column_ordering_snippets_1_1;
             }
         ],
         execute: function () {
@@ -41,8 +44,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.orders = table_demo_data_1.orders;
                     _this.columnOrderPreset = 'customer-first';
                     _this.columnOrderState = ['customer', 'order', 'region', 'status', 'total', 'channel'];
-                    _this.htmlSnippet = "<label>\n  Order preset\n  <select [value]=\"columnOrderPreset\" (change)=\"setColumnOrderPreset($event.target.value)\">\n    <option value=\"customer-first\">Customer first</option>\n    <option value=\"money-first\">Money first</option>\n    <option value=\"operations-first\">Operations first</option>\n  </select>\n</label>\n\n<stackline-data-table\n  title=\"Column ordering\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [columnOrder]=\"columnOrderState\">\n</stackline-data-table>";
-                    _this.tsSnippet = "columnOrderState = ['customer', 'order', 'region', 'status', 'total', 'channel'];\n\nsetColumnOrderPreset(preset: string) {\n  this.columnOrderState = preset === 'money-first'\n    ? ['total', 'order', 'customer', 'region', 'status', 'channel']\n    : ['customer', 'order', 'region', 'status', 'total', 'channel'];\n}";
+                    _this.htmlSnippet = column_ordering_snippets_1.ColumnOrderingSnippets.html;
+                    _this.tsSnippet = column_ordering_snippets_1.ColumnOrderingSnippets.ts;
                     return _this;
                 }
                 ColumnOrderingExampleComponent.prototype.setColumnOrderPreset = function (preset) {

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./cell-templates.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, CellTemplatesExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, cell_templates_snippets_1, CellTemplatesExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -31,6 +31,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (cell_templates_snippets_1_1) {
+                cell_templates_snippets_1 = cell_templates_snippets_1_1;
             }
         ],
         execute: function () {
@@ -43,8 +46,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Angular TemplateRef cells for status, customer and money values.';
                     _this.orders = table_demo_data_1.orders;
                     _this.templateColumns = [];
-                    _this.htmlSnippet = "<template #statusCell let-value=\"value\">\n  <span class=\"status-badge\">{{ value }}</span>\n</template>\n\n<stackline-data-table\n  title=\"Template cells\"\n  [columns]=\"templateColumns\"\n  [data]=\"orders\">\n</stackline-data-table>";
-                    _this.tsSnippet = "@ViewChild('statusCell') statusCellTemplate: TemplateRef<any>;\n\nngAfterViewInit() {\n  this.templateColumns = [\n    { id: 'status', name: 'Status', selector: 'status', cellTemplate: this.statusCellTemplate }\n  ];\n}";
+                    _this.htmlSnippet = cell_templates_snippets_1.CellTemplatesSnippets.html;
+                    _this.tsSnippet = cell_templates_snippets_1.CellTemplatesSnippets.ts;
                     return _this;
                 }
                 CellTemplatesExampleComponent.prototype.ngAfterViewInit = function () {

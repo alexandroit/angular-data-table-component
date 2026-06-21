@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./row-pinning.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, RowPinningExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, row_pinning_snippets_1, RowPinningExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (row_pinning_snippets_1_1) {
+                row_pinning_snippets_1 = row_pinning_snippets_1_1;
             }
         ],
         execute: function () {
@@ -41,8 +44,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.orders = table_demo_data_1.orders;
                     _this.topPinnedOrders = [];
                     _this.bottomPinnedOrders = [];
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Row pinning\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [pinnedTopRows]=\"topPinnedOrders\"\n  [pinnedBottomRows]=\"bottomPinnedOrders\">\n</stackline-data-table>";
-                    _this.tsSnippet = "topPinnedOrders = [orders[6]];\nbottomPinnedOrders = [orders[1]];";
+                    _this.htmlSnippet = row_pinning_snippets_1.RowPinningSnippets.html;
+                    _this.tsSnippet = row_pinning_snippets_1.RowPinningSnippets.ts;
                     return _this;
                 }
                 RowPinningExampleComponent.prototype.ngOnInit = function () {

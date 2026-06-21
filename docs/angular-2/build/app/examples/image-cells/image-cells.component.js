@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./image-cells.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -20,7 +20,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ImageCellsExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, image_cells_snippets_1, ImageCellsExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -31,6 +31,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (image_cells_snippets_1_1) {
+                image_cells_snippets_1 = image_cells_snippets_1_1;
             }
         ],
         execute: function () {
@@ -48,8 +51,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                         { id: 3, name: 'Mechanical Keyboard', category: 'Workspace', stock: 31, owner: 'Iris', image: 'app/assets/products/keyboard.svg' },
                         { id: 4, name: 'Ops Watch', category: 'Field team', stock: 12, owner: 'Noah', image: 'app/assets/products/watch.svg' }
                     ];
-                    _this.htmlSnippet = "<template #productCell let-row=\"row\">\n  <span class=\"product-cell\">\n    <img [src]=\"row.image\" [alt]=\"row.name\" />\n    <span>\n      <strong>{{ row.name }}</strong>\n      <small>{{ row.category }}</small>\n    </span>\n  </span>\n</template>\n\n<stackline-data-table\n  title=\"Product media table\"\n  [columns]=\"imageColumns\"\n  [data]=\"products\">\n</stackline-data-table>";
-                    _this.tsSnippet = "@ViewChild('productCell') productCellTemplate: TemplateRef<any>;\n\nngAfterViewInit() {\n  this.imageColumns = [\n    { id: 'product', name: 'Product', selector: 'name', cellTemplate: this.productCellTemplate },\n    { id: 'owner', name: 'Owner', selector: 'owner' },\n    { id: 'stock', name: 'Stock', selector: 'stock', right: true }\n  ];\n}";
+                    _this.htmlSnippet = image_cells_snippets_1.ImageCellsSnippets.html;
+                    _this.tsSnippet = image_cells_snippets_1.ImageCellsSnippets.ts;
                     return _this;
                 }
                 ImageCellsExampleComponent.prototype.ngAfterViewInit = function () {

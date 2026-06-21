@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./client-pagination.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ClientPaginationExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, client_pagination_snippets_1, ClientPaginationExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (client_pagination_snippets_1_1) {
+                client_pagination_snippets_1 = client_pagination_snippets_1_1;
             }
         ],
         execute: function () {
@@ -40,8 +43,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
                     _this.pageSizes = table_demo_data_1.pageSizes;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Client pagination\"\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  [pagination]=\"true\"\n  [paginationPerPage]=\"4\">\n</stackline-data-table>";
-                    _this.tsSnippet = "orderColumns = getOrderColumns();\norders = orderRows;\npageSizes = [4, 5, 8, 10];";
+                    _this.htmlSnippet = client_pagination_snippets_1.ClientPaginationSnippets.html;
+                    _this.tsSnippet = client_pagination_snippets_1.ClientPaginationSnippets.ts;
                     return _this;
                 }
                 ClientPaginationExampleComponent.prototype.getDataSnippet = function () {

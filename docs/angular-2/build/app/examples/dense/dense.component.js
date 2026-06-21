@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./dense.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, DenseExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, dense_snippets_1, DenseExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (dense_snippets_1_1) {
+                dense_snippets_1 = dense_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Compact row height for operation-heavy screens.';
                     _this.ticketColumns = table_demo_data_1.getTicketColumns();
                     _this.tickets = table_demo_data_1.tickets;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Dense operations table\"\n  [columns]=\"ticketColumns\"\n  [data]=\"tickets\"\n  [dense]=\"true\">\n</stackline-data-table>";
-                    _this.tsSnippet = "ticketColumns = getTicketColumns();\ntickets = ticketRows;";
+                    _this.htmlSnippet = dense_snippets_1.DenseSnippets.html;
+                    _this.tsSnippet = dense_snippets_1.DenseSnippets.ts;
                     return _this;
                 }
                 DenseExampleComponent.prototype.getDataSnippet = function () {

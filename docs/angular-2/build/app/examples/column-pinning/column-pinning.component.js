@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./column-pinning.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ColumnPinningExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, column_pinning_snippets_1, ColumnPinningExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (column_pinning_snippets_1_1) {
+                column_pinning_snippets_1 = column_pinning_snippets_1_1;
             }
         ],
         execute: function () {
@@ -41,8 +44,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.orders = table_demo_data_1.orders;
                     _this.columnPinningState = { left: ['order'], right: ['total'] };
                     _this.columnSizingState = { order: 130, customer: 240, total: 130 };
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Column pinning\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [columnPinning]=\"{ left: ['order'], right: ['total'] }\"\n  [columnSizing]=\"columnSizingState\">\n</stackline-data-table>";
-                    _this.tsSnippet = "columnPinningState = { left: ['order'], right: ['total'] };\ncolumnSizingState = { order: 130, customer: 240, total: 130 };";
+                    _this.htmlSnippet = column_pinning_snippets_1.ColumnPinningSnippets.html;
+                    _this.tsSnippet = column_pinning_snippets_1.ColumnPinningSnippets.ts;
                     return _this;
                 }
                 ColumnPinningExampleComponent.prototype.getDataSnippet = function () {

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./sorting.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, SortingExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, sorting_snippets_1, SortingExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (sorting_snippets_1_1) {
+                sorting_snippets_1 = sorting_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Client-side sorting with a default descending sort.';
                     _this.inventoryColumns = table_demo_data_1.getInventoryColumns();
                     _this.inventory = table_demo_data_1.inventory;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Sortable inventory\"\n  [columns]=\"inventoryColumns\"\n  [data]=\"inventory\"\n  defaultSortFieldId=\"stock\"\n  [defaultSortAsc]=\"false\"\n  [striped]=\"true\"\n  [highlightOnHover]=\"true\">\n</stackline-data-table>";
-                    _this.tsSnippet = "inventoryColumns = [\n  { id: 'sku', name: 'SKU', selector: 'sku', sortable: true },\n  { id: 'stock', name: 'Stock', selector: 'stock', sortable: true, right: true }\n];";
+                    _this.htmlSnippet = sorting_snippets_1.SortingSnippets.html;
+                    _this.tsSnippet = sorting_snippets_1.SortingSnippets.ts;
                     return _this;
                 }
                 SortingExampleComponent.prototype.getDataSnippet = function () {

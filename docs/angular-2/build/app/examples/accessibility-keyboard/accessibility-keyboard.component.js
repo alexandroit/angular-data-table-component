@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./accessibility-keyboard.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, AccessibilityKeyboardExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, accessibility_keyboard_snippets_1, AccessibilityKeyboardExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (accessibility_keyboard_snippets_1_1) {
+                accessibility_keyboard_snippets_1 = accessibility_keyboard_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'ARIA sort, labels, selected state, expanded state and row keyboard activation.';
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Accessibility keyboard contract\"\n  ariaLabel=\"Accessibility keyboard orders\"\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  [selectableRows]=\"true\"\n  [selectableRowsHighlight]=\"true\"\n  [expandableRows]=\"true\"\n  [expandableRowTemplate]=\"orderDetail\"\n  [keyboardRows]=\"true\"\n  [pagination]=\"true\"\n  [paginationPerPage]=\"5\">\n</stackline-data-table>";
-                    _this.tsSnippet = "// Native inputs/buttons keep their own keyboard behavior.\n// When a data row receives focus, Enter or Space activates the row:\n// selectable rows toggle selection, expandable rows toggle details.\n// Headers expose aria-sort and selection controls expose aria-checked.\nkeyboardRows = true;";
+                    _this.htmlSnippet = accessibility_keyboard_snippets_1.AccessibilityKeyboardSnippets.html;
+                    _this.tsSnippet = accessibility_keyboard_snippets_1.AccessibilityKeyboardSnippets.ts;
                     return _this;
                 }
                 AccessibilityKeyboardExampleComponent.prototype.getDataSnippet = function () {

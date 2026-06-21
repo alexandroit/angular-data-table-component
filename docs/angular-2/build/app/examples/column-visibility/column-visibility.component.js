@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./column-visibility.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ColumnVisibilityExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, column_visibility_snippets_1, ColumnVisibilityExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (column_visibility_snippets_1_1) {
+                column_visibility_snippets_1 = column_visibility_snippets_1_1;
             }
         ],
         execute: function () {
@@ -41,8 +44,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.orders = table_demo_data_1.orders;
                     _this.visibilityColumns = table_demo_data_1.visibilityColumns;
                     _this.columnVisibilityState = { channel: false };
-                    _this.htmlSnippet = "<label *ngFor=\"let column of visibilityColumns\">\n  <input\n    type=\"checkbox\"\n    [checked]=\"isDemoColumnVisible(column.id)\"\n    (change)=\"setDemoColumnVisible(column.id, $event.target.checked)\" />\n  {{ column.label }}\n</label>\n\n<stackline-data-table\n  title=\"Column visibility\"\n  [columns]=\"advancedColumns\"\n  [data]=\"orders\"\n  [columnVisibility]=\"columnVisibilityState\">\n</stackline-data-table>";
-                    _this.tsSnippet = "columnVisibilityState = { channel: false };\n\nsetDemoColumnVisible(columnId: string, visible: boolean) {\n  this.columnVisibilityState = cloneColumnVisibility(this.columnVisibilityState, columnId, visible);\n}";
+                    _this.htmlSnippet = column_visibility_snippets_1.ColumnVisibilitySnippets.html;
+                    _this.tsSnippet = column_visibility_snippets_1.ColumnVisibilitySnippets.ts;
                     return _this;
                 }
                 ColumnVisibilityExampleComponent.prototype.isDemoColumnVisible = function (columnId) {

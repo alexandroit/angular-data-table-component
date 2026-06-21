@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./fixed-header.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, FixedHeaderExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, fixed_header_snippets_1, FixedHeaderExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (fixed_header_snippets_1_1) {
+                fixed_header_snippets_1 = fixed_header_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Scrollable table body with sticky header support.';
                     _this.revenueColumns = table_demo_data_1.getRevenueColumns();
                     _this.revenue = table_demo_data_1.revenue;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Fixed header revenue\"\n  [columns]=\"revenueColumns\"\n  [data]=\"revenue\"\n  [fixedHeader]=\"true\"\n  fixedHeaderScrollHeight=\"320px\">\n</stackline-data-table>";
-                    _this.tsSnippet = "revenueColumns = getRevenueColumns();\nrevenue = revenueRows;";
+                    _this.htmlSnippet = fixed_header_snippets_1.FixedHeaderSnippets.html;
+                    _this.tsSnippet = fixed_header_snippets_1.FixedHeaderSnippets.ts;
                     return _this;
                 }
                 FixedHeaderExampleComponent.prototype.getDataSnippet = function () {

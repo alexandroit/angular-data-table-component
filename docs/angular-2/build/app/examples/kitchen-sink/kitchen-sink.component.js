@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./kitchen-sink.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, KitchenSinkExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, kitchen_sink_snippets_1, KitchenSinkExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (kitchen_sink_snippets_1_1) {
+                kitchen_sink_snippets_1 = kitchen_sink_snippets_1_1;
             }
         ],
         execute: function () {
@@ -51,8 +54,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.columnPinningState = { left: ['order'], right: ['total'] };
                     _this.columnSizingState = { order: 130, customer: 240, total: 130 };
                     _this.topPinnedOrders = [];
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Kitchen sink\"\n  [columns]=\"headerGroupColumns\"\n  [data]=\"orders\"\n  [globalFilter]=\"kitchenGlobalFilter\"\n  [columnFilters]=\"kitchenColumnFilters\"\n  [columnVisibility]=\"kitchenColumnVisibility\"\n  [columnOrder]=\"kitchenColumnOrder\"\n  [columnPinning]=\"columnPinningState\"\n  [pinnedTopRows]=\"topPinnedOrders\"\n  [selectableRows]=\"true\"\n  [expandableRows]=\"true\"\n  [groupBy]=\"kitchenGroupBy\">\n</stackline-data-table>";
-                    _this.tsSnippet = "kitchenGlobalFilter = 'paid';\nkitchenRegionFilter = 'Canada';\nkitchenColumnFilters = [{ id: 'region', value: 'Canada' }];\nkitchenColumnVisibility = { channel: false };\nkitchenColumnOrder = ['order', 'customer', 'status', 'region', 'total'];\nkitchenGroupBy = 'region';";
+                    _this.htmlSnippet = kitchen_sink_snippets_1.KitchenSinkSnippets.html;
+                    _this.tsSnippet = kitchen_sink_snippets_1.KitchenSinkSnippets.ts;
                     return _this;
                 }
                 KitchenSinkExampleComponent.prototype.ngOnInit = function () {

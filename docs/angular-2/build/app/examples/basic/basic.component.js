@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./basic.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, BasicExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, basic_snippets_1, BasicExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (basic_snippets_1_1) {
+                basic_snippets_1 = basic_snippets_1_1;
             }
         ],
         execute: function () {
@@ -40,8 +43,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.orders = table_demo_data_1.orders;
                     _this.pageSizes = table_demo_data_1.pageSizes;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Orders\"\n  ariaLabel=\"Orders table\"\n  [columns]=\"orderColumns\"\n  [data]=\"orders\"\n  [pagination]=\"true\"\n  [paginationPerPage]=\"5\"\n  [paginationRowsPerPageOptions]=\"pageSizes\"\n  [selectableRows]=\"true\"\n  [selectableRowsHighlight]=\"true\"\n  [striped]=\"true\"\n  [highlightOnHover]=\"true\"\n  [pointerOnHover]=\"true\"\n  defaultSortFieldId=\"order\">\n</stackline-data-table>";
-                    _this.tsSnippet = "orderColumns = getOrderColumns();\norders = orderRows;\npageSizes = [4, 5, 8, 10];";
+                    _this.htmlSnippet = basic_snippets_1.BasicSnippets.html;
+                    _this.tsSnippet = basic_snippets_1.BasicSnippets.ts;
                     return _this;
                 }
                 BasicExampleComponent.prototype.getDataSnippet = function () {

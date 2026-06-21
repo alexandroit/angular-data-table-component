@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./programmatic-selection.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ProgrammaticSelectionExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, programmatic_selection_snippets_1, ProgrammaticSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (programmatic_selection_snippets_1_1) {
+                programmatic_selection_snippets_1 = programmatic_selection_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Preselect rows from a predicate supplied by the app.';
                     _this.ticketColumns = table_demo_data_1.getTicketColumns();
                     _this.tickets = table_demo_data_1.tickets;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"High priority tickets\"\n  [columns]=\"ticketColumns\"\n  [data]=\"tickets\"\n  [selectableRows]=\"true\"\n  [selectableRowSelected]=\"isHighPriority\">\n</stackline-data-table>";
-                    _this.tsSnippet = "isHighPriority(row: any) {\n  return row.priority === 'High';\n}";
+                    _this.htmlSnippet = programmatic_selection_snippets_1.ProgrammaticSelectionSnippets.html;
+                    _this.tsSnippet = programmatic_selection_snippets_1.ProgrammaticSelectionSnippets.ts;
                     return _this;
                 }
                 ProgrammaticSelectionExampleComponent.prototype.isHighPriority = function (row) {

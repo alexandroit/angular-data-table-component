@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./empty.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, EmptyExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, empty_snippets_1, EmptyExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (empty_snippets_1_1) {
+                empty_snippets_1 = empty_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Custom empty message when there are no rows.';
                     _this.orderColumns = table_demo_data_1.getOrderColumns();
                     _this.emptyRows = [];
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Empty project list\"\n  [columns]=\"orderColumns\"\n  [data]=\"emptyRows\"\n  noDataText=\"No projects were found\">\n</stackline-data-table>";
-                    _this.tsSnippet = "emptyRows = [];";
+                    _this.htmlSnippet = empty_snippets_1.EmptySnippets.html;
+                    _this.tsSnippet = empty_snippets_1.EmptySnippets.ts;
                     return _this;
                 }
                 EmptyExampleComponent.prototype.getDataSnippet = function () {

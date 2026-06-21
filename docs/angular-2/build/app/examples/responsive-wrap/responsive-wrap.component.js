@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./responsive-wrap.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ResponsiveWrapExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, responsive_wrap_snippets_1, ResponsiveWrapExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (responsive_wrap_snippets_1_1) {
+                responsive_wrap_snippets_1 = responsive_wrap_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Long values wrap while the responsive shell protects the layout.';
                     _this.wrappedColumns = table_demo_data_1.getWrappedColumns();
                     _this.longTextRows = table_demo_data_1.longTextRows;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Responsive wrapped content\"\n  [columns]=\"wrappedColumns\"\n  [data]=\"longTextRows\"\n  [responsive]=\"true\">\n</stackline-data-table>";
-                    _this.tsSnippet = "wrappedColumns = getWrappedColumns();\nlongTextRows = rows;";
+                    _this.htmlSnippet = responsive_wrap_snippets_1.ResponsiveWrapSnippets.html;
+                    _this.tsSnippet = responsive_wrap_snippets_1.ResponsiveWrapSnippets.ts;
                     return _this;
                 }
                 ResponsiveWrapExampleComponent.prototype.getDataSnippet = function () {

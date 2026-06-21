@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./single-selection.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, SingleSelectionExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, single_selection_snippets_1, SingleSelectionExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (single_selection_snippets_1_1) {
+                single_selection_snippets_1 = single_selection_snippets_1_1;
             }
         ],
         execute: function () {
@@ -39,8 +42,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                     _this.summary = 'Radio-style selection for one active item.';
                     _this.ticketColumns = table_demo_data_1.getTicketColumns();
                     _this.tickets = table_demo_data_1.tickets;
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Support queue\"\n  [columns]=\"ticketColumns\"\n  [data]=\"tickets\"\n  [selectableRows]=\"true\"\n  [selectableRowsSingle]=\"true\"\n  keyField=\"ticket\">\n</stackline-data-table>";
-                    _this.tsSnippet = "ticketColumns = getTicketColumns();\ntickets = ticketRows;";
+                    _this.htmlSnippet = single_selection_snippets_1.SingleSelectionSnippets.html;
+                    _this.tsSnippet = single_selection_snippets_1.SingleSelectionSnippets.ts;
                     return _this;
                 }
                 SingleSelectionExampleComponent.prototype.getDataSnippet = function () {

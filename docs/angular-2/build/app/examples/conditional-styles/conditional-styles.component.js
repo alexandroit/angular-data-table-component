@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base"], function (exports_1, context_1) {
+System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/table-example-base", "./conditional-styles.snippets"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -17,7 +17,7 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, table_demo_data_1, table_example_base_1, ConditionalStylesExampleComponent;
+    var core_1, table_demo_data_1, table_example_base_1, conditional_styles_snippets_1, ConditionalStylesExampleComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -28,6 +28,9 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
             },
             function (table_example_base_1_1) {
                 table_example_base_1 = table_example_base_1_1;
+            },
+            function (conditional_styles_snippets_1_1) {
+                conditional_styles_snippets_1 = conditional_styles_snippets_1_1;
             }
         ],
         execute: function () {
@@ -47,8 +50,8 @@ System.register(["@angular/core", "../../shared/table-demo-data", "../../shared/
                             className: 'row-warning'
                         }
                     ];
-                    _this.htmlSnippet = "<stackline-data-table\n  title=\"Inventory risk\"\n  [columns]=\"inventoryColumns\"\n  [data]=\"inventory\"\n  [conditionalRowStyles]=\"inventoryStyles\">\n</stackline-data-table>";
-                    _this.tsSnippet = "inventoryStyles = [{\n  when: function(row) { return row.stock < 10; },\n  className: 'row-warning'\n}];";
+                    _this.htmlSnippet = conditional_styles_snippets_1.ConditionalStylesSnippets.html;
+                    _this.tsSnippet = conditional_styles_snippets_1.ConditionalStylesSnippets.ts;
                     return _this;
                 }
                 ConditionalStylesExampleComponent.prototype.getDataSnippet = function () {
