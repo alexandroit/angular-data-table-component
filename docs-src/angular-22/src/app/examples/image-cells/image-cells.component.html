@@ -1,0 +1,37 @@
+<ng-template #productCell let-row="row">
+  <span class="product-cell">
+    <img [src]="row.image" [alt]="row.name" />
+    <span>
+      <strong>{{ row.name }}</strong>
+      <small>{{ row.category }}</small>
+    </span>
+  </span>
+</ng-template>
+
+<ng-template #stockCell let-value="value">
+  <span class="stock-pill" [class.stock-low]="value < 10">
+    {{ value }} units
+  </span>
+</ng-template>
+
+<example-shell
+  exampleId="image-cells"
+  [title]="title"
+  [summary]="summary"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <stackline-data-table
+    title="Product media table"
+    ariaLabel="Product media table with images"
+    [columns]="imageColumns"
+    [data]="products"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    [striped]="true"
+    [highlightOnHover]="true"
+    defaultSortFieldId="product"
+    (selectedRowsChange)="record('image selection', $event)"
+    (sortChange)="record('image sort', $event)">
+  </stackline-data-table>
+</example-shell>

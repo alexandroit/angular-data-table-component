@@ -1,0 +1,48 @@
+:host {
+  display: block;
+}
+
+.animation-toolbar {
+  align-items: center;
+  background: #f6f9fc;
+  border: 1px solid #dbe4ef;
+  border-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+}
+
+.animation-toolbar button {
+  background: #ffffff;
+  border: 1px solid #cbd8e6;
+  border-radius: 4px;
+  color: #1d3d5c;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 8px 12px;
+}
+
+.row-detail {
+  background: #f7fbff;
+  border-top: 1px solid #e1ebf5;
+  color: #36546e;
+  font-size: 13px;
+  padding: 12px 16px;
+}
+
+.animated-table-frame {
+  animation: table-refresh 180ms ease-out;
+}
+
+@keyframes table-refresh {
+  from {
+    opacity: 0.45;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

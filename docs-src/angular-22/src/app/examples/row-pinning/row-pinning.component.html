@@ -1,0 +1,12 @@
+<example-shell
+  exampleId="row-pinning" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Row pinning"
+    [columns]="advancedColumns"
+    [data]="orders"
+    [pinnedTopRows]="topPinnedOrders"
+    [pinnedBottomRows]="bottomPinnedOrders"
+    [pagination]="true"
+    [paginationPerPage]="5">
+  </stackline-data-table>
+</example-shell>

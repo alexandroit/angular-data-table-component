@@ -1,0 +1,82 @@
+# @stackline/angular-data-table-component 22.1.0
+
+@stackline/angular-data-table-component is an Angular 22 NgModule library for data-heavy application screens. It includes a styled table component and a view-independent controller for custom Angular markup.
+
+## Installation
+
+```bash
+npm install @stackline/angular-data-table-component
+```
+
+Import DataTableModule from @stackline/angular-data-table-component and add it to an Angular NgModule imports array. Render the stackline-data-table selector with columns and data inputs.
+
+## Angular Compatibility
+
+The 22.x package line accepts @angular/common and @angular/core versions >=22.0.0 <23.0.0. The release is built with Angular 22.1.3 and TypeScript 6.0.3. Historical package majors 2 and 4 through 21 remain on npm for matching Angular majors.
+
+## Runtime Exports
+
+- DataTableModule: NgModule exporting DataTableComponent.
+- DataTableComponent: styled Angular table component.
+- HeadlessDataTableController: table behavior for custom Angular markup.
+- createDataTableController(options): creates a headless controller.
+
+## Type Exports
+
+- DataTableColumn
+- DataTableColumnFilter
+- DataTableColumnPinningState
+- DataTableRowPinningState
+- DataTableStateChangeEvent
+- DataTableSelectionState
+- DataTableSortEvent
+- DataTablePageEvent
+- DataTableRowsPerPageEvent
+- DataTableExpandEvent
+- DataTableCellContext
+- DataTableExpandableContext
+- ConditionalStyle
+- HeadlessDataTableOptions
+
+## Capabilities
+
+The component supports client and controlled sorting, filtering, and pagination; multi-row and single-row selection; global and column filters; column visibility, ordering, sizing, grouping, and sticky pinning; row grouping and pinning; expandable rows; virtual row windows; custom Angular templates; conditional styles; keyboard activation; ARIA state; and default or dark themes.
+
+## Important Inputs
+
+- columns, data, keyField
+- pagination, paginationServer, paginationPerPage, paginationTotalRows
+- sortServer, manualSorting, manualFiltering, manualPagination
+- globalFilter, columnFilters
+- selectableRows, selectableRowsSingle, selectableRowsVisibleOnly
+- expandableRows, expandableRowTemplate
+- columnVisibility, columnOrder, columnPinning, columnSizing
+- groupBy, grouping, rowPinning
+- virtualRows, virtualStartIndex, virtualRowCount
+- theme, dense, striped, responsive
+
+## Important Outputs
+
+- sortChange
+- selectedRowsChange
+- pageChange
+- rowsPerPageChange
+- rowClicked
+- rowDoubleClicked
+- rowExpandToggled
+- globalFilterChange
+- columnFiltersChange
+- columnVisibilityChange
+- columnOrderChange
+- groupingChange
+- tableStateChange
+
+## Examples
+
+The Angular 22 documentation contains 40 runnable examples. Source panels are loaded from the real component HTML and TypeScript files published beside the application.
+
+Documentation: https://alexandro.net/docs/angular/angular-data-table-component/angular-22/
+Repository: https://github.com/alexandroit/angular-data-table-component
+npm: https://www.npmjs.com/package/@stackline/angular-data-table-component
+Security: https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md
+License: MIT

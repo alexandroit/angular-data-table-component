@@ -1,0 +1,38 @@
+<example-shell
+  exampleId="animated-rows"
+  [title]="title"
+  [summary]="summary"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <div class="animation-toolbar">
+    <button type="button" (click)="rotateRows()">Rotate rows</button>
+    <button type="button" (click)="highlightReviews()">Show pending review</button>
+    <button type="button" (click)="resetRows()">Reset</button>
+  </div>
+
+  <div class="animated-table-frame" [attr.data-refresh]="refreshToken">
+    <stackline-data-table
+      title="Animated operations"
+      ariaLabel="Animated table refreshes"
+      [columns]="orderColumns"
+      [data]="orders"
+      [pagination]="true"
+      [paginationPerPage]="4"
+      [striped]="true"
+      [highlightOnHover]="true"
+      [pointerOnHover]="true"
+      [expandableRows]="true"
+      [expandableRowTemplate]="detailTemplate"
+      keyField="id"
+      (rowClicked)="record('animated rowClicked', $event)"
+      (sortChange)="record('animated sort', $event)">
+    </stackline-data-table>
+  </div>
+
+  <ng-template #detailTemplate let-row>
+    <div class="row-detail">
+      {{ row.notes }}
+    </div>
+  </ng-template>
+</example-shell>

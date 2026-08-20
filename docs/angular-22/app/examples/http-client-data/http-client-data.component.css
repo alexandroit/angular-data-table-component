@@ -1,0 +1,48 @@
+:host {
+  display: block;
+}
+
+.api-toolbar {
+  align-items: center;
+  background: #f6f9fc;
+  border: 1px solid #dbe4ef;
+  border-bottom: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.api-toolbar span {
+  color: #587189;
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.api-toolbar strong {
+  color: #13283c;
+  display: block;
+  font-size: 20px;
+  margin-top: 2px;
+}
+
+.api-toolbar button {
+  background: #ffffff;
+  border: 1px solid #cdd9e5;
+  border-radius: 4px;
+  color: #1d3d5c;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 8px 12px;
+}
+
+.error-message {
+  background: #fff5f5;
+  border: 1px solid #ffd6d6;
+  color: #982828;
+  margin: 0;
+  padding: 10px;
+}

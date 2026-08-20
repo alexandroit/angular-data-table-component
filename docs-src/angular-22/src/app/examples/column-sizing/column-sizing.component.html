@@ -1,0 +1,11 @@
+<example-shell
+  exampleId="column-sizing" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Column sizing"
+    [columns]="advancedColumns"
+    [data]="orders"
+    [columnSizing]="wideColumnSizingState"
+    [pagination]="true"
+    [paginationPerPage]="5">
+  </stackline-data-table>
+</example-shell>

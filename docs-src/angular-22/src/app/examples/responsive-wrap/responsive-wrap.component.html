@@ -1,0 +1,10 @@
+<example-shell
+  exampleId="responsive-wrap" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Responsive wrapped content"
+    [columns]="wrappedColumns"
+    [data]="longTextRows"
+    [responsive]="true"
+    [highlightOnHover]="true">
+  </stackline-data-table>
+</example-shell>

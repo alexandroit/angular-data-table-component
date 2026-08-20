@@ -1,10 +1,8 @@
 import { TemplateRef } from '@angular/core';
 
-export type Primitive = string | number | boolean | null | undefined;
 export type DataTableSortOrder = 'asc' | 'desc';
 export type DataTableThemeName = 'default' | 'dark';
-export type DataTableSelector<T> = keyof T | ((row: T, rowIndex?: number) => unknown);
-export type DataTableFormatter<T> = (row: T, rowIndex: number) => unknown;
+export type DataTablePinningSide = 'left' | 'right';
 
 export interface DataTableContextMessage {
   singular: string;
@@ -12,58 +10,96 @@ export interface DataTableContextMessage {
   message: string;
 }
 
-export interface DataTableCellContext<T> {
-  $implicit: T;
-  row: T;
-  rowIndex: number;
-  column: DataTableColumn<T>;
-  value: unknown;
-}
-
-export interface DataTableExpandableContext<T> {
-  $implicit: T;
-  row: T;
-  rowIndex: number;
-}
-
-export interface ConditionalStyle<T> {
-  when: (row: T) => boolean;
-  style?: Record<string, string | number> | ((row: T) => Record<string, string | number>);
-  className?: string | ((row: T) => string);
-}
-
-export interface DataTableColumn<T> {
+export interface DataTableColumn {
   id?: string | number;
   name: string | number;
-  selector?: DataTableSelector<T>;
+  selector?: string | ((row: any, rowIndex?: number) => any);
+  accessorKey?: string;
+  header?: string | number;
+  group?: string | number;
+  columns?: DataTableColumn[];
   sortable?: boolean;
   sortField?: string;
-  sortFunction?: (a: T, b: T) => number;
-  format?: DataTableFormatter<T>;
-  cellTemplate?: TemplateRef<DataTableCellContext<T>>;
+  sortFunction?: (a: any, b: any) => number;
+  format?: (row: any, rowIndex: number) => any;
+  filterFn?: (row: any, filterValue: any, column: DataTableColumn) => boolean;
+  aggregationFn?: DataTableAggregationName | ((rows: any[], column: DataTableColumn) => any);
+  enableHiding?: boolean;
+  enableGlobalFilter?: boolean;
+  enableColumnFilter?: boolean;
+  cellTemplate?: TemplateRef<DataTableCellContext>;
   className?: string;
   headerClassName?: string;
-  style?: Record<string, string | number>;
-  headerStyle?: Record<string, string | number>;
+  style?: { [key: string]: string | number };
+  headerStyle?: { [key: string]: string | number };
+  size?: number;
+  minSize?: number;
+  maxSize?: number;
   minWidth?: string;
   maxWidth?: string;
   width?: string;
+  pin?: DataTablePinningSide | false;
   right?: boolean;
   center?: boolean;
   wrap?: boolean;
   omit?: boolean;
 }
 
-export interface DataTableSortEvent<T> {
-  column: DataTableColumn<T>;
-  direction: DataTableSortOrder;
-  rows: T[];
+export type DataTableAggregationName = 'sum' | 'avg' | 'count' | 'min' | 'max' | 'unique';
+
+export interface DataTableColumnFilter {
+  id: string | number;
+  value: any;
 }
 
-export interface DataTableSelectionState<T> {
+export interface DataTableColumnPinningState {
+  left?: Array<string | number>;
+  right?: Array<string | number>;
+}
+
+export interface DataTableRowPinningState {
+  top?: any[];
+  bottom?: any[];
+}
+
+export interface DataTableStateChangeEvent {
+  globalFilter: string;
+  columnFilters: any;
+  columnVisibility: { [key: string]: boolean };
+  columnOrder: Array<string | number>;
+  groupBy: Array<string | number>;
+}
+
+export interface DataTableCellContext {
+  $implicit: any;
+  row: any;
+  rowIndex: number;
+  column: DataTableColumn;
+  value: any;
+}
+
+export interface DataTableExpandableContext {
+  $implicit: any;
+  row: any;
+  rowIndex: number;
+}
+
+export interface ConditionalStyle {
+  when: (row: any) => boolean;
+  style?: { [key: string]: string | number } | ((row: any) => { [key: string]: string | number });
+  className?: string | ((row: any) => string);
+}
+
+export interface DataTableSortEvent {
+  column: DataTableColumn;
+  direction: DataTableSortOrder;
+  rows: any[];
+}
+
+export interface DataTableSelectionState {
   allSelected: boolean;
   selectedCount: number;
-  selectedRows: T[];
+  selectedRows: any[];
 }
 
 export interface DataTablePageEvent {
@@ -76,8 +112,7 @@ export interface DataTableRowsPerPageEvent {
   currentPage: number;
 }
 
-export interface DataTableExpandEvent<T> {
+export interface DataTableExpandEvent {
   expanded: boolean;
-  row: T;
+  row: any;
 }
-

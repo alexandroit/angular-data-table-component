@@ -1,196 +1,207 @@
 # @stackline/angular-data-table-component
 
-> A maintained Angular data table component with Angular-versioned release lines, starting with Angular 2 support and growing through modern Angular families.
+An Angular 22 data table for application screens that need sorting, filtering,
+pagination, selection, grouping, pinning, virtualization, templates, or a
+headless controller without adopting an entire UI framework.
 
-[![npm version](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
-[![npm downloads](https://img.shields.io/npm/dt/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
-[![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/master/LICENSE)
-[![Angular 2](https://img.shields.io/badge/Angular-2.x-red?style=flat-square&logo=angular)](https://alexandro.net/docs/angular/angular-data-table-component/angular-2/)
-[![Angular 21](https://img.shields.io/badge/Angular-21.2-red?style=flat-square&logo=angular)](https://angular.io)
-[![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
-[![Reddit community](https://img.shields.io/badge/community-r%2FStackline-ff4500?style=flat-square&logo=reddit&logoColor=white)](https://www.reddit.com/r/Stackline/)
+[![npm](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
+[![downloads](https://img.shields.io/npm/dm/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
+[![CI](https://img.shields.io/github/actions/workflow/status/alexandroit/angular-data-table-component/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/alexandroit/angular-data-table-component/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/main/LICENSE)
 
-**[Documentation & Live Demos](https://alexandro.net/docs/angular/angular-data-table-component/)** | **[Angular 2 Demo](https://alexandro.net/docs/angular/angular-data-table-component/angular-2/)** | **[StackBlitz Angular 2](https://stackblitz.com/github/alexandroit/stackline-angular-data-table-angular-2?file=src%2Fapp%2Fexamples%2Fbasic%2Fbasic.component.ts&initialpath=%2Fbasic&startScript=start)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)** | **[Community Discussions](https://www.reddit.com/r/Stackline/)**
+[Live documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)
+| [npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)
+| [Issues](https://github.com/alexandroit/angular-data-table-component/issues)
+| [Security](SECURITY.md)
 
-**First published release line:** `2.0.0` for Angular `2.x`
-
-## Why this library?
-
-`@stackline/angular-data-table-component` keeps data-heavy Angular screens practical across versioned Stackline release lines:
-
-- declarative column definitions
-- Angular templates for custom cells, image/media cells, and expandable content
-- built-in sorting, selection, expansion, filtering, grouping, and pagination
-- large-data and server-pagination patterns
-- headless custom HTML controller for advanced layouts
-- keyboard/ARIA focused behavior
-- versioned demos that follow the Angular release line
-
-The first production package line is Angular 2, built for legacy applications that still use classic NgModule imports and SystemJS. The repository also contains modern Angular work that will continue to be released one Angular family at a time.
-
-## Angular Version Compatibility
-
-Each package family only installs on its matching Angular family. Framework major and package major are not always the same package number, so use the package family column below.
-
-| Package family | Framework family | Peer range | Tested release window | Demo link |
-| :---: | :---: | :---: | :---: | :--- |
-| **2.x** | **Angular 2 only** | **`>=2.0.0 <3.0.0`** | **2.4.10** | [Angular 2 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-2/) |
-| **21.x** | **Angular 21 only** | **`>=21.0.0 <22.0.0`** | **21.0.0 -> 21.2.8** | [Angular 21 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-21/) |
-| **20.x** | **Angular 20 only** | **`>=20.0.0 <21.0.0`** | **20.0.0 -> 20.3.18** | [Angular 20 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-20/) |
-| **19.x** | **Angular 19 only** | **`>=19.0.0 <20.0.0`** | **19.0.0 -> 19.2.20** | [Angular 19 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-19/) |
-| **18.x** | **Angular 18 only** | **`>=18.0.0 <19.0.0`** | **18.0.0 -> 18.2.14** | [Angular 18 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-18/) |
-| **17.x** | **Angular 17 only** | **`>=17.0.0 <18.0.0`** | **17.0.0 -> 17.3.12** | [Angular 17 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-17/) |
-| **16.x** | **Angular 16 only** | **`>=16.0.0 <17.0.0`** | **16.0.0 -> 16.2.12** | [Angular 16 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-16/) |
-| **15.x** | **Angular 15 only** | **`>=15.0.0 <16.0.0`** | **15.0.0 -> 15.2.10** | [Angular 15 family docs](https://alexandro.net/docs/angular/angular-data-table-component/angular-15/) |
-
-
-## Installation
+## Install
 
 ```bash
 npm install @stackline/angular-data-table-component
 ```
 
-Choose the package family from the compatibility table above. Each published family is locked to one framework major only.
+The current release supports Angular 22:
 
-For Angular 2:
-
-```bash
-npm install @stackline/angular-data-table-component@2.0.0 --save-exact
+```text
+@angular/common  >=22.0.0 <23.0.0
+@angular/core    >=22.0.0 <23.0.0
 ```
 
-## Basic Usage
+Angular applications should keep all Angular framework packages on the same
+patch version.
+
+## Quick Start
+
+Import the NgModule:
 
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { DataTableModule } from '@stackline/angular-data-table-component';
 
-import { AppComponent } from './app.component';
-
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, DataTableModule],
-  bootstrap: [AppComponent]
+  imports: [BrowserModule, DataTableModule]
 })
 export class AppModule {}
 ```
 
+Define columns and rows:
+
 ```ts
-import { Component } from '@angular/core';
 import { DataTableColumn } from '@stackline/angular-data-table-component';
 
-type Movie = {
-  id: number;
-  title: string;
-  year: number;
-};
+columns: DataTableColumn[] = [
+  { id: 'name', name: 'Name', selector: 'name', sortable: true },
+  { id: 'team', name: 'Team', selector: 'team' },
+  { id: 'score', name: 'Score', selector: 'score', sortable: true, right: true }
+];
 
-@Component({
-  selector: 'app-root',
-  template: `
-    <stackline-data-table
-      [columns]="columns"
-      [data]="data"
-      [pagination]="true">
-    </stackline-data-table>
-  `
-})
-export class AppComponent {
-  columns: DataTableColumn<Movie>[] = [
-    { id: 'title', name: 'Title', selector: row => row.title, sortable: true },
-    { id: 'year', name: 'Year', selector: row => row.year, sortable: true, right: true }
-  ];
+rows = [
+  { id: 1, name: 'Ada', team: 'Platform', score: 98 },
+  { id: 2, name: 'Linus', team: 'Runtime', score: 94 }
+];
+```
 
-  data: Movie[] = [
-    { id: 1, title: 'Beetlejuice', year: 1988 },
-    { id: 2, title: 'Ghostbusters', year: 1984 }
+Render the table:
+
+```html
+<stackline-data-table
+  title="Team scores"
+  ariaLabel="Team scores"
+  [columns]="columns"
+  [data]="rows"
+  [pagination]="true"
+  [selectableRows]="true"
+  [highlightOnHover]="true"
+  (selectedRowsChange)="selection = $event">
+</stackline-data-table>
+```
+
+## Capabilities
+
+- Client and server sorting, filtering, and pagination
+- Multi-row, single-row, disabled-row, and visible-page selection
+- Global and per-column filters
+- Column visibility, ordering, sizing, groups, and sticky pinning
+- Row grouping, top/bottom pinning, expansion, and conditional styles
+- Virtual row windows for large data sets
+- Custom cells and expandable content with Angular templates
+- Keyboard activation and grid-oriented ARIA attributes
+- Dark and default themes with no external stylesheet import
+- View-independent `HeadlessDataTableController` for custom Angular markup
+
+Every feature has a runnable example in the
+[Angular 22 documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/).
+
+## Templates
+
+```html
+<ng-template #scoreCell let-row let-value="value">
+  <strong [class.high-score]="value >= 90">{{ value }}</strong>
+</ng-template>
+
+<stackline-data-table [columns]="templateColumns" [data]="rows">
+</stackline-data-table>
+```
+
+```ts
+import { AfterViewInit, TemplateRef, ViewChild } from '@angular/core';
+import { DataTableColumn } from '@stackline/angular-data-table-component';
+
+@ViewChild('scoreCell') scoreCell!: TemplateRef<unknown>;
+
+templateColumns: DataTableColumn[] = [];
+
+ngAfterViewInit() {
+  this.templateColumns = [
+    { id: 'name', name: 'Name', selector: 'name' },
+    { id: 'score', name: 'Score', selector: 'score', cellTemplate: this.scoreCell }
   ];
 }
 ```
 
-## Main Features
+## Headless Usage
 
-- Declarative columns via `DataTableColumn<T>[]`
-- Built-in client sorting
-- Selectable rows with single or multi-select
-- Expandable rows with `TemplateRef`
-- Client or server-driven pagination
-- Image/media cells through `TemplateRef`
-- Headless custom HTML through `createDataTableController`
-- Conditional row styles
-- `default` and `dark` theme presets
-- Responsive wrapper with fixed-header support
+Use the same data behavior with custom HTML:
 
-## API Snapshot
+```ts
+import { createDataTableController } from '@stackline/angular-data-table-component';
 
-| Input | Type | Notes |
-| :--- | :--- | :--- |
-| `columns` | `DataTableColumn<T>[]` | Required. Declarative column definitions. |
-| `data` | `T[]` | Required. Row data. |
-| `keyField` | `string` | Defaults to `id`. |
-| `title` | `string` | Optional table title. |
-| `pagination` | `boolean` | Enables the footer pagination UI. |
-| `paginationServer` | `boolean` | Disables client slicing and leaves paging to your code. |
-| `selectableRows` | `boolean` | Enables row selection. |
-| `selectableRowsSingle` | `boolean` | Restricts selection to a single row. |
-| `expandableRows` | `boolean` | Enables expandable detail rows. |
-| `expandableRowTemplate` | `TemplateRef` | Template used to render expanded row content. |
-| `conditionalRowStyles` | `ConditionalStyle<T>[]` | Applies row styles when conditions match. |
-| `theme` | `'default' \| 'dark'` | Built-in theme preset. |
+const table = createDataTableController({
+  columns,
+  data: rows,
+  pagination: true,
+  perPage: 25,
+  selectableRows: true
+});
 
-| Output | Payload | Notes |
-| :--- | :--- | :--- |
-| `sortChange` | `{ column, direction, rows }` | Fires after sorting changes. |
-| `selectedRowsChange` | `{ allSelected, selectedCount, selectedRows }` | Fires after selection changes. |
-| `pageChange` | `{ page, totalRows }` | Fires when the current page changes. |
-| `rowsPerPageChange` | `{ rowsPerPage, currentPage }` | Fires when rows-per-page changes. |
-| `rowClicked` | `row` | Fires when a row is clicked. |
-| `rowExpandToggled` | `{ expanded, row }` | Fires when a detail row is opened or closed. |
+table.setGlobalFilter('platform');
+table.toggleSort(columns[0]);
 
-## Changelog
+console.log(table.displayedRows);
+console.log(table.state);
+```
 
-### 2.0.0
-- Added the Angular 2 package line for Angular `2.x`
-- Added SystemJS-friendly package output
-- Added a clean Angular 2.4.10 validation app with one component per example
-- Added sorting, selection, pagination, large-data pagination, filtering, grouping, pinning, sizing, templates, image cells, expandable rows, keyboard/ARIA behavior, and headless custom HTML support
+## Main Inputs
 
-### 21.0.0
-- Updated the library and docs app to Angular 21.2.x
-- Added a versioned Angular 21 demo app
-- Expanded peer dependency support to Angular 15 through Angular 21
-- Kept the NgModule-based public API intact while moving the toolchain to Angular 21
+| Input | Purpose |
+| --- | --- |
+| `columns`, `data`, `keyField` | Table structure, records, and stable row identity |
+| `pagination`, `paginationServer`, `paginationPerPage` | Client or controlled pagination |
+| `sortServer`, `manualSorting`, `manualFiltering`, `manualPagination` | Controlled data operations |
+| `globalFilter`, `columnFilters` | Text and column-level filtering |
+| `selectableRows`, `selectableRowsSingle`, `selectableRowsVisibleOnly` | Selection modes |
+| `expandableRows`, `expandableRowTemplate` | Expandable detail rows |
+| `columnVisibility`, `columnOrder`, `columnPinning`, `columnSizing` | Column controls |
+| `groupBy`, `grouping`, `rowPinning` | Grouping and pinned rows |
+| `virtualRows`, `virtualStartIndex`, `virtualRowCount` | Virtual row window |
+| `theme`, `dense`, `striped`, `responsive` | Presentation |
 
-### 20.0.0
-- Updated the library and docs app to Angular 20.3.x
-- Added a versioned Angular 20 demo app
-- Kept the NgModule-based public API intact while aligning the package metadata with the generated FESM output
-- Expanded peer dependency support to Angular 15 through Angular 20
+## Main Outputs
 
-### 19.0.0
-- Updated the library and docs app to Angular 19.2.x
-- Added a versioned Angular 19 demo app
-- Marked the table component and docs root component with `standalone: false` for NgModule compatibility
-- Expanded peer dependency support to Angular 15 through Angular 19
+`sortChange`, `selectedRowsChange`, `pageChange`, `rowsPerPageChange`,
+`rowClicked`, `rowDoubleClicked`, `rowExpandToggled`, `globalFilterChange`,
+`columnFiltersChange`, `columnVisibilityChange`, `columnOrderChange`,
+`groupingChange`, and `tableStateChange`.
 
-### 18.0.0
-- Updated the library and docs app to Angular 18.2.x
-- Added a versioned Angular 18 demo app
-- Expanded peer dependency support to Angular 15 through Angular 18
+## Angular Compatibility
 
-### 17.0.0
-- Updated the library and docs app to Angular 17.3.x
-- Added a versioned Angular 17 demo app
-- Expanded peer dependency support to Angular 15 through Angular 17
-- Escaped literal `@` characters in the docs template for Angular 17 parsing rules
+Package majors follow Angular majors. Install an exact historical major when
+maintaining an older Angular application:
 
-### 16.0.0
-- Updated the library and docs app to Angular 16.2.x
-- Moved the build output to the Angular 16 `esm2022` and `fesm2022` package format
-- Added a versioned Angular 16 demo app
-- Expanded peer dependency support to Angular 15 and Angular 16
+| Angular | Package |
+| --- | --- |
+| 22 | `@stackline/angular-data-table-component@22` |
+| 21 | `@stackline/angular-data-table-component@21` |
+| 20 | `@stackline/angular-data-table-component@20` |
+| 19 | `@stackline/angular-data-table-component@19` |
+| 18 | `@stackline/angular-data-table-component@18` |
+| 17 | `@stackline/angular-data-table-component@17` |
+| 16 | `@stackline/angular-data-table-component@16` |
+| 15 | `@stackline/angular-data-table-component@15` |
+| 4-14 | Matching package major |
+| 2 | `@stackline/angular-data-table-component@2` |
 
-### 15.0.0
-- Initial Angular 15 line
-- Added a versioned Angular 15 demo app
-- Introduced sorting, selection, expansion, pagination, conditional styles, and theme support
+Historical lines remain available on npm. Security and maintenance work is
+focused on the current Angular line unless a separate backport is announced.
+
+## Development
+
+Use Node `22.22.3` or newer in the Node 22 line:
+
+```bash
+npm ci
+npm run verify
+```
+
+`verify` builds the Angular package, runs behavioral and package-contract tests,
+validates clean Angular 22 consumers, and builds the live documentation.
+
+## Security
+
+Please report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+Do not include sensitive details in a public issue.
+
+## License
+
+[MIT](LICENSE) Copyright (c) 2026 Alexandro Marques.

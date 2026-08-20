@@ -1,0 +1,12 @@
+<example-shell
+  exampleId="fixed-header" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Fixed header revenue"
+    [columns]="revenueColumns"
+    [data]="revenue"
+    [fixedHeader]="true"
+    fixedHeaderScrollHeight="320px"
+    [striped]="true"
+    [highlightOnHover]="true">
+  </stackline-data-table>
+</example-shell>

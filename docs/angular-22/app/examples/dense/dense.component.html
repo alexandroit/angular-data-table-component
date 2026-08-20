@@ -1,0 +1,11 @@
+<example-shell
+  exampleId="dense" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Dense operations table"
+    [columns]="ticketColumns"
+    [data]="tickets"
+    [dense]="true"
+    [striped]="true"
+    [highlightOnHover]="true">
+  </stackline-data-table>
+</example-shell>

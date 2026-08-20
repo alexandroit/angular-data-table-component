@@ -2,103 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>@stackline/angular-data-table-component — Docs</title>
-  <meta http-equiv="refresh" content="0; url=angular-21/">
+  <title>Angular Data Table Documentation | Stackline</title>
+  <meta http-equiv="refresh" content="0; url=angular-22/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Versioned documentation for @stackline/angular-data-table-component.">
+  <link rel="canonical" href="https://alexandro.net/docs/angular/angular-data-table-component/">
   <style>
     :root {
-      color-scheme: light;
-      font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+      color: #102033;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      align-items: center;
-      background:
-        radial-gradient(circle at top right, rgba(214, 90, 37, 0.18), transparent 36%),
-        radial-gradient(circle at top left, rgba(12, 115, 184, 0.16), transparent 32%),
-        #f5f7fb;
-      color: #17324d;
-      display: flex;
-      justify-content: center;
+      background: #f4f7fa;
       margin: 0;
       min-height: 100vh;
-      padding: 24px;
+      padding: 32px 20px;
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(197, 210, 224, 0.9);
-      border-radius: 24px;
-      box-shadow: 0 24px 60px rgba(19, 50, 77, 0.12);
-      max-width: 720px;
-      padding: 32px;
-      width: 100%;
+    main {
+      margin: 0 auto;
+      max-width: 760px;
     }
 
     h1 {
-      font-family: Georgia, "Times New Roman", serif;
-      margin: 0 0 0.75rem;
+      font-size: 28px;
+      letter-spacing: 0;
+      line-height: 1.2;
+      margin: 0;
+      overflow-wrap: anywhere;
     }
 
     p {
+      color: #526a82;
       line-height: 1.6;
-      margin: 0 0 1rem;
+      margin: 10px 0 0;
     }
 
     .versions {
+      background: #ffffff;
+      border: 1px solid #d8e2ec;
+      border-radius: 8px;
       display: grid;
-      gap: 0.75rem;
-      margin: 1.5rem 0;
+      margin-top: 24px;
+      overflow: hidden;
     }
 
-    .ver {
-      border: 1px solid #d7e0ea;
-      border-radius: 14px;
-      color: inherit;
-      display: block;
-      padding: 0.9rem 1rem;
+    .version {
+      align-items: center;
+      border-bottom: 1px solid #e7edf3;
+      color: #24425f;
+      display: flex;
+      justify-content: space-between;
+      min-height: 46px;
+      padding: 10px 14px;
       text-decoration: none;
     }
 
-    .latest {
-      background: #17324d;
-      border-color: #17324d;
-      color: #fff;
+    .version:last-child {
+      border-bottom: 0;
     }
 
-    .note {
-      color: #59708a;
-      font-size: 0.92rem;
+    .version:hover,
+    .version:focus-visible {
+      background: #edf6f4;
+      outline: none;
+    }
+
+    .latest {
+      background: #1f7a6b;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .latest:hover,
+    .latest:focus-visible {
+      background: #176557;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
   </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6353624842390947"
-     crossorigin="anonymous"></script>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3KQ9KECXR9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3KQ9KECXR9');
-</script>
 </head>
 <body>
-  <div class="card">
+  <main>
     <h1>@stackline/angular-data-table-component</h1>
-    <p>Select an Angular version to view the documentation:</p>
+    <p>Select the package line that matches your Angular application.</p>
     <div class="versions">
-      <a class="ver latest" href="angular-21/">Angular 21 <span>(latest)</span></a>
-      <a class="ver" href="angular-20/">Angular 20</a>
-      <a class="ver" href="angular-19/">Angular 19</a>
-      <a class="ver" href="angular-18/">Angular 18</a>
-      <a class="ver" href="angular-17/">Angular 17</a>
-      <a class="ver" href="angular-16/">Angular 16</a>
-      <a class="ver" href="angular-15/">Angular 15</a>
-      <a class="ver" href="angular-2/">Angular 2</a>
+      <a class="version latest" href="angular-22/"><span>Angular 22</span><span class="label">Latest</span></a>
+      <a class="version" href="angular-21/">Angular 21</a>
+      <a class="version" href="angular-20/">Angular 20</a>
+      <a class="version" href="angular-19/">Angular 19</a>
+      <a class="version" href="angular-18/">Angular 18</a>
+      <a class="version" href="angular-17/">Angular 17</a>
+      <a class="version" href="angular-16/">Angular 16</a>
+      <a class="version" href="angular-15/">Angular 15</a>
+      <a class="version" href="angular-14/">Angular 14</a>
+      <a class="version" href="angular-13/">Angular 13</a>
+      <a class="version" href="angular-12/">Angular 12</a>
+      <a class="version" href="angular-11/">Angular 11</a>
+      <a class="version" href="angular-10/">Angular 10</a>
+      <a class="version" href="angular-9/">Angular 9</a>
+      <a class="version" href="angular-8/">Angular 8</a>
+      <a class="version" href="angular-7/">Angular 7</a>
+      <a class="version" href="angular-6/">Angular 6</a>
+      <a class="version" href="angular-5/">Angular 5</a>
+      <a class="version" href="angular-4/">Angular 4</a>
+      <a class="version" href="angular-2/">Angular 2</a>
     </div>
-    <p class="note">Redirecting to the latest version…</p>
-  </div>
+  </main>
 </body>
 </html>

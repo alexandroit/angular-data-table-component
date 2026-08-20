@@ -3,9 +3,8 @@ import { NgModule } from '@angular/core';
 import { DataTableComponent } from './angular-data-table.component';
 
 @NgModule({
-  declarations: [DataTableComponent],
   imports: [CommonModule],
+  declarations: [DataTableComponent],
   exports: [DataTableComponent]
 })
 export class DataTableModule {}
-

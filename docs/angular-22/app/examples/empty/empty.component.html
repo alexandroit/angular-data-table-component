@@ -1,0 +1,9 @@
+<example-shell
+  exampleId="empty" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Empty project list"
+    [columns]="orderColumns"
+    [data]="emptyRows"
+    noDataText="No projects were found">
+  </stackline-data-table>
+</example-shell>

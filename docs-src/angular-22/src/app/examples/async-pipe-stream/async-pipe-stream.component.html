@@ -1,0 +1,34 @@
+<example-shell
+  exampleId="async-pipe-stream"
+  [title]="title"
+  [summary]="summary"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <div class="stream-toolbar">
+    <div>
+      <span>Stream rows</span>
+      <strong>{{ currentRows.length }}</strong>
+    </div>
+    <button type="button" (click)="pushPriorityTicket()">Push ticket</button>
+    <button type="button" (click)="resetStream()">Reset stream</button>
+  </div>
+
+  <stackline-data-table
+    title="Ticket stream"
+    ariaLabel="Ticket stream rendered through the Angular async pipe"
+    [columns]="ticketColumns"
+    [data]="(rows$ | async) || []"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    [striped]="true"
+    [highlightOnHover]="true"
+    [pointerOnHover]="true"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    keyField="ticket"
+    (selectedRowsChange)="record('stream selection', $event)"
+    (rowClicked)="record('stream rowClicked', $event)"
+    (sortChange)="record('stream sort', $event)">
+  </stackline-data-table>
+</example-shell>

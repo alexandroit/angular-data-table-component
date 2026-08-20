@@ -1,0 +1,12 @@
+<example-shell
+  exampleId="headerless" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Compact list"
+    [columns]="orderColumns"
+    [data]="orders"
+    [noHeader]="true"
+    [noTableHead]="true"
+    [dense]="true"
+    [highlightOnHover]="true">
+  </stackline-data-table>
+</example-shell>

@@ -1,0 +1,36 @@
+# @stackline/angular-data-table-component
+
+> Angular 22 data table with sorting, filtering, pagination, selection, grouping, pinning, virtualization, templates, and a headless controller.
+
+Current version: 22.1.0
+Package: https://www.npmjs.com/package/@stackline/angular-data-table-component
+Repository: https://github.com/alexandroit/angular-data-table-component
+Documentation: https://alexandro.net/docs/angular/angular-data-table-component/angular-22/
+License: MIT
+
+## Install
+
+```bash
+npm install @stackline/angular-data-table-component
+```
+
+## Compatibility
+
+- @angular/common: >=22.0.0 <23.0.0
+- @angular/core: >=22.0.0 <23.0.0
+- Historical package majors match their Angular majors.
+
+## Main Exports
+
+- DataTableModule
+- DataTableComponent
+- HeadlessDataTableController
+- createDataTableController
+- Data table column, event, state, pinning, filtering, and template context types
+
+## Documentation
+
+- [Angular 22 examples](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)
+- [README](https://github.com/alexandroit/angular-data-table-component#readme)
+- [Changelog](https://github.com/alexandroit/angular-data-table-component/blob/main/CHANGELOG.md)
+- [Security policy](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md)

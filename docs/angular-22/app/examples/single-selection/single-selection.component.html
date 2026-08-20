@@ -1,0 +1,15 @@
+<example-shell
+  exampleId="single-selection" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Support queue"
+    [columns]="ticketColumns"
+    [data]="tickets"
+    [selectableRows]="true"
+    [selectableRowsSingle]="true"
+    [selectableRowsHighlight]="true"
+    [dense]="true"
+    [highlightOnHover]="true"
+    keyField="ticket"
+    (selectedRowsChange)="record('single selection', $event)">
+  </stackline-data-table>
+</example-shell>

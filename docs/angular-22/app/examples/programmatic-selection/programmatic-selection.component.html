@@ -1,0 +1,13 @@
+<example-shell
+  exampleId="programmatic-selection" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="High priority tickets"
+    [columns]="ticketColumns"
+    [data]="tickets"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    [selectableRowSelected]="isHighPriority"
+    keyField="ticket"
+    (selectedRowsChange)="record('programmatic selection', $event)">
+  </stackline-data-table>
+</example-shell>

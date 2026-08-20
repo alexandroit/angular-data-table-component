@@ -1,0 +1,35 @@
+<example-shell
+  exampleId="http-client-data"
+  [title]="title"
+  [summary]="summary"
+  [dataSnippet]="dataSnippet"
+  [events]="events"
+  (clear)="clearEvents()">
+  <div class="api-toolbar">
+    <div>
+      <span>Rows loaded</span>
+      <strong>{{ orders.length }}</strong>
+    </div>
+    <button type="button" (click)="loadRows()">Reload fixture</button>
+  </div>
+
+  <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <stackline-data-table
+    title="HttpClient orders"
+    ariaLabel="Orders loaded with Angular HttpClient"
+    [columns]="orderColumns"
+    [data]="orders"
+    [progressPending]="loading"
+    [pagination]="true"
+    [paginationPerPage]="4"
+    [striped]="true"
+    [highlightOnHover]="true"
+    [selectableRows]="true"
+    [selectableRowsHighlight]="true"
+    keyField="id"
+    (selectedRowsChange)="record('http selection', $event)"
+    (sortChange)="record('http sort', $event)"
+    (pageChange)="record('http page', $event)">
+  </stackline-data-table>
+</example-shell>

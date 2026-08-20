@@ -4,118 +4,171 @@ export const DATA_TABLE_TEMPLATE = `
     <h3>{{ title }}</h3>
   </div>
 
-  <div *ngIf="subHeader && subHeaderTemplate" class="adtc-subheader">
-    <ng-container *ngTemplateOutlet="subHeaderTemplate"></ng-container>
-  </div>
-
   <div *ngIf="showContextBar" class="adtc-context">
     <strong>{{ selectedCount }}</strong>
     {{ selectedCount === 1 ? contextMessage.singular : contextMessage.plural }}
     {{ contextMessage.message }}
   </div>
 
-  <div *ngIf="progressPending" class="adtc-state adtc-loading">
-    Loading…
+  <div *ngIf="progressPending" class="adtc-state adtc-loading" role="status" aria-live="polite">
+    Loading...
   </div>
 
-  <div *ngIf="!progressPending && !hasRows" class="adtc-state">
+  <div *ngIf="!progressPending && !hasRows" class="adtc-state" role="status" aria-live="polite">
     {{ noDataText }}
   </div>
 
-  <ng-container *ngIf="!progressPending && hasRows">
-    <div [attr.class]="getWrapperClassName()">
-      <div [attr.class]="getScrollClassName()" [attr.style]="getScrollStyleAttribute()">
-        <table class="adtc-table" [attr.aria-label]="ariaLabel || null">
+  <div *ngIf="!progressPending && hasRows">
+      <div [attr.class]="wrapperClassName">
+      <div [attr.class]="scrollClassName" [attr.style]="scrollStyleText">
+        <table
+          class="adtc-table"
+          role="grid"
+          [attr.aria-label]="tableAriaLabel"
+          [attr.aria-rowcount]="totalRows"
+          [attr.aria-colcount]="expandedColspan">
           <thead *ngIf="!noTableHead">
-            <tr>
-              <ng-container *ngIf="selectableRows">
-                <th class="adtc-select-col">
-                  <input
-                    *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
-                    type="checkbox"
-                    [checked]="allRowsSelected"
-                    (click)="$event.stopPropagation()"
-                    (change)="toggleAllRows($any($event.target).checked)" />
-                </th>
-              </ng-container>
+            <tr *ngIf="hasColumnGroups" role="row">
+              <th *ngIf="selectableRows" class="adtc-select-col" rowspan="2" scope="col" role="columnheader">
+                <input
+                  *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
+                  type="checkbox"
+                  [attr.aria-label]="selectAllAriaLabel"
+                  [attr.aria-checked]="selectAllAriaChecked"
+                  [indeterminate]="someRowsSelected"
+                  [checked]="allRowsSelected"
+                  (click)="$event.stopPropagation()"
+                  (change)="toggleAllRows($any($event.target).checked)" />
+              </th>
 
-              <ng-container *ngIf="expandableRows && !expandableRowsHideExpander">
-                <th class="adtc-expand-col"></th>
-              </ng-container>
+              <th *ngIf="expandableRows && !expandableRowsHideExpander" class="adtc-expand-col" rowspan="2" scope="col" role="columnheader"></th>
 
-              <ng-container *ngFor="let column of visibleColumns; trackBy: trackByColumn">
-                <th [attr.class]="getHeaderClassName(column)" [attr.style]="getHeaderStyleAttribute(column)">
-                  <button
-                    type="button"
-                    [attr.class]="getSortButtonClassName(column)"
-                    [disabled]="!column.sortable"
-                    (click)="toggleSort(column)">
-                    <span>{{ column.name }}</span>
-                    <span *ngIf="column.sortable" [attr.class]="getSortIndicatorClassName(column)">
-                      {{ activeSortColumn === column ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
-                    </span>
-                  </button>
-                </th>
-              </ng-container>
+              <th *ngFor="let group of columnGroups" class="adtc-group-header" [attr.colspan]="group.colspan" scope="colgroup" role="columnheader">
+                {{ group.name }}
+              </th>
+            </tr>
+
+            <tr role="row">
+              <th *ngIf="selectableRows && !hasColumnGroups" class="adtc-select-col" scope="col" role="columnheader">
+                <input
+                  *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
+                  type="checkbox"
+                  [attr.aria-label]="selectAllAriaLabel"
+                  [attr.aria-checked]="selectAllAriaChecked"
+                  [indeterminate]="someRowsSelected"
+                  [checked]="allRowsSelected"
+                  (click)="$event.stopPropagation()"
+                  (change)="toggleAllRows($any($event.target).checked)" />
+              </th>
+
+              <th *ngIf="expandableRows && !expandableRowsHideExpander && !hasColumnGroups" class="adtc-expand-col" scope="col" role="columnheader"></th>
+
+              <th
+                *ngFor="let column of visibleColumns"
+                [attr.class]="getHeaderClassName(column)"
+                [attr.style]="getHeaderStyleText(column)"
+                scope="col"
+                role="columnheader"
+                [attr.aria-sort]="getAriaSort(column)">
+                <button
+                  type="button"
+	                  [attr.class]="getSortButtonClassName(column)"
+	                  [attr.aria-label]="getSortButtonAriaLabel(column)"
+	                  [disabled]="!column.sortable"
+	                  (keydown)="handleSortButtonKeydown($event, column)"
+	                  (click)="toggleSort(column)">
+                  <span>{{ column.name }}</span>
+                  <span *ngIf="column.sortable" [attr.class]="getSortIndicatorClassName(column)">
+                    {{ activeSortColumn === column ? (sortDirection === 'asc' ? 'Asc' : 'Desc') : 'Sort' }}
+                  </span>
+                </button>
+              </th>
             </tr>
           </thead>
 
           <tbody>
-            <ng-container *ngFor="let row of displayedRows; let rowIndex = index; trackBy: trackByRow">
+            <ng-template ngFor let-row [ngForOf]="displayedRows" let-rowIndex="index">
+              <tr *ngIf="isGroupRow(row)" class="adtc-group-row" role="row" [attr.id]="getGroupRowId(row)">
+                <td class="adtc-group-cell" [attr.colspan]="expandedColspan" role="gridcell">
+                  <button
+                    type="button"
+                    class="adtc-group-toggle"
+	                    [attr.aria-label]="getGroupToggleAriaLabel(row)"
+	                    [attr.aria-expanded]="isGroupRowExpanded(row)"
+	                    [attr.aria-controls]="getGroupRowId(row)"
+	                    (keydown)="handleGroupToggleKeydown($event, row)"
+	                    (click)="toggleGroupRow(row)">
+                    {{ isGroupRowExpanded(row) ? '-' : '+' }}
+                  </button>
+                  <strong>{{ row.groupLabel }}</strong>
+                  <span>{{ row.groupValue }}</span>
+                  <em>{{ row.leafRows.length }} rows</em>
+                </td>
+              </tr>
+
               <tr
+                *ngIf="!isGroupRow(row)"
+                role="row"
                 [attr.class]="getRowClassName(row)"
-                [attr.style]="getRowStyleAttribute(row)"
+                [attr.style]="getRowStyleText(row)"
+                [attr.tabindex]="getRowTabIndex(row)"
+                [attr.aria-selected]="getRowAriaSelected(row)"
+                (keydown)="handleRowKeydown($event, row)"
                 (click)="handleRowClick(row)"
                 (dblclick)="handleRowDoubleClick(row)"
                 (mouseenter)="handleMouseEnter(row)"
                 (mouseleave)="handleMouseLeave(row)">
-                <ng-container *ngIf="selectableRows">
-                  <td class="adtc-select-col">
-                    <input
-                      [type]="selectableRowsSingle ? 'radio' : 'checkbox'"
-                      [checked]="isRowSelected(row)"
-                      [disabled]="isSelectableDisabled(row)"
-                      (click)="$event.stopPropagation()"
-                      (change)="toggleRowSelection(row)" />
-                  </td>
-                </ng-container>
+                <td *ngIf="selectableRows" class="adtc-select-col" role="gridcell">
+                  <input
+                    [type]="selectableRowsSingle ? 'radio' : 'checkbox'"
+                    [attr.aria-label]="getRowSelectionAriaLabel(row, rowIndex)"
+                    [attr.aria-checked]="isRowSelected(row)"
+                    [checked]="isRowSelected(row)"
+                    [disabled]="isSelectableDisabled(row)"
+                    (click)="$event.stopPropagation()"
+                    (change)="toggleRowSelection(row)" />
+                </td>
 
-                <ng-container *ngIf="expandableRows && !expandableRowsHideExpander">
-                  <td class="adtc-expand-col">
-                    <button
-                      type="button"
-                      class="adtc-expander"
-                      [disabled]="isExpandableDisabled(row)"
-                      (click)="$event.stopPropagation(); toggleRowExpansion(row)">
-                      {{ isRowExpanded(row) ? '−' : '+' }}
-                    </button>
-                  </td>
-                </ng-container>
+                <td *ngIf="expandableRows && !expandableRowsHideExpander" class="adtc-expand-col" role="gridcell">
+                  <button
+                    type="button"
+                    class="adtc-expander"
+                    [attr.aria-label]="getRowExpandAriaLabel(row, rowIndex)"
+	                    [attr.aria-expanded]="isRowExpanded(row)"
+	                    [attr.aria-controls]="getExpandedRowId(row)"
+	                    [disabled]="isExpandableDisabled(row)"
+	                    (keydown)="handleExpanderKeydown($event, row)"
+	                    (click)="$event.stopPropagation(); toggleRowExpansion(row)">
+                    {{ isRowExpanded(row) ? '-' : '+' }}
+                  </button>
+                </td>
 
-                <ng-container *ngFor="let column of visibleColumns; trackBy: trackByColumn">
-                  <td [attr.class]="getCellClassName(column)" [attr.style]="getCellStyleAttribute(column)">
-                    <ng-container *ngIf="column.cellTemplate">
-                      <ng-container
-                        *ngTemplateOutlet="column.cellTemplate; context: getCellContext(row, column, rowIndex)">
-                      </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="!column.cellTemplate">
-                      {{ getCellText(row, column, rowIndex) }}
-                    </ng-container>
-                  </td>
-                </ng-container>
-              </tr>
-
-              <tr *ngIf="expandableRows && expandableRowTemplate && isRowExpanded(row)" class="adtc-expanded-row">
-                <td
-                  class="adtc-expanded-cell"
-                  [attr.colspan]="visibleColumns.length + (selectableRows ? 1 : 0) + (expandableRows && !expandableRowsHideExpander ? 1 : 0)">
-                  <ng-container
-                    *ngTemplateOutlet="expandableRowTemplate; context: getExpandableContext(row, rowIndex)">
-                  </ng-container>
+                <td *ngFor="let column of visibleColumns" [attr.class]="getCellClassName(column)" [attr.style]="getCellStyleText(column)" role="gridcell">
+                  <ng-template [ngIf]="column.cellTemplate">
+                    <ng-template
+                      [ngTemplateOutlet]="column.cellTemplate"
+                      [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)">
+                    </ng-template>
+                  </ng-template>
+                  <ng-template [ngIf]="!column.cellTemplate">
+                    {{ getCellText(row, column, rowIndex) }}
+                  </ng-template>
                 </td>
               </tr>
-            </ng-container>
+
+              <tr
+                *ngIf="!isGroupRow(row) && expandableRows && expandableRowTemplate && isRowExpanded(row)"
+                class="adtc-expanded-row"
+                role="row"
+                [attr.id]="getExpandedRowId(row)">
+                <td class="adtc-expanded-cell" [attr.colspan]="expandedColspan" role="gridcell">
+                  <ng-template
+                    [ngTemplateOutlet]="expandableRowTemplate"
+                    [ngTemplateOutletContext]="getExpandableContext(row, rowIndex)">
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-template>
           </tbody>
         </table>
       </div>
@@ -123,34 +176,26 @@ export const DATA_TABLE_TEMPLATE = `
 
     <div *ngIf="showPagination" class="adtc-pagination">
       <div class="adtc-pagination-meta">
-        Showing {{ startRow }}–{{ endRow }} of {{ totalRows }}
+        Showing {{ startRow }}-{{ endRow }} of {{ totalRows }}
       </div>
 
       <div class="adtc-pagination-controls">
         <label class="adtc-pagination-size">
           Rows:
-          <select [value]="rowsPerPage" (change)="changeRowsPerPage(+$any($event.target).value)">
+          <select [value]="rowsPerPage" (change)="changeRowsPerPage($any($event.target).value)">
             <option *ngFor="let size of paginationRowsPerPageOptions" [value]="size">
               {{ size }}
             </option>
           </select>
         </label>
 
-        <button type="button" (click)="changePage(1)" [disabled]="currentPage === 1">
-          First
-        </button>
-        <button type="button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
-          Prev
-        </button>
+        <button type="button" (click)="changePage(1)" [disabled]="currentPage === 1">First</button>
+        <button type="button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
         <span class="adtc-page-indicator">Page {{ currentPage }} of {{ totalPages }}</span>
-        <button type="button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
-          Next
-        </button>
-        <button type="button" (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">
-          Last
-        </button>
+        <button type="button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+        <button type="button" (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">Last</button>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>
 `;

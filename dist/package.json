@@ -1,16 +1,10 @@
 {
   "name": "@stackline/angular-data-table-component",
-  "version": "21.0.0",
-  "description": "A maintained Angular 21 data table component with sorting, selection, expandable rows, pagination, and versioned docs.",
+  "version": "22.1.0",
+  "description": "An Angular 22 data table with sorting, filtering, pagination, selection, grouping, pinning, virtualization, templates, and a headless controller.",
   "keywords": [
     "angular",
-    "angular15",
-    "angular16",
-    "angular17",
-    "angular18",
-    "angular19",
-    "angular20",
-    "angular21",
+    "angular22",
     "angular-library",
     "typescript",
     "data-table",
@@ -18,17 +12,17 @@
     "table",
     "grid",
     "sorting",
+    "filtering",
     "pagination",
-    "selectable-rows",
-    "expandable-rows",
-    "conditional-styles",
-    "responsive",
-    "ui-component",
-    "component-library",
-    "maintained",
-    "maintained"
+    "selection",
+    "grouping",
+    "column-pinning",
+    "row-pinning",
+    "virtualization",
+    "headless",
+    "accessibility"
   ],
-  "homepage": "https://alexandro.net/docs/angular/angular-data-table-component/",
+  "homepage": "https://alexandro.net/docs/angular/angular-data-table-component/angular-22/",
   "bugs": {
     "url": "https://github.com/alexandroit/angular-data-table-component/issues"
   },
@@ -39,20 +33,20 @@
   "license": "MIT",
   "sideEffects": false,
   "main": "./fesm2022/stackline-angular-data-table-component.mjs",
-  "module": "fesm2022/stackline-angular-data-table-component.mjs",
+  "module": "./fesm2022/stackline-angular-data-table-component.mjs",
   "es2022": "./fesm2022/stackline-angular-data-table-component.mjs",
   "fesm2022": "./fesm2022/stackline-angular-data-table-component.mjs",
-  "typings": "types/stackline-angular-data-table-component.d.ts",
+  "typings": "./types/stackline-angular-data-table-component.d.ts",
   "types": "./types/stackline-angular-data-table-component.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "@angular/common": ">=21.0.0 <22.0.0",
-    "@angular/core": ">=21.0.0 <22.0.0"
+    "@angular/common": ">=22.0.0 <23.0.0",
+    "@angular/core": ">=22.0.0 <23.0.0"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.8.1"
   },
   "exports": {
     "./package.json": {
