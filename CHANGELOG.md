@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## Unreleased
 
+- Classified non-current documentation families as compatibility fixtures while
+  keeping the maintained framework line buildable and audited.
 - Moved exact-version dependency records to `package.fixture.json`, repaired
   their validators, and added an offline catalog contract to keep historical
   metadata out of active dependency alerts.

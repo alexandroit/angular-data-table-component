@@ -38,6 +38,63 @@ function frameworkDependencies(framework, dependencies) {
   return [];
 }
 
+function validateFrameworkFamilies(repositoryRoot) {
+  const docsRoot = path.join(repositoryRoot, 'docs-src');
+  const currentMajor = Number.parseInt(readJson(path.join(repositoryRoot, 'package.json')).version, 10);
+  const families = readdirSync(docsRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && /^angular-\d+$/.test(entry.name))
+    .map((entry) => ({
+      directory: path.join(docsRoot, entry.name),
+      major: Number.parseInt(entry.name.slice('angular-'.length), 10)
+    }));
+  let archived = 0;
+
+  assert(families.some(({ major }) => major === currentMajor),
+    `Missing current Angular ${currentMajor} documentation family`);
+
+  for (const { directory, major } of families) {
+    const activeManifest = path.join(directory, 'package.json');
+    const activeLock = path.join(directory, 'package-lock.json');
+    const fixtureManifest = path.join(directory, FIXTURE_MANIFEST);
+    const fixtureLock = path.join(directory, 'package-lock.fixture.json');
+
+    if (major === currentMajor) {
+      assert(existsSync(activeManifest),
+        `Current Angular ${major} docs must expose package.json`);
+      assert(existsSync(activeLock),
+        `Current Angular ${major} docs must expose package-lock.json`);
+      assert(!existsSync(fixtureManifest),
+        `Current Angular ${major} docs must not be archived`);
+      readJson(activeLock);
+      continue;
+    }
+
+    archived += 1;
+    assert(existsSync(fixtureManifest),
+      `Missing family fixture manifest: ${directory}`);
+    assert(!existsSync(activeManifest),
+      `Historical family must not expose package.json: ${directory}`);
+    assert(!existsSync(activeLock),
+      `Historical family must not expose package-lock.json: ${directory}`);
+
+    const manifest = readJson(fixtureManifest);
+    assert(manifest.private === true, 'Historical family fixtures must stay private');
+
+    for (const [name, version] of frameworkDependencies(
+      'angular',
+      manifest.dependencies || {}
+    )) {
+      assert(
+        Number.parseInt(String(version).match(/\d+/)?.[0], 10) === major,
+        `${name} must stay on Angular ${major}, found ${version}`
+      );
+    }
+
+    if (existsSync(fixtureLock)) readJson(fixtureLock);
+  }
+
+  return archived;
+}
 export function validateRelease(releaseRoot) {
   const metadata = readJson(path.join(releaseRoot, 'stackline-release.json'));
   const manifestFile = path.join(releaseRoot, FIXTURE_MANIFEST);
@@ -98,7 +155,11 @@ export function validateCatalog(repositoryRoot) {
     validateRelease(releaseRoot);
   }
 
-  process.stdout.write(`Validated ${metadataFiles.length} compatibility fixtures\n`);
+  const archivedFamilies = validateFrameworkFamilies(repositoryRoot);
+  process.stdout.write(
+    `Validated ${metadataFiles.length} exact-version fixtures and ` +
+      `${archivedFamilies} historical framework families\n`
+  );
 }
 
 const currentFile = fileURLToPath(import.meta.url);
