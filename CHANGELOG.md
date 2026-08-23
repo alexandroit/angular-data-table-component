@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## Unreleased
+
+- Moved exact-version dependency records to `package.fixture.json`, repaired
+  their validators, and added an offline catalog contract to keep historical
+  metadata out of active dependency alerts.
+
 ## 22.1.0 - 2026-08-20
 
 - Restored the complete Angular 22 source and public API in the GitHub repository.
