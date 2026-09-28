@@ -12,9 +12,68 @@ headless controller without adopting an entire UI framework.
 [Live documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)
 | [npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)
 | [Issues](https://github.com/alexandroit/angular-data-table-component/issues)
-| [Security](SECURITY.md)
+| [Repository](https://github.com/alexandroit/angular-data-table-component)
+| [Security](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md)
 
-## Install
+
+**Package version:** `22.1.1`
+
+## Contents
+
+- [Why this package?](#why-this-package)
+- [Compatibility](#compatibility)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Security](#security)
+- [API Surface](#api-surface)
+- [Local Development](#local-development)
+- [Consumer Smoke Test](#consumer-smoke-test)
+- [Release Checklist](#release-checklist)
+- [Community and Support](#community-and-support)
+- [License](#license)
+
+<a id="why-this-library"></a>
+
+## Why this package?
+
+`@stackline/angular-data-table-component` provides Angular 22 tables and a headless controller for applications that need configurable data presentation while keeping their own templates and styling.
+
+## Compatibility
+
+| Item | Value |
+| --- | --- |
+| Package | `@stackline/angular-data-table-component@22.1.1` |
+| Peer: `@angular/common` | `>=22.0.0 <23.0.0` |
+| Peer: `@angular/core` | `>=22.0.0 <23.0.0` |
+| Runtime dependencies | `tslib` |
+| Package format | Angular Package Format with partial-Ivy compilation and TypeScript declarations |
+
+
+### Angular Compatibility
+
+Package majors follow Angular majors. Install an exact historical major when
+maintaining an older Angular application:
+
+| Angular | Package |
+| --- | --- |
+| 22 | `@stackline/angular-data-table-component@22` |
+| 21 | `@stackline/angular-data-table-component@21` |
+| 20 | `@stackline/angular-data-table-component@20` |
+| 19 | `@stackline/angular-data-table-component@19` |
+| 18 | `@stackline/angular-data-table-component@18` |
+| 17 | `@stackline/angular-data-table-component@17` |
+| 16 | `@stackline/angular-data-table-component@16` |
+| 15 | `@stackline/angular-data-table-component@15` |
+| 4-14 | Matching package major |
+| 2 | `@stackline/angular-data-table-component@2` |
+
+Historical lines remain available on npm. Security and maintenance work is
+focused on the current Angular line unless a separate backport is announced.
+
+<a id="install"></a>
+
+## Installation
 
 ```bash
 npm install @stackline/angular-data-table-component
@@ -30,7 +89,9 @@ The current release supports Angular 22:
 Angular applications should keep all Angular framework packages on the same
 patch version.
 
-## Quick Start
+## Usage
+
+### Quick Start
 
 Import the NgModule:
 
@@ -77,7 +138,7 @@ Render the table:
 </stackline-data-table>
 ```
 
-## Capabilities
+## Features
 
 - Client and server sorting, filtering, and pagination
 - Multi-row, single-row, disabled-row, and visible-page selection
@@ -93,7 +154,14 @@ Render the table:
 Every feature has a runnable example in the
 [Angular 22 documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/).
 
-## Templates
+## Security
+
+Please report vulnerabilities privately as described in [SECURITY.md](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md).
+Do not include sensitive details in a public issue.
+
+## API Surface
+
+### Templates
 
 ```html
 <ng-template #scoreCell let-row let-value="value">
@@ -120,7 +188,8 @@ ngAfterViewInit() {
 }
 ```
 
-## Headless Usage
+
+### Headless Usage
 
 Use the same data behavior with custom HTML:
 
@@ -142,7 +211,8 @@ console.log(table.displayedRows);
 console.log(table.state);
 ```
 
-## Main Inputs
+
+### Main Inputs
 
 | Input | Purpose |
 | --- | --- |
@@ -157,37 +227,22 @@ console.log(table.state);
 | `virtualRows`, `virtualStartIndex`, `virtualRowCount` | Virtual row window |
 | `theme`, `dense`, `striped`, `responsive` | Presentation |
 
-## Main Outputs
+
+### Main Outputs
 
 `sortChange`, `selectedRowsChange`, `pageChange`, `rowsPerPageChange`,
 `rowClicked`, `rowDoubleClicked`, `rowExpandToggled`, `globalFilterChange`,
 `columnFiltersChange`, `columnVisibilityChange`, `columnOrderChange`,
 `groupingChange`, and `tableStateChange`.
 
-## Angular Compatibility
+<a id="run-locally"></a>
+<a id="development"></a>
 
-Package majors follow Angular majors. Install an exact historical major when
-maintaining an older Angular application:
+## Local Development
 
-| Angular | Package |
-| --- | --- |
-| 22 | `@stackline/angular-data-table-component@22` |
-| 21 | `@stackline/angular-data-table-component@21` |
-| 20 | `@stackline/angular-data-table-component@20` |
-| 19 | `@stackline/angular-data-table-component@19` |
-| 18 | `@stackline/angular-data-table-component@18` |
-| 17 | `@stackline/angular-data-table-component@17` |
-| 16 | `@stackline/angular-data-table-component@16` |
-| 15 | `@stackline/angular-data-table-component@15` |
-| 4-14 | Matching package major |
-| 2 | `@stackline/angular-data-table-component@2` |
+Use Node `24.20.0` and npm `11.19.0` for reproducible release artifacts.
 
-Historical lines remain available on npm. Security and maintenance work is
-focused on the current Angular line unless a separate backport is announced.
-
-## Development
-
-Use Node `22.22.3` or newer in the Node 22 line:
+The release toolchain uses Node `24.20.0` and npm `11.19.0`; package peer/runtime support remains as documented above:
 
 ```bash
 npm ci
@@ -197,11 +252,27 @@ npm run verify
 `verify` builds the Angular package, runs behavioral and package-contract tests,
 validates clean Angular 22 consumers, and builds the live documentation.
 
-## Security
+## Consumer Smoke Test
 
-Please report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
-Do not include sensitive details in a public issue.
+`npm run check` builds the library and checks its public package contents and existing behavior. Run `npm run test:consumer` for the existing installed-consumer matrix.
+
+## Release Checklist
+
+- Run `npm ci`, `npm run check`, and the applicable browser or consumer checks.
+- Review `npm audit` and `npm audit --omit=dev` separately.
+- Review the packed README, declarations, exports, license, and compatibility metadata.
+- Publish through the [GitHub Actions workflow](https://github.com/alexandroit/angular-data-table-component/actions/workflows/publish.yml) using the tested artifact's SHA-512 digest.
+- Verify the exact npm tarball, version, and GitHub provenance after publication; never replace a published version.
+
+## Community and Support
+
+Report reproducible package issues in the [issue tracker](https://github.com/alexandroit/angular-data-table-component/issues). Use the [security policy](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md) for security reports.
+
+- [Stackline / Alexandro.Net](https://alexandro.net/)
+- [GitHub](https://github.com/alexandroit)
+- [Maintainer LinkedIn](https://www.linkedin.com/in/aleinfo/)
+- [Reddit community: r/Stackline](https://www.reddit.com/r/Stackline/)
 
 ## License
 
-[MIT](LICENSE) Copyright (c) 2026 Alexandro Marques.
+[MIT](https://github.com/alexandroit/angular-data-table-component/blob/main/LICENSE) Copyright (c) 2026 Alexandro Marques.

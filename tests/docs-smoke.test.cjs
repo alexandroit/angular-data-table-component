@@ -11,11 +11,11 @@ test('Angular 22 documentation metadata matches the release', () => {
   const app = fs.readFileSync(path.join(docsRoot, 'src/app/app.component.ts'), 'utf8');
   const index = fs.readFileSync(path.join(docsRoot, 'src/index.html'), 'utf8');
 
-  assert.equal(packageJson.version, '22.1.0');
+  assert.equal(packageJson.version, '22.1.1');
   assert.equal(packageJson.dependencies['@angular/core'], '22.1.3');
   assert.equal(packageJson.dependencies['@stackline/angular-data-table-component'], 'file:../../dist');
   assert.match(app, /angularVersion = '22\.1\.3'/);
-  assert.match(app, /packageVersion = '22\.1\.0'/);
+  assert.match(app, /packageVersion = '22\.1\.1'/);
   assert.match(index, /<base href="\.\/">/);
   assert.match(index, /rel="canonical"/);
 });
@@ -34,7 +34,7 @@ test('documentation index redirects to the current Angular line', () => {
   ]) {
     const content = fs.readFileSync(file, 'utf8');
     assert.match(content, /@stackline\/angular-data-table-component/);
-    assert.match(content, /22\.1\.0/);
+    assert.match(content, /22\.1\.1/);
   }
 });
 

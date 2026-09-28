@@ -9,7 +9,7 @@ import { EXAMPLE_MENU, ExampleMenuItem } from './shared/example-menu';
 })
 export class AppComponent implements OnInit {
   angularVersion = '22.1.3';
-  packageVersion = '22.1.0';
+  packageVersion = '22.1.1';
   stackBlitzUrl = 'https://stackblitz.com/github/alexandroit/stackline-angular-data-table-angular-22?file=src%2Fapp%2Fexamples%2Fbasic%2Fbasic.component.ts&initialpath=%2Fbasic&startScript=start';
   activeExample = 'basic';
   examples: ExampleMenuItem[] = EXAMPLE_MENU;

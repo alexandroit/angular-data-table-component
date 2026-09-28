@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 
 ## Unreleased
 
+## 22.1.1 - 2026-09-28
+
+- Organize package documentation, preserve examples and compatibility guidance, and add verified Stackline community links.
+- Add precise Stackline discovery metadata and standardize GitHub release tooling on Node 24.20.0 and npm 11.19.0.
+- Fail closed on registry lookup errors and use the reviewed GitHub artifact workflow for public npm releases.
+- Patch vulnerable development and documentation dependencies within their existing compatible ranges.
+
+
 - Classified non-current documentation families as compatibility fixtures while
   keeping the maintained framework line buildable and audited.
 - Moved exact-version dependency records to `package.fixture.json`, repaired
