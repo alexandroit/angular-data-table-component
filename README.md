@@ -1,39 +1,18 @@
 # @stackline/angular-data-table-component
 
-An Angular 22 data table for application screens that need sorting, filtering,
-pagination, selection, grouping, pinning, virtualization, templates, or a
-headless controller without adopting an entire UI framework.
+> An Angular 22 data table with sorting, filtering, pagination, selection, grouping, pinning, virtualization, templates, and a headless controller.
 
-[![npm](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
-[![downloads](https://img.shields.io/npm/dm/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
-[![CI](https://img.shields.io/github/actions/workflow/status/alexandroit/angular-data-table-component/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/alexandroit/angular-data-table-component/actions/workflows/ci.yml)
-[![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
+[![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component)
+[![GitHub repository](https://img.shields.io/badge/GitHub-alexandroit%2Fangular-data-table-component-181717?style=flat-square&logo=github)](https://github.com/alexandroit/angular-data-table-component)
+[![Docs](https://img.shields.io/badge/docs-alexandro.net-0f766e?style=flat-square)](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)
+[![Reddit community](https://img.shields.io/badge/community-r%2FStackline-ff4500?style=flat-square&logo=reddit&logoColor=white)](https://www.reddit.com/r/Stackline/)
 
-[Live documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)
-| [npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)
-| [Issues](https://github.com/alexandroit/angular-data-table-component/issues)
-| [Repository](https://github.com/alexandroit/angular-data-table-component)
-| [Security](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md)
+**[Documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
 
+**Current package version:** `22.1.3`
 
-**Package version:** `22.1.2`
-
-## Contents
-
-- [Why this package?](#why-this-package)
-- [Compatibility](#compatibility)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
-- [Security](#security)
-- [API Surface](#api-surface)
-- [Local Development](#local-development)
-- [Consumer Smoke Test](#consumer-smoke-test)
-- [Release Checklist](#release-checklist)
-- [Community and Support](#community-and-support)
-- [License](#license)
-
-<a id="why-this-library"></a>
+---
 
 ## Why this package?
 
@@ -43,7 +22,7 @@ headless controller without adopting an entire UI framework.
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/angular-data-table-component@22.1.2` |
+| Package | `@stackline/angular-data-table-component@22.1.3` |
 | Peer: `@angular/common` | `>=22.0.0 <23.0.0` |
 | Peer: `@angular/core` | `>=22.0.0 <23.0.0` |
 | Runtime dependencies | `tslib` |
@@ -264,15 +243,23 @@ validates clean Angular 22 consumers, and builds the live documentation.
 - Publish through the [GitHub Actions workflow](https://github.com/alexandroit/angular-data-table-component/actions/workflows/publish.yml) using the tested artifact's SHA-512 digest.
 - Verify the exact npm tarball, version, and GitHub provenance after publication; never replace a published version.
 
-## Community and Support
-
-Report reproducible package issues in the [issue tracker](https://github.com/alexandroit/angular-data-table-component/issues). Use the [security policy](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md) for security reports.
-
-- [Stackline / Alexandro.Net](https://alexandro.net/)
-- [GitHub](https://github.com/alexandroit)
-- [Maintainer LinkedIn](https://www.linkedin.com/in/aleinfo/)
-- [Reddit community: r/Stackline](https://www.reddit.com/r/Stackline/)
-
 ## License
 
 [MIT](https://github.com/alexandroit/angular-data-table-component/blob/main/LICENSE) Copyright (c) 2026 Alexandro Marques.
+
+## Credits and original authors
+
+- Copyright (c) 2026 Alexandro Marques.
+- Stackline maintenance: [Alexandro Paixao Marques](https://www.linkedin.com/in/aleinfo/) and [Stackline contributors](https://github.com/alexandroit).
+
+Original copyright, license notices and contributor acknowledgements remain part of this distribution. Stackline maintenance does not replace authorship of the original work.
+
+## Community and Links
+
+- [Stackline website](https://alexandro.net/)
+- [GitHub projects](https://github.com/alexandroit)
+- [npm packages](https://www.npmjs.com/~alex360qc)
+- [Reddit community — r/Stackline](https://www.reddit.com/r/Stackline/)
+- [Maintainer LinkedIn](https://www.linkedin.com/in/aleinfo/)
+
+Use this repository's issue tracker for reproducible bugs and feature requests. Join r/Stackline for examples, usage questions and release discussions.

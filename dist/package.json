@@ -1,12 +1,15 @@
 {
   "name": "@stackline/angular-data-table-component",
-  "version": "22.1.2",
+  "version": "22.1.3",
   "description": "An Angular 22 data table with sorting, filtering, pagination, selection, grouping, pinning, virtualization, templates, and a headless controller.",
   "keywords": [
+    "stackline",
+    "npm-package",
+    "angular-data-table-component",
     "angular",
+    "typescript",
     "angular22",
     "angular-library",
-    "typescript",
     "data-table",
     "datatable",
     "table",
@@ -19,12 +22,7 @@
     "column-pinning",
     "row-pinning",
     "virtualization",
-    "headless",
-    "accessibility",
-    "stackline",
-    "angular-data-table",
-    "data-grid",
-    "headless-table"
+    "headless"
   ],
   "homepage": "https://alexandro.net/docs/angular/angular-data-table-component/angular-22/",
   "bugs": {
