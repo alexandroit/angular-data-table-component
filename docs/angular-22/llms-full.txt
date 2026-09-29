@@ -1,4 +1,4 @@
-# @stackline/angular-data-table-component 22.1.1
+# @stackline/angular-data-table-component 22.1.2
 
 @stackline/angular-data-table-component is an Angular 22 NgModule library for data-heavy application screens. It includes a styled table component and a view-independent controller for custom Angular markup.
 

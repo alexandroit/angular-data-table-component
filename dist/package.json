@@ -1,6 +1,6 @@
 {
   "name": "@stackline/angular-data-table-component",
-  "version": "22.1.1",
+  "version": "22.1.2",
   "description": "An Angular 22 data table with sorting, filtering, pagination, selection, grouping, pinning, virtualization, templates, and a headless controller.",
   "keywords": [
     "angular",
@@ -50,7 +50,12 @@
     "@angular/core": ">=22.0.0 <23.0.0"
   },
   "dependencies": {
-    "tslib": "^2.8.1"
+    "tslib": "npm:@stackline/tslib@1.0.0"
+  },
+  "overrides": {
+    "ng-packagr": {
+      "tslib": "$tslib"
+    }
   },
   "exports": {
     "./package.json": {

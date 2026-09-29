@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented here.
 
+## 22.1.2 - 2026-09-28
+
+- Reuse the verified Stackline fork of tslib, preserving its import name and runtime API.
+- Verify the aliased helper library in the Angular package, installed consumers, and live documentation.
+
 ## Unreleased
 
 ## 22.1.1 - 2026-09-28

@@ -16,7 +16,7 @@ headless controller without adopting an entire UI framework.
 | [Security](https://github.com/alexandroit/angular-data-table-component/blob/main/SECURITY.md)
 
 
-**Package version:** `22.1.1`
+**Package version:** `22.1.2`
 
 ## Contents
 
@@ -43,7 +43,7 @@ headless controller without adopting an entire UI framework.
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/angular-data-table-component@22.1.1` |
+| Package | `@stackline/angular-data-table-component@22.1.2` |
 | Peer: `@angular/common` | `>=22.0.0 <23.0.0` |
 | Peer: `@angular/core` | `>=22.0.0 <23.0.0` |
 | Runtime dependencies | `tslib` |

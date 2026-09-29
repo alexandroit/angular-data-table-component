@@ -122,7 +122,7 @@ try {
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
     }));
 
-    assert.match(initial.body, /@stackline\/angular-data-table-component 22\.1\.1/);
+    assert.match(initial.body, /@stackline\/angular-data-table-component 22\.1\.2/);
     assert.match(initial.body, /Angular 22\.1\.3 runtime/);
     assert.equal(initial.navItems, 40);
     assert.ok(initial.tableRows >= 5);

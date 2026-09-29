@@ -2,7 +2,7 @@
 
 > Angular 22 data table with sorting, filtering, pagination, selection, grouping, pinning, virtualization, templates, and a headless controller.
 
-Current version: 22.1.1
+Current version: 22.1.2
 Package: https://www.npmjs.com/package/@stackline/angular-data-table-component
 Repository: https://github.com/alexandroit/angular-data-table-component
 Documentation: https://alexandro.net/docs/angular/angular-data-table-component/angular-22/

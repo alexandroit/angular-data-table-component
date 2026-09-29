@@ -11,7 +11,7 @@ test('built package has the expected Angular 22 contract and release files', asy
   const packageJson = JSON.parse(fs.readFileSync(path.join(dist, 'package.json'), 'utf8'));
 
   assert.equal(packageJson.name, '@stackline/angular-data-table-component');
-  assert.equal(packageJson.version, '22.1.1');
+  assert.equal(packageJson.version, '22.1.2');
   assert.equal(packageJson.peerDependencies['@angular/common'], '>=22.0.0 <23.0.0');
   assert.equal(packageJson.peerDependencies['@angular/core'], '>=22.0.0 <23.0.0');
   assert.equal(packageJson.sideEffects, false);
