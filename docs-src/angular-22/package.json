@@ -26,8 +26,6 @@
     "typescript": "6.0.3"
   },
   "overrides": {
-    "@angular/build": {
-      "tslib": "$tslib"
-    }
+    "tslib": "$tslib"
   }
 }

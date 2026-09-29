@@ -233,7 +233,7 @@ License: "Apache-2.0"
 
 
 --------------------------------------------------------------------------------
-Package: tslib
+Package: @stackline/tslib
 License: "0BSD"
 
 Copyright (c) Microsoft Corporation.

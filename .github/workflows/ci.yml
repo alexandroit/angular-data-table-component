@@ -61,9 +61,10 @@ jobs:
       - run: npm install --global npm@11.19.0
       - run: npm ci
       - run: npm run check
-      - run: npm ci --prefix docs-src/angular-22
+      - run: npm ci --prefix docs-src/angular-22 --install-links
       - run: npm run build:docs
       - run: npm run test:browser
+      - run: npm ls --prefix docs-src/angular-22 --all --install-links
       - run: npm audit --prefix docs-src/angular-22 --audit-level=low
 
   artifact:

@@ -57,7 +57,7 @@
     "test:fixtures": "node tools/stackline-run-release-smoke.mjs --catalog",
     "build": "ng-packagr -p ng-package.json && node scripts/finalize-package.mjs",
     "build:docs": "npm run build --prefix docs-src/angular-22",
-    "docs:install": "npm install --ignore-scripts --prefix docs-src/angular-22",
+    "docs:install": "npm install --ignore-scripts --install-links --prefix docs-src/angular-22",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "pretest": "npm run build",
     "test": "node --test tests/*.test.cjs",

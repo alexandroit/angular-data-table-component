@@ -55,10 +55,12 @@ jobs:
             .head_repository.full_name == $repo and .path == ".github/workflows/ci.yml" and
             .status == "completed" and .conclusion == "success"
           ' "$RUNNER_TEMP/ci.json"
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/codeql.yml/runs?head_sha=$GITHUB_SHA&event=push&branch=main&per_page=1" > "$RUNNER_TEMP/codeql.json"
-          jq -e --arg sha "$GITHUB_SHA" '
-            .workflow_runs[0] | .head_sha == $sha and
-            .status == "completed" and .conclusion == "success"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&per_page=100" > "$RUNNER_TEMP/codeql.json"
+          jq -e --arg sha "$GITHUB_SHA" --arg repo "$GITHUB_REPOSITORY" '
+            [.workflow_runs[] | select(.path == "dynamic/github-code-scanning/codeql" and
+              .event == "dynamic" and .head_sha == $sha and .head_branch == "main" and
+              .head_repository.full_name == $repo and
+              .status == "completed" and .conclusion == "success")] | length > 0
           ' "$RUNNER_TEMP/codeql.json"
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
