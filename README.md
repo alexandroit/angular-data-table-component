@@ -4,13 +4,13 @@
 
 [![npm version](https://img.shields.io/npm/v/@stackline/angular-data-table-component.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/angular-data-table-component)
 [![license](https://img.shields.io/npm/l/@stackline/angular-data-table-component.svg?style=flat-square)](https://github.com/alexandroit/angular-data-table-component)
-[![GitHub repository](https://img.shields.io/badge/GitHub-alexandroit%2Fangular-data-table-component-181717?style=flat-square&logo=github)](https://github.com/alexandroit/angular-data-table-component)
+[![GitHub repository](https://img.shields.io/badge/GitHub-repository-181717?style=flat-square&logo=github)](https://github.com/alexandroit/angular-data-table-component)
 [![Docs](https://img.shields.io/badge/docs-alexandro.net-0f766e?style=flat-square)](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)
 [![Reddit community](https://img.shields.io/badge/community-r%2FStackline-ff4500?style=flat-square&logo=reddit&logoColor=white)](https://www.reddit.com/r/Stackline/)
 
 **[Documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
 
-**Current package version:** `22.1.3`
+**Current package version:** `22.1.4`
 
 ---
 
@@ -22,7 +22,7 @@
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/angular-data-table-component@22.1.3` |
+| Package | `@stackline/angular-data-table-component@22.1.4` |
 | Peer: `@angular/common` | `>=22.0.0 <23.0.0` |
 | Peer: `@angular/core` | `>=22.0.0 <23.0.0` |
 | Runtime dependencies | `tslib` |
