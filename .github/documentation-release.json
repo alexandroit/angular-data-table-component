@@ -1,0 +1,38 @@
+{
+  "repository": "alexandroit/angular-data-table-component",
+  "packages": [
+    {
+      "name": "@stackline/angular-data-table-component",
+      "path": "README.md",
+      "version": "22.1.3",
+      "baselineVersion": "22.1.2",
+      "keywords": [
+        "stackline",
+        "npm-package",
+        "angular-data-table-component",
+        "angular",
+        "typescript",
+        "angular22",
+        "angular-library",
+        "data-table",
+        "datatable",
+        "table",
+        "grid",
+        "sorting",
+        "filtering",
+        "pagination",
+        "selection",
+        "grouping",
+        "column-pinning",
+        "row-pinning",
+        "virtualization",
+        "headless"
+      ],
+      "homepage": "https://alexandro.net/docs/angular/angular-data-table-component/angular-22/",
+      "baselineTarball": "https://registry.npmjs.org/@stackline/angular-data-table-component/-/angular-data-table-component-22.1.2.tgz",
+      "baselineIntegrity": "sha512-2a6RnbAs+H338ELbOtscdgVOTAaphIg8dmKHV9gHoM32FUwzvB+Ri/LzqGaSv57M1jgj8id9eM66Wnm08MH2NQ==",
+      "expectedSha512": "970d1312be992898847d00e0260879bce38539e7483bb4c76d6805097de6bbdd12c01ee79f11893e9b9e8a0eda9a4d729951294423f9d3f0abfa914fdcd00094",
+      "tag": "docs-stackline-angular-data-table-component-v22.1.3"
+    }
+  ]
+}
