@@ -13,7 +13,12 @@ test('Angular 22 documentation metadata matches the release', () => {
 
   assert.equal(packageJson.version, '22.1.2');
   assert.equal(packageJson.dependencies['@angular/core'], '22.1.3');
-  assert.equal(packageJson.dependencies['@stackline/angular-data-table-component'], 'file:../../dist');
+  assert.equal(packageJson.dependencies['@stackline/angular-data-table-component'], '22.1.2');
+  const lock = JSON.parse(fs.readFileSync(path.join(docsRoot, 'package-lock.json'), 'utf8'));
+  const installed = lock.packages['node_modules/@stackline/angular-data-table-component'];
+  assert.equal(installed.version, packageJson.version);
+  assert.equal(installed.resolved, 'https://registry.npmjs.org/@stackline/angular-data-table-component/-/angular-data-table-component-22.1.2.tgz');
+  assert.equal(installed.integrity, 'sha512-2a6RnbAs+H338ELbOtscdgVOTAaphIg8dmKHV9gHoM32FUwzvB+Ri/LzqGaSv57M1jgj8id9eM66Wnm08MH2NQ==');
   assert.match(app, /angularVersion = '22\.1\.3'/);
   assert.match(app, /packageVersion = '22\.1\.2'/);
   assert.match(index, /<base href="\.\/">/);
