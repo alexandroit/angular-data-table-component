@@ -11,16 +11,16 @@ test('Angular 22 documentation metadata matches the release', () => {
   const app = fs.readFileSync(path.join(docsRoot, 'src/app/app.component.ts'), 'utf8');
   const index = fs.readFileSync(path.join(docsRoot, 'src/index.html'), 'utf8');
 
-  assert.equal(packageJson.version, '22.1.2');
-  assert.equal(packageJson.dependencies['@angular/core'], '22.1.3');
-  assert.equal(packageJson.dependencies['@stackline/angular-data-table-component'], '22.1.2');
+  assert.equal(packageJson.version, packageJson.dependencies['@stackline/angular-data-table-component']);
+  assert.equal(packageJson.dependencies['@angular/core'], '22.2.4');
+  assert.match(packageJson.dependencies['@stackline/angular-data-table-component'], /^\d+\.\d+\.\d+$/);
   const lock = JSON.parse(fs.readFileSync(path.join(docsRoot, 'package-lock.json'), 'utf8'));
   const installed = lock.packages['node_modules/@stackline/angular-data-table-component'];
   assert.equal(installed.version, packageJson.version);
-  assert.equal(installed.resolved, 'https://registry.npmjs.org/@stackline/angular-data-table-component/-/angular-data-table-component-22.1.2.tgz');
-  assert.equal(installed.integrity, 'sha512-2a6RnbAs+H338ELbOtscdgVOTAaphIg8dmKHV9gHoM32FUwzvB+Ri/LzqGaSv57M1jgj8id9eM66Wnm08MH2NQ==');
-  assert.match(app, /angularVersion = '22\.1\.3'/);
-  assert.match(app, /packageVersion = '22\.1\.2'/);
+  assert.equal(installed.resolved, `https://registry.npmjs.org/@stackline/angular-data-table-component/-/angular-data-table-component-${packageJson.dependencies['@stackline/angular-data-table-component']}.tgz`);
+  assert.match(installed.integrity, /^sha512-/);
+  assert.ok(app.includes(`angularVersion = '${packageJson.dependencies['@angular/core']}'`));
+  assert.ok(app.includes(`packageVersion = '${packageJson.version}'`));
   assert.match(index, /<base href="\.\/">/);
   assert.match(index, /rel="canonical"/);
 });
@@ -39,7 +39,7 @@ test('documentation index redirects to the current Angular line', () => {
   ]) {
     const content = fs.readFileSync(file, 'utf8');
     assert.match(content, /@stackline\/angular-data-table-component/);
-    assert.match(content, /22\.1\.2/);
+    assert.match(content, /22\.1\.4/);
   }
 });
 

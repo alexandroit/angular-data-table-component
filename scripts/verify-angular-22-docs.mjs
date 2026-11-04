@@ -7,6 +7,7 @@ import puppeteer from 'puppeteer-core';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docs = path.join(root, 'docs', 'angular-22');
+const docsManifest = JSON.parse(fs.readFileSync(path.join(root, 'docs-src/angular-22/package.json'), 'utf8'));
 const explicitUrl = process.env.STACKLINE_ANGULAR_DATA_TABLE_URL;
 const screenshotDir = process.env.STACKLINE_SCREENSHOT_DIR;
 const chrome = [
@@ -122,8 +123,8 @@ try {
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
     }));
 
-    assert.match(initial.body, /@stackline\/angular-data-table-component 22\.1\.2/);
-    assert.match(initial.body, /Angular 22\.1\.3 runtime/);
+    assert.ok(initial.body.includes(`@stackline/angular-data-table-component ${docsManifest.dependencies['@stackline/angular-data-table-component']}`));
+    assert.ok(initial.body.includes(`Angular ${docsManifest.dependencies['@angular/core']} runtime`));
     assert.equal(initial.navItems, 40);
     assert.ok(initial.tableRows >= 5);
     assert.equal(initial.overflow, false, `${viewport.name} page has horizontal overflow.`);

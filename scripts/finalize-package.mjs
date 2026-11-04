@@ -26,5 +26,6 @@ manifest.exports = {
 
 delete manifest.files;
 delete manifest.packageManager;
+delete manifest.overrides;
 
 fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);

@@ -25,7 +25,7 @@ assert.ok(fs.existsSync(tarball), `Package tarball not found: ${tarball}`);
 
 const matrices = [
   { name: 'peer-floor', angular: '22.0.2', compilerCli: '22.0.2' },
-  { name: 'current', angular: '22.1.3', compilerCli: '22.1.3' }
+  { name: 'current', angular: '22.2.4', compilerCli: '22.2.4' }
 ];
 
 try {
