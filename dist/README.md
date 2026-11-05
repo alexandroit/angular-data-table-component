@@ -10,7 +10,7 @@
 
 **[Documentation](https://alexandro.net/docs/angular/angular-data-table-component/angular-22/)** | **[npm](https://www.npmjs.com/package/@stackline/angular-data-table-component)** | **[Issues](https://github.com/alexandroit/angular-data-table-component/issues)** | **[Repository](https://github.com/alexandroit/angular-data-table-component)**
 
-**Current package version:** `22.1.6`
+**Current package version:** `22.1.7`
 
 ---
 
@@ -22,7 +22,7 @@
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/angular-data-table-component@22.1.6` |
+| Package | `@stackline/angular-data-table-component@22.1.7` |
 | Peer: `@angular/common` | `>=22.0.0 <23.0.0` |
 | Peer: `@angular/core` | `>=22.0.0 <23.0.0` |
 | Runtime dependencies | `tslib` |

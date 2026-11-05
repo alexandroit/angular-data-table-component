@@ -43,7 +43,7 @@ try {
         '@angular/compiler-cli': matrix.compilerCli,
         '@angular/core': matrix.angular,
         '@stackline/angular-data-table-component': `file:${tarball}`,
-        tslib: '2.8.1',
+        tslib: '2.9.1',
         typescript: '6.0.3'
       }
     }, null, 2)}\n`);
