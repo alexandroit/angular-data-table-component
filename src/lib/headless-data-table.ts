@@ -10,12 +10,15 @@ import {
 } from './types';
 import {
   clamp,
+  columnStateId,
   copySafeDictionary,
   createSafeDictionary,
   hasOwnKey,
   resolveCellValue,
   sortRows,
-  toCellText
+  toCellText,
+  toPage,
+  toPageSize
 } from './utils';
 
 export interface HeadlessDataTableOptions {
@@ -35,6 +38,10 @@ export interface HeadlessDataTableOptions {
   selectableRows?: boolean;
   selectableRowsSingle?: boolean;
   selectedKeys?: { [key: string]: boolean };
+  /** Report pages the controller changes on its own (sort, filter, clamping) through onPageChange. Default false. */
+  paginationEmitOnReset?: boolean;
+  /** With client pagination, a new globalFilter or columnFilters value in update() goes to page 1. Default false. */
+  paginationResetOnFilterChange?: boolean;
   onSortChange?: (event: DataTableSortEvent) => void;
   onSelectionChange?: (event: DataTableSelectionState) => void;
   onPageChange?: (event: DataTablePageEvent) => void;
@@ -56,12 +63,17 @@ export class HeadlessDataTableController {
   columnOrder: Array<string | number> = [];
   selectableRows = false;
   selectableRowsSingle = false;
+  paginationEmitOnReset = false;
+  paginationResetOnFilterChange = false;
   currentPage = 1;
   rowsPerPage = 10;
   sortDirection: DataTableSortOrder = 'asc';
   activeSortColumn: DataTableColumn | null = null;
 
   private selectedKeys = createSafeDictionary<boolean>();
+  private hasSeenRows = false;
+  private pageOption: any;
+  private optionsApplied = false;
   private onSortChange: ((event: DataTableSortEvent) => void) | null = null;
   private onSelectionChange: ((event: DataTableSelectionState) => void) | null = null;
   private onPageChange: ((event: DataTablePageEvent) => void) | null = null;
@@ -73,6 +85,18 @@ export class HeadlessDataTableController {
   }
 
   update(options: HeadlessDataTableOptions) {
+    var previousColumns = this.columns;
+    // The constructor's first update neither resets nor reports the page.
+    var initialized = this.optionsApplied;
+    // Compared with the filters in effect, which setGlobalFilter and setColumnFilter also change,
+    // so passing back the current filters is not a change. Two empty filter sets are equal.
+    var filtersChanged = initialized && (
+      (options.globalFilter || '') !== this.globalFilter ||
+      ((options.columnFilters || []) !== this.columnFilters &&
+        (Object.keys(options.columnFilters || []).length > 0 || Object.keys(this.columnFilters || []).length > 0))
+    );
+    var reset = false;
+
     this.columns = options.columns || [];
     this.data = options.data || [];
     this.keyField = options.keyField || this.keyField || 'id';
@@ -86,8 +110,16 @@ export class HeadlessDataTableController {
     this.columnOrder = options.columnOrder || [];
     this.selectableRows = !!options.selectableRows;
     this.selectableRowsSingle = !!options.selectableRowsSingle;
-    this.currentPage = options.page || this.currentPage || 1;
-    this.rowsPerPage = options.perPage || this.rowsPerPage || 10;
+    this.paginationEmitOnReset = !!options.paginationEmitOnReset;
+    this.paginationResetOnFilterChange = !!options.paginationResetOnFilterChange;
+    this.optionsApplied = true;
+    if (options.page !== undefined && options.page !== this.pageOption) {
+      // A new page value is kept until rows exist, like the component's paginationDefaultPage.
+      this.hasSeenRows = false;
+    }
+    this.pageOption = options.page;
+    this.currentPage = toPage(options.page, toPage(this.currentPage, 1));
+    this.rowsPerPage = toPageSize(options.perPage, toPageSize(this.rowsPerPage, 10));
     this.onSortChange = options.onSortChange || null;
     this.onSelectionChange = options.onSelectionChange || null;
     this.onPageChange = options.onPageChange || null;
@@ -98,7 +130,20 @@ export class HeadlessDataTableController {
       this.selectedKeys = copySafeDictionary(options.selectedKeys);
     }
 
-    this.ensureValidPage();
+    if (this.activeSortColumn && this.columns !== previousColumns) {
+      // New column objects: keep sorting by the column with the same key.
+      this.activeSortColumn = this.findColumn(this.getColumnKey(this.activeSortColumn), this.flatColumns) || this.activeSortColumn;
+    }
+
+    if (this.paginationResetOnFilterChange && filtersChanged && this.pagination && !this.paginationServer) {
+      reset = this.currentPage !== 1;
+      this.currentPage = 1;
+    }
+
+    if ((this.ensureValidPage() || reset) && this.paginationEmitOnReset && initialized) {
+      this.emitPageChange();
+    }
+
     return this;
   }
 
@@ -222,12 +267,18 @@ export class HeadlessDataTableController {
   }
 
   get state(): DataTableStateChangeEvent {
+    var column = this.activeSortColumn;
+
     return {
       globalFilter: this.globalFilter,
       columnFilters: this.columnFilters,
       columnVisibility: this.columnVisibility,
       columnOrder: this.columnOrder,
-      groupBy: []
+      groupBy: [],
+      page: this.currentPage,
+      rowsPerPage: this.rowsPerPage,
+      sortColumnId: column ? columnStateId(column) : null,
+      sortDirection: this.sortDirection
     };
   }
 
@@ -289,6 +340,8 @@ export class HeadlessDataTableController {
   }
 
   toggleSort(column: DataTableColumn) {
+    var previousPage = this.currentPage;
+
     if (!column.sortable) {
       return;
     }
@@ -310,6 +363,7 @@ export class HeadlessDataTableController {
       });
     }
 
+    this.emitPageReset(previousPage);
     this.emitState();
   }
 
@@ -362,20 +416,13 @@ export class HeadlessDataTableController {
   }
 
   changePage(page: number) {
-    this.currentPage = clamp(page, 1, this.totalPages);
-
-    if (this.onPageChange) {
-      this.onPageChange({
-        page: this.currentPage,
-        totalRows: this.totalRows
-      });
-    }
-
+    this.currentPage = clamp(toPage(page, 1), 1, this.totalPages);
+    this.emitPageChange();
     this.emitState();
   }
 
   changeRowsPerPage(rowsPerPage: string | number) {
-    this.rowsPerPage = Number(rowsPerPage) || this.rowsPerPage;
+    this.rowsPerPage = toPageSize(rowsPerPage, toPageSize(this.rowsPerPage, 10));
     this.currentPage = 1;
 
     if (this.onRowsPerPageChange) {
@@ -389,18 +436,24 @@ export class HeadlessDataTableController {
   }
 
   setGlobalFilter(value: string) {
+    var previousPage = this.currentPage;
+
     this.globalFilter = value || '';
     this.currentPage = 1;
     this.ensureValidPage();
+    this.emitPageReset(previousPage);
     this.emitState();
   }
 
   setColumnFilter(columnId: string | number, value: any) {
     var filters = this.getColumnFilterMap();
+    var previousPage = this.currentPage;
+
     filters[String(columnId)] = value;
     this.columnFilters = filters;
     this.currentPage = 1;
     this.ensureValidPage();
+    this.emitPageReset(previousPage);
     this.emitState();
   }
 
@@ -538,8 +591,34 @@ export class HeadlessDataTableController {
     return output;
   }
 
+  // Returns true when the page was clamped.
   private ensureValidPage() {
-    this.currentPage = clamp(this.currentPage || 1, 1, this.totalPages);
+    var previousPage = this.currentPage;
+
+    // The requested page waits until rows first exist; then clamp as before.
+    this.hasSeenRows = this.hasSeenRows || this.totalRows > 0;
+
+    if (this.hasSeenRows) {
+      this.currentPage = clamp(this.currentPage || 1, 1, this.totalPages);
+    }
+
+    return !Object.is(previousPage, this.currentPage);
+  }
+
+  private emitPageChange() {
+    if (this.onPageChange) {
+      this.onPageChange({
+        page: this.currentPage,
+        totalRows: this.totalRows
+      });
+    }
+  }
+
+  // paginationEmitOnReset: report a page the controller changed on its own.
+  private emitPageReset(previousPage: number) {
+    if (this.paginationEmitOnReset && this.currentPage !== previousPage) {
+      this.emitPageChange();
+    }
   }
 
   private emitSelection() {

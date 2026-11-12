@@ -10,22 +10,22 @@ export const DATA_TABLE_TEMPLATE = `
     {{ contextMessage.message }}
   </div>
 
-  <div *ngIf="progressPending" class="adtc-state adtc-loading" role="status" aria-live="polite">
-    Loading...
+  <div *ngIf="progressPending" class="adtc-state adtc-loading" role="status" aria-live="polite" [attr.style]="loadingStyleText">
+    {{ localize('', 'loadingText') }}
   </div>
 
   <div *ngIf="!progressPending && !hasRows" class="adtc-state" role="status" aria-live="polite">
     {{ noDataText }}
   </div>
 
-  <div *ngIf="!progressPending && hasRows">
+  <div *ngIf="!progressPending && hasRows" #adtcRows>
       <div [attr.class]="wrapperClassName">
       <div [attr.class]="scrollClassName" [attr.style]="scrollStyleText">
         <table
           class="adtc-table"
           role="grid"
           [attr.aria-label]="tableAriaLabel"
-          [attr.aria-rowcount]="totalRows"
+          [attr.aria-rowcount]="ariaRowCount"
           [attr.aria-colcount]="expandedColspan">
           <thead *ngIf="!noTableHead">
             <tr *ngIf="hasColumnGroups" role="row">
@@ -33,7 +33,7 @@ export const DATA_TABLE_TEMPLATE = `
                 <input
                   *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
                   type="checkbox"
-                  [attr.aria-label]="selectAllAriaLabel"
+                  [attr.aria-label]="getSelectAllAriaLabel()"
                   [attr.aria-checked]="selectAllAriaChecked"
                   [indeterminate]="someRowsSelected"
                   [checked]="allRowsSelected"
@@ -53,7 +53,7 @@ export const DATA_TABLE_TEMPLATE = `
                 <input
                   *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
                   type="checkbox"
-                  [attr.aria-label]="selectAllAriaLabel"
+                  [attr.aria-label]="getSelectAllAriaLabel()"
                   [attr.aria-checked]="selectAllAriaChecked"
                   [indeterminate]="someRowsSelected"
                   [checked]="allRowsSelected"
@@ -79,7 +79,7 @@ export const DATA_TABLE_TEMPLATE = `
 	                  (click)="toggleSort(column)">
                   <span>{{ column.name }}</span>
                   <span *ngIf="column.sortable" [attr.class]="getSortIndicatorClassName(column)">
-                    {{ activeSortColumn === column ? (sortDirection === 'asc' ? 'Asc' : 'Desc') : 'Sort' }}
+                    {{ getSortIndicatorText(column) }}
                   </span>
                 </button>
               </th>
@@ -87,8 +87,8 @@ export const DATA_TABLE_TEMPLATE = `
           </thead>
 
           <tbody>
-            <ng-template ngFor let-row [ngForOf]="displayedRows" let-rowIndex="index">
-              <tr *ngIf="isGroupRow(row)" class="adtc-group-row" role="row" [attr.id]="getGroupRowId(row)">
+            <ng-template ngFor let-row [ngForOf]="displayedRows" [ngForTrackBy]="rowTrackBy" let-rowIndex="index">
+              <tr *ngIf="isGroupRow(row)" class="adtc-group-row" role="row" [attr.id]="getGroupRowId(row)" [attr.aria-rowindex]="getRowAriaIndex(rowIndex)">
                 <td class="adtc-group-cell" [attr.colspan]="expandedColspan" role="gridcell">
                   <button
                     type="button"
@@ -102,13 +102,14 @@ export const DATA_TABLE_TEMPLATE = `
                   </button>
                   <strong>{{ row.groupLabel }}</strong>
                   <span>{{ row.groupValue }}</span>
-                  <em>{{ row.leafRows.length }} rows</em>
+                  <em>{{ getGroupRowCountText(row) }}</em>
                 </td>
               </tr>
 
               <tr
                 *ngIf="!isGroupRow(row)"
                 role="row"
+                [attr.aria-rowindex]="getRowAriaIndex(rowIndex)"
                 [attr.class]="getRowClassName(row)"
                 [attr.style]="getRowStyleText(row)"
                 [attr.tabindex]="getRowTabIndex(row)"
@@ -160,6 +161,7 @@ export const DATA_TABLE_TEMPLATE = `
                 *ngIf="!isGroupRow(row) && expandableRows && expandableRowTemplate && isRowExpanded(row)"
                 class="adtc-expanded-row"
                 role="row"
+                [attr.aria-rowindex]="getRowAriaIndex(rowIndex) + 1"
                 [attr.id]="getExpandedRowId(row)">
                 <td class="adtc-expanded-cell" [attr.colspan]="expandedColspan" role="gridcell">
                   <ng-template
@@ -174,28 +176,44 @@ export const DATA_TABLE_TEMPLATE = `
       </div>
     </div>
 
-    <div *ngIf="showPagination" class="adtc-pagination">
-      <div class="adtc-pagination-meta">
-        Showing {{ startRow }}-{{ endRow }} of {{ totalRows }}
-      </div>
-
-      <div class="adtc-pagination-controls">
-        <label class="adtc-pagination-size">
-          Rows:
-          <select [value]="rowsPerPage" (change)="changeRowsPerPage($any($event.target).value)">
-            <option *ngFor="let size of paginationRowsPerPageOptions" [value]="size">
-              {{ size }}
-            </option>
-          </select>
-        </label>
-
-        <button type="button" (click)="changePage(1)" [disabled]="currentPage === 1">First</button>
-        <button type="button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
-        <span class="adtc-page-indicator">Page {{ currentPage }} of {{ totalPages }}</span>
-        <button type="button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
-        <button type="button" (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">Last</button>
-      </div>
-    </div>
+    <ng-container *ngIf="showPagination && !persistPagination" [ngTemplateOutlet]="adtcPagination"></ng-container>
   </div>
+
+  <ng-container *ngIf="showPersistentPagination" [ngTemplateOutlet]="adtcPagination"></ng-container>
 </div>
+
+<ng-template #adtcPagination>
+  <div class="adtc-pagination" [attr.role]="paginationAriaLabel ? 'navigation' : null" [attr.aria-label]="paginationAriaLabel">
+    <ng-container
+      *ngIf="paginationTemplate; else adtcPaginationContent"
+      [ngTemplateOutlet]="paginationTemplate"
+      [ngTemplateOutletContext]="paginationContext"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #adtcPaginationContent>
+  <div class="adtc-pagination-meta" aria-live="polite" aria-atomic="true">
+    {{ paginationOption('showingText') }} {{ startRow }}-{{ endRow }} {{ paginationOption('rangeSeparatorText') }} {{ totalRows }}
+  </div>
+
+  <div class="adtc-pagination-controls">
+    <label *ngIf="!paginationHideRowsPerPage && !paginationOption('noRowsPerPage')" class="adtc-pagination-size">
+      {{ paginationOption('rowsPerPageText') }}
+      <select [value]="rowsPerPage" [attr.aria-label]="localize('pagination', 'rowsPerPageAriaLabel') || null" (change)="changeRowsPerPage($any($event.target).value)">
+        <option
+          *ngFor="let size of rowsPerPageOptions; let index = index; let last = last; let sizes = ngForOf"
+          [value]="size"
+          [selected]="size === rowsPerPage && sizes.indexOf(size) === index">
+          {{ getRowsPerPageOptionLabel(size, last) }}
+        </option>
+      </select>
+    </label>
+
+    <button type="button" (click)="changePage(1); keepPagerFocus($event)" [disabled]="currentPage === 1" [attr.aria-label]="localize('pagination', 'firstPageAriaLabel') || null">{{ paginationOption('firstPageText') }}</button>
+    <button type="button" (click)="changePage(currentPage - 1); keepPagerFocus($event)" [disabled]="currentPage === 1" [attr.aria-label]="localize('pagination', 'previousPageAriaLabel') || null">{{ paginationOption('previousPageText') }}</button>
+    <span class="adtc-page-indicator">{{ paginationOption('pageText') }} {{ currentPage }} {{ paginationOption('rangeSeparatorText') }} {{ totalPages }}</span>
+    <button type="button" (click)="changePage(currentPage + 1); keepPagerFocus($event)" [disabled]="currentPage === totalPages" [attr.aria-label]="localize('pagination', 'nextPageAriaLabel') || null">{{ paginationOption('nextPageText') }}</button>
+    <button type="button" (click)="changePage(totalPages); keepPagerFocus($event)" [disabled]="currentPage === totalPages" [attr.aria-label]="localize('pagination', 'lastPageAriaLabel') || null">{{ paginationOption('lastPageText') }}</button>
+  </div>
+</ng-template>
 `;

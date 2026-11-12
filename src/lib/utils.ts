@@ -4,6 +4,34 @@ export function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+// Page sizes: a finite value of 1 or more, floored; anything else uses the fallback.
+export function toPageSize(value: any, fallback: number) {
+  var size = Number(value);
+  return isFinite(size) && size >= 1 ? Math.floor(size) : fallback;
+}
+
+// Page numbers follow the same rule, except that Infinity keeps meaning the last page, as before.
+export function toPage(value: any, fallback: number) {
+  return Number(value) === Infinity ? Infinity : toPageSize(value, fallback);
+}
+
+// The id that table state reports for a column: id, else accessorKey, a string selector, or name.
+// A selector function is never stringified.
+export function columnStateId(column: DataTableColumn): string | number {
+  if (column.id !== undefined && column.id !== null) {
+    return column.id;
+  }
+
+  return column.accessorKey || (typeof column.selector === 'string' ? column.selector : String(column.name));
+}
+
+// Replaces {name} placeholders; inserted values are not scanned again.
+export function fillPlaceholders(text: string, values: { [key: string]: any }) {
+  return String(text).replace(/\{(\w+)\}/g, function(match: string, key: string) {
+    return hasOwnKey(values, key) ? String(values[key]) : match;
+  });
+}
+
 export function createSafeDictionary<T>() {
   return Object.create(null) as { [key: string]: T };
 }
@@ -143,7 +171,18 @@ function compareUnknown(left: any, right: any) {
     return Number(left) - Number(right);
   }
 
+  // Chronological order; invalid dates sort like null values.
+  if (left instanceof Date && right instanceof Date) {
+    return compareUnknown(timeOrNull(left), timeOrNull(right));
+  }
+
   return String(left).localeCompare(String(right));
+}
+
+function timeOrNull(date: Date) {
+  var time = date.getTime();
+
+  return isNaN(time) ? null : time;
 }
 
 function toKebabCase(value: string) {

@@ -468,6 +468,10 @@ export const DATA_TABLE_STYLES = `
   font-size: 12px;
 }
 
+.adtc-theme-dark .adtc-pagination-size {
+  color: #b0c1d8;
+}
+
 .adtc-pagination select,
 .adtc-pagination button {
   background: #ffffff;

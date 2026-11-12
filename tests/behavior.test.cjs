@@ -134,3 +134,60 @@ test('objects with null prototypes and circular values are handled predictably',
   assert.equal(controller.visibleColumns.length, 1);
   assert.equal(controller.getCellText(controller.data[0], column, 0), '[Unserializable value]');
 });
+
+test('Date values sort chronologically; invalid dates sort like null values', async () => {
+  const { DataTableComponent, createDataTableController } = await apiPromise;
+  const column = { id: 'due', name: 'Due', selector: 'due', sortable: true };
+  const rows = [
+    { id: 1, due: new Date('2024-01-05') },
+    { id: 2, due: new Date('2023-01-02') },
+    { id: 3, due: new Date('invalid') },
+    { id: 4, due: new Date('2025-03-02') },
+    { id: 5, due: new Date('2022-06-01') }
+  ];
+  const controller = createDataTableController({ columns: [column], data: rows });
+  const table = new DataTableComponent();
+  table.columns = [column];
+  table.data = rows;
+
+  controller.activeSortColumn = column;
+  table.activeSortColumn = column;
+  assert.deepEqual(controller.sortedRows.map((row) => row.id), [3, 5, 2, 1, 4]);
+  assert.deepEqual(table.sortedRows.map((row) => row.id), [3, 5, 2, 1, 4]);
+
+  controller.sortDirection = 'desc';
+  table.sortDirection = 'desc';
+  assert.deepEqual(controller.sortedRows.map((row) => row.id), [4, 1, 2, 5, 3]);
+  assert.deepEqual(table.sortedRows.map((row) => row.id), [4, 1, 2, 5, 3]);
+});
+
+test('null or undefined list inputs, as from the async pipe, render an empty table', async () => {
+  const { DataTableComponent } = await apiPromise;
+  const { SimpleChange, reflectComponentType } = await import('@angular/core');
+  const inputs = reflectComponentType(DataTableComponent).inputs;
+  const transform = (name) => inputs.find((input) => input.templateName === name).transform;
+  const list = [{ id: 1 }];
+
+  for (const name of ['data', 'columns', 'hiddenColumns', 'conditionalRowStyles']) {
+    assert.deepEqual(transform(name)(null), [], name);
+    assert.deepEqual(transform(name)(undefined), [], name);
+    assert.equal(transform(name)(list), list, name);
+  }
+  assert.deepEqual(transform('contextMessage')(null), { singular: 'item', plural: 'items', message: 'selected' });
+
+  const table = new DataTableComponent();
+  table.pagination = true;
+  table.selectableRows = true;
+  table.data = transform('data')(null);
+  table.columns = transform('columns')(undefined);
+  table.hiddenColumns = transform('hiddenColumns')(null);
+  table.conditionalRowStyles = transform('conditionalRowStyles')(null);
+  table.contextMessage = transform('contextMessage')(undefined);
+  table.ngOnChanges({ data: new SimpleChange(undefined, table.data, true) });
+  table.ngDoCheck();
+  assert.equal(table.totalRows, 0);
+  assert.deepEqual(table.displayedRows, []);
+  assert.deepEqual(table.visibleColumns, []);
+  assert.equal(table.contextMessage.plural, 'items');
+  table.ngAfterViewChecked();
+});

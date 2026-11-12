@@ -54,10 +54,19 @@ test('built package has the expected Angular 22 contract and release files', asy
     'DataTableColumnPinningState',
     'DataTableRowPinningState',
     'DataTableStateChangeEvent',
+    'DataTablePaginationOptions',
+    'DataTableLocalization',
+    'DataTablePaginationServerOptions',
+    'DataTablePaginationContext',
     'HeadlessDataTableOptions'
   ]) {
     assert.match(declarations, new RegExp(`\\b${publicType}\\b`));
   }
+
+  // 22.1.7 members keep their types; the new text inputs also accept null, as the async pipe gives.
+  assert.match(declarations, /get selectAllAriaLabel\(\): ['"]Select all visible rows['"] \| ['"]Select all rows['"];/);
+  assert.match(declarations, /\blocalization: DataTableLocalization \| null;/);
+  assert.match(declarations, /\bpaginationComponentOptions: DataTablePaginationOptions \| null;/);
 });
 
 test('source no longer performs index lookup inside the sort comparator', () => {

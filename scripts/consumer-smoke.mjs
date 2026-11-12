@@ -73,6 +73,8 @@ import {
   DataTableModule,
   createDataTableController,
   type DataTableColumn,
+  type DataTableLocalization,
+  type DataTablePaginationOptions,
   type DataTableSelectionState
 } from '@stackline/angular-data-table-component';
 
@@ -84,11 +86,14 @@ const rows = [{ id: 1, name: 'Ada' }];
 @Component({
   standalone: false,
   selector: 'consumer-root',
-  template: '<stackline-data-table [columns]="columns" [data]="rows" (selectedRowsChange)="selected($event)"></stackline-data-table>'
+  // Rows and texts loaded later reach the table through the async pipe, which gives null first.
+  template: '<stackline-data-table [columns]="columns" [data]="rows | async" [localization]="texts | async" [paginationComponentOptions]="pagerTexts | async" (selectedRowsChange)="selected($event)"></stackline-data-table>'
 })
 class ConsumerComponent {
   columns = columns;
-  rows = rows;
+  rows = Promise.resolve(rows);
+  texts = Promise.resolve<DataTableLocalization>({ loadingText: 'Loading rows' });
+  pagerTexts = Promise.resolve<DataTablePaginationOptions>({ nextPageText: 'Forward' });
   selected(state: DataTableSelectionState) {
     return state.selectedCount;
   }

@@ -1,5 +1,5 @@
 import * as i0 from "@angular/core";
-import { EventEmitter, OnChanges, SimpleChanges, TemplateRef } from "@angular/core";
+import { AfterViewChecked, DoCheck, EventEmitter, OnChanges, SimpleChanges, TemplateRef } from "@angular/core";
 import * as i2 from "@angular/common";
 export type DataTableSortOrder = 'asc' | 'desc';
 export type DataTableThemeName = 'default' | 'dark';
@@ -68,6 +68,125 @@ export interface DataTableStateChangeEvent {
   };
   columnOrder: Array<string | number>;
   groupBy: Array<string | number>;
+  page?: number;
+  rowsPerPage?: number;
+  sortColumnId?: string | number | null;
+  sortDirection?: DataTableSortOrder;
+}
+/** Pager texts and switches. Option names follow react-data-table-component. */
+export interface DataTablePaginationOptions {
+  /** Hides the rows-per-page selector, like `paginationHideRowsPerPage`. */
+  noRowsPerPage?: boolean;
+  /** Default 'Rows:'. */
+  rowsPerPageText?: string;
+  /** Default 'of', in both "Showing 1-10 of 23" and "Page 1 of 3". */
+  rangeSeparatorText?: string;
+  /** Adds a last "All" option whose value is the total row count. Default false. */
+  selectAllRowsItem?: boolean;
+  /** Default 'All'. */
+  selectAllRowsItemText?: string;
+  /** Default 'Showing'. */
+  showingText?: string;
+  /** Default 'Page'. */
+  pageText?: string;
+  /** Default 'First'. */
+  firstPageText?: string;
+  /** Default 'Prev'. */
+  previousPageText?: string;
+  /** Default 'Next'. */
+  nextPageText?: string;
+  /** Default 'Last'. */
+  lastPageText?: string;
+}
+/**
+ * Texts and accessible names. Every default is the English text of earlier releases.
+ * Placeholders are replaced literally: {column}, {row}, {count}, {label}, {value} and {table}.
+ */
+export interface DataTableLocalization {
+  pagination?: {
+    /**
+     * Names the pager's navigation landmark; {table} is the table's accessible name. Default
+     * '{table} pagination', used when the table has an `ariaLabel` or a `title`. Without either,
+     * and without this label, the pager is not a landmark. An empty string removes the landmark.
+     */
+    navigationAriaLabel?: string;
+    /** Default none: the button text stays the accessible name. */
+    firstPageAriaLabel?: string;
+    /** Default none. */
+    previousPageAriaLabel?: string;
+    /** Default none. */
+    nextPageAriaLabel?: string;
+    /** Default none. */
+    lastPageAriaLabel?: string;
+    /** Default none: the label text names the select. */
+    rowsPerPageAriaLabel?: string;
+  };
+  expandable?: {
+    /** Default 'Expand details for row {row}'. */
+    expandRowAriaLabel?: string;
+    /** Default 'Collapse details for row {row}'. */
+    collapseRowAriaLabel?: string;
+  };
+  /** Default 'Loading...'. */
+  loadingText?: string;
+  /** Used when `ariaLabel` and `title` are empty. Default 'Data table'. */
+  tableAriaLabel?: string;
+  sort?: {
+    /** Default 'Asc'. */
+    ascendingText?: string;
+    /** Default 'Desc'. */
+    descendingText?: string;
+    /** Default 'Sort'. */
+    unsortedText?: string;
+    /** Default 'Sort {column} ascending'. */
+    sortAscendingAriaLabel?: string;
+    /** Default 'Sort {column} descending'. */
+    sortDescendingAriaLabel?: string;
+    /** Non-sortable headers. Default '{column} column'. */
+    columnAriaLabel?: string;
+  };
+  selection?: {
+    /** Default 'Select all rows'. */
+    selectAllRowsAriaLabel?: string;
+    /** Default 'Select all visible rows'. */
+    selectAllVisibleRowsAriaLabel?: string;
+    /** Default 'Select row {row}'. */
+    selectRowAriaLabel?: string;
+    /** Default 'Clear selection for row {row}'. */
+    deselectRowAriaLabel?: string;
+    /** Single selection. Default 'Choose row {row}'. */
+    chooseRowAriaLabel?: string;
+  };
+  grouping?: {
+    /** Default '{count} rows'. */
+    rowCountText?: string;
+    /** Default 'Expand group {label} {value}'. */
+    expandGroupAriaLabel?: string;
+    /** Default 'Collapse group {label} {value}'. */
+    collapseGroupAriaLabel?: string;
+  };
+}
+/** Selection rules for server pagination. Names follow react-data-table-component. */
+export interface DataTablePaginationServerOptions {
+  /** Keep the selection when the sort changes. Default false: it is cleared. */
+  persistSelectedOnSort?: boolean;
+  /** Keep the selection, and the selected rows of other pages, on page changes. Default false: it is cleared. */
+  persistSelectedOnPageChange?: boolean;
+}
+/** Context of `paginationTemplate`. */
+export interface DataTablePaginationContext {
+  $implicit: DataTablePaginationContext;
+  currentPage: number;
+  totalPages: number;
+  rowsPerPage: number;
+  /** The total row count. */
+  rowCount: number;
+  startRow: number;
+  endRow: number;
+  /** Sorted page sizes. With `selectAllRowsItem`, the last entry is the total row count. */
+  rowsPerPageOptions: number[];
+  changePage: (page: number) => void;
+  changeRowsPerPage: (size: string | number) => void;
 }
 export interface DataTableCellContext {
   $implicit: any;
@@ -135,6 +254,10 @@ export interface HeadlessDataTableOptions {
   selectedKeys?: {
     [key: string]: boolean;
   };
+  /** Report pages the controller changes on its own (sort, filter, clamping) through onPageChange. Default false. */
+  paginationEmitOnReset?: boolean;
+  /** With client pagination, a new globalFilter or columnFilters value in update() goes to page 1. Default false. */
+  paginationResetOnFilterChange?: boolean;
   onSortChange?: (event: DataTableSortEvent) => void;
   onSelectionChange?: (event: DataTableSelectionState) => void;
   onPageChange?: (event: DataTablePageEvent) => void;
@@ -159,11 +282,16 @@ export declare class HeadlessDataTableController {
   columnOrder: Array<string | number>;
   selectableRows: boolean;
   selectableRowsSingle: boolean;
+  paginationEmitOnReset: boolean;
+  paginationResetOnFilterChange: boolean;
   currentPage: number;
   rowsPerPage: number;
   sortDirection: DataTableSortOrder;
   activeSortColumn: DataTableColumn | null;
   private selectedKeys;
+  private hasSeenRows;
+  private pageOption;
+  private optionsApplied;
   private onSortChange;
   private onSelectionChange;
   private onPageChange;
@@ -206,23 +334,47 @@ export declare class HeadlessDataTableController {
   private findColumn;
   private getColumnFilterMap;
   private ensureValidPage;
+  private emitPageChange;
+  private emitPageReset;
   private emitSelection;
   private emitState;
 }
 export declare function createDataTableController(options: HeadlessDataTableOptions): HeadlessDataTableController;
-export declare class DataTableComponent implements OnChanges {
+export declare class DataTableComponent implements OnChanges, DoCheck, AfterViewChecked {
   columns: DataTableColumn[];
   data: any[];
   keyField: string;
   title: string;
   ariaLabel: string;
   keyboardRows: boolean;
+  /**
+   * Row identity for the body loop. `(index, row) => row.id` keeps the DOM rows when a refresh
+   * (for example an HttpClient reload) returns new objects. Null keeps identity tracking.
+   */
+  trackBy: ((index: number, row: any) => any) | null;
   pagination: boolean;
   paginationServer: boolean;
   paginationDefaultPage: number;
   paginationPerPage: number;
   paginationTotalRows: number;
   paginationRowsPerPageOptions: number[];
+  paginationHideRowsPerPage: boolean;
+  /** Pager texts, `noRowsPerPage` and the "All" option, as in react-data-table-component. */
+  paginationComponentOptions: DataTablePaginationOptions | null;
+  /** Every change after the first goes back to `paginationDefaultPage` and emits `pageChange`. */
+  paginationResetDefaultPage: boolean;
+  /** Null keeps the selection keys on server page and sort changes; an object applies its rules. */
+  paginationServerOptions: DataTablePaginationServerOptions | null;
+  /** Replaces the content of `div.adtc-pagination`. */
+  paginationTemplate: TemplateRef<DataTablePaginationContext> | null;
+  /** Opt-in: pinned rows stay on every page; client pagination pages and counts the other rows. */
+  keepPinnedRows: boolean;
+  /** Opt-in: the pager stays mounted while `progressPending` is true, for server page loads. */
+  persistPagination: boolean;
+  /** Opt-in: with client pagination, a new `globalFilter` or `columnFilters` input goes to page 1. */
+  paginationResetOnFilterChange: boolean;
+  /** Opt-in: emit `pageChange` when the table changes the page on its own (sort, filter, clamping). */
+  paginationEmitOnReset: boolean;
   selectableRows: boolean;
   selectableRowsSingle: boolean;
   selectableRowsHighlight: boolean;
@@ -282,6 +434,8 @@ export declare class DataTableComponent implements OnChanges {
   virtualRowCount: number;
   theme: DataTableThemeName;
   contextMessage: DataTableContextMessage;
+  /** Texts and accessible names; every default is the English text of earlier releases. */
+  localization: DataTableLocalization | null;
   sortChange: EventEmitter<DataTableSortEvent>;
   selectedRowsChange: EventEmitter<DataTableSelectionState>;
   pageChange: EventEmitter<DataTablePageEvent>;
@@ -303,10 +457,25 @@ export declare class DataTableComponent implements OnChanges {
   rowsPerPage: number;
   sortDirection: DataTableSortOrder;
   activeSortColumn: DataTableColumn | null;
+  readonly rowTrackBy: (index: number, row: any) => any;
   private selectedKeys;
   private expandedKeys;
   private collapsedGroupKeys;
+  private hasSeenRows;
+  private renderPass;
+  private derivedDepth;
+  private derivedCache;
+  private derivedInputs;
+  private loadingHeight;
+  private rowsBlock?;
+  private columnCopies;
+  private groupRowsByKey;
+  private selectedRowCache;
+  private readonly pagerChangePage;
+  private readonly pagerChangeRowsPerPage;
   ngOnChanges(changes: SimpleChanges): void;
+  ngDoCheck(): void;
+  ngAfterViewChecked(): void;
   get flatColumns(): DataTableColumn[];
   get visibleColumns(): DataTableColumn[];
   get hasColumnGroups(): boolean;
@@ -322,6 +491,10 @@ export declare class DataTableComponent implements OnChanges {
   getRowStyleText(row: any): string | null;
   getCellStyleText(column: DataTableColumn): string | null;
   get tableAriaLabel(): string;
+  /** A text from `localization` (group '' for top-level keys), else the default English text. */
+  localize(group: '' | 'pagination' | 'expandable' | 'sort' | 'selection' | 'grouping', key: string): string;
+  /** A value from `paginationComponentOptions`, else its default. */
+  paginationOption<K extends keyof DataTablePaginationOptions>(key: K): Required<DataTablePaginationOptions>[K];
   get pinnedTopDisplayRows(): any[];
   get pinnedBottomDisplayRows(): any[];
   get filteredPinnedTopRows(): any[];
@@ -337,19 +510,36 @@ export declare class DataTableComponent implements OnChanges {
   get totalPages(): number;
   get startRow(): number;
   get endRow(): number;
+  get rowsPerPageOptions(): number[];
+  /** The option text: the "All" text for the last option (`last`) when it is shown, else the size. */
+  getRowsPerPageOptionLabel(size: number, last?: boolean): string | number;
+  get paginationContext(): DataTablePaginationContext;
+  getRowAriaIndex(rowIndex: number): number;
+  get ariaRowCount(): number;
   get selectedRows(): any[];
   get selectedCount(): number;
   get selectionScopeRows(): any[];
   get allRowsSelected(): boolean;
   get someRowsSelected(): boolean;
-  get selectAllAriaLabel(): "Select all visible rows" | "Select all rows";
+  /** The English label of earlier releases; the rendered label is `getSelectAllAriaLabel()`, which applies `localization`. */
+  get selectAllAriaLabel(): 'Select all visible rows' | 'Select all rows';
+  getSelectAllAriaLabel(): string;
   get selectAllAriaChecked(): "true" | "mixed" | "false";
   get showContextBar(): boolean;
   get showPagination(): boolean;
+  get showPersistentPagination(): boolean;
+  get loadingStyleText(): string | null;
+  /**
+   * Names the pager's navigation landmark: `localization.pagination.navigationAriaLabel`, default
+   * '{table} pagination'. Null, and no landmark, for a table without `ariaLabel` or `title` and no
+   * explicit label, because several unnamed landmarks on one page would share one name.
+   */
+  get paginationAriaLabel(): string | null;
   get expandedColspan(): number;
   getCellText(row: any, column: DataTableColumn, rowIndex: number): string;
   getAriaSort(column: DataTableColumn): "none" | "ascending" | "descending" | null;
   getSortButtonAriaLabel(column: DataTableColumn): string;
+  getSortIndicatorText(column: DataTableColumn): string;
   getRowAriaSelected(row: any): string | null;
   getRowTabIndex(row: any): 0 | null;
   getRowSelectionAriaLabel(row: any, rowIndex: number): string;
@@ -357,6 +547,7 @@ export declare class DataTableComponent implements OnChanges {
   getExpandedRowId(row: any): string;
   getGroupRowId(row: any): string;
   getGroupToggleAriaLabel(row: any): string;
+  getGroupRowCountText(row: any): string;
   getCellContext(row: any, column: DataTableColumn, rowIndex: number): DataTableCellContext;
   getExpandableContext(row: any, rowIndex: number): DataTableExpandableContext;
   toggleSort(column: DataTableColumn): void;
@@ -373,6 +564,8 @@ export declare class DataTableComponent implements OnChanges {
   handleMouseEnter(row: any): void;
   handleMouseLeave(row: any): void;
   changePage(page: number): void;
+  keepPagerFocus(event: Event): void;
+  private ignoreKeyRepeat;
   changeRowsPerPage(value: string | number): void;
   toggleRowExpansion(row: any): void;
   isRowExpanded(row: any): boolean;
@@ -403,6 +596,7 @@ export declare class DataTableComponent implements OnChanges {
     [key: string]: string | number;
   };
   private getRowKey;
+  private getDataIndex;
   private getColumnKey;
   private flattenColumns;
   private withInheritedGroup;
@@ -434,10 +628,21 @@ export declare class DataTableComponent implements OnChanges {
   private sanitizeId;
   private emitSelectionState;
   private emitTableState;
+  private emitPageChange;
+  private emitPageReset;
+  private get isClientPaginated();
+  private get keepsPinnedRows();
+  private get headerRowCount();
+  private get allRowsOptionValue();
+  private get detailRowsBefore();
+  private get persistsSelectedRows();
+  private clearServerSelection;
   private syncProgrammaticSelection;
   private syncProgrammaticExpansion;
   private applyDefaultSort;
   private ensureValidPage;
+  private derivedValue;
+  private invalidateDerivedState;
   private mergeColumnSize;
   private joinClasses;
   static ɵfac: i0.ɵɵFactoryDeclaration<DataTableComponent, never>;
@@ -466,6 +671,10 @@ export declare class DataTableComponent implements OnChanges {
       "alias": "keyboardRows";
       "required": false;
     };
+    "trackBy": {
+      "alias": "trackBy";
+      "required": false;
+    };
     "pagination": {
       "alias": "pagination";
       "required": false;
@@ -488,6 +697,42 @@ export declare class DataTableComponent implements OnChanges {
     };
     "paginationRowsPerPageOptions": {
       "alias": "paginationRowsPerPageOptions";
+      "required": false;
+    };
+    "paginationHideRowsPerPage": {
+      "alias": "paginationHideRowsPerPage";
+      "required": false;
+    };
+    "paginationComponentOptions": {
+      "alias": "paginationComponentOptions";
+      "required": false;
+    };
+    "paginationResetDefaultPage": {
+      "alias": "paginationResetDefaultPage";
+      "required": false;
+    };
+    "paginationServerOptions": {
+      "alias": "paginationServerOptions";
+      "required": false;
+    };
+    "paginationTemplate": {
+      "alias": "paginationTemplate";
+      "required": false;
+    };
+    "keepPinnedRows": {
+      "alias": "keepPinnedRows";
+      "required": false;
+    };
+    "persistPagination": {
+      "alias": "persistPagination";
+      "required": false;
+    };
+    "paginationResetOnFilterChange": {
+      "alias": "paginationResetOnFilterChange";
+      "required": false;
+    };
+    "paginationEmitOnReset": {
+      "alias": "paginationEmitOnReset";
       "required": false;
     };
     "selectableRows": {
@@ -694,6 +939,10 @@ export declare class DataTableComponent implements OnChanges {
       "alias": "contextMessage";
       "required": false;
     };
+    "localization": {
+      "alias": "localization";
+      "required": false;
+    };
   }, {
     "sortChange": "sortChange";
     "selectedRowsChange": "selectedRowsChange";
@@ -711,6 +960,11 @@ export declare class DataTableComponent implements OnChanges {
     "groupingChange": "groupingChange";
     "tableStateChange": "tableStateChange";
   }, never, never, false, never>;
+  static ngAcceptInputType_columns: DataTableColumn[] | null | undefined;
+  static ngAcceptInputType_data: any[] | null | undefined;
+  static ngAcceptInputType_conditionalRowStyles: ConditionalStyle[] | null | undefined;
+  static ngAcceptInputType_hiddenColumns: Array<string | number> | null | undefined;
+  static ngAcceptInputType_contextMessage: DataTableContextMessage | null | undefined;
 }
 export declare class DataTableModule {
   static ɵfac: i0.ɵɵFactoryDeclaration<DataTableModule, never>;

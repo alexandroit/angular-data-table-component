@@ -1,9 +1,25 @@
 import * as i0 from "@angular/core";
-import { Component, EventEmitter, Input, NgModule, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, Output, ViewChild } from "@angular/core";
 import * as i1 from "@angular/common";
 import { CommonModule } from "@angular/common";
 function clamp(value, min, max) {
 	return Math.min(max, Math.max(min, value));
+}
+function toPageSize(value, fallback) {
+	var size = Number(value);
+	return isFinite(size) && size >= 1 ? Math.floor(size) : fallback;
+}
+function toPage(value, fallback) {
+	return Number(value) === Infinity ? Infinity : toPageSize(value, fallback);
+}
+function columnStateId(column) {
+	if (column.id !== void 0 && column.id !== null) return column.id;
+	return column.accessorKey || (typeof column.selector === "string" ? column.selector : String(column.name));
+}
+function fillPlaceholders(text, values) {
+	return String(text).replace(/\{(\w+)\}/g, function(match, key) {
+		return hasOwnKey(values, key) ? String(values[key]) : match;
+	});
 }
 function createSafeDictionary() {
 	return Object.create(null);
@@ -74,7 +90,12 @@ function compareUnknown(left, right) {
 	if (right === null || right === void 0) return 1;
 	if (typeof left === "number" && typeof right === "number") return left - right;
 	if (typeof left === "boolean" && typeof right === "boolean") return Number(left) - Number(right);
+	if (left instanceof Date && right instanceof Date) return compareUnknown(timeOrNull(left), timeOrNull(right));
 	return String(left).localeCompare(String(right));
+}
+function timeOrNull(date) {
+	var time = date.getTime();
+	return isNaN(time) ? null : time;
 }
 function toKebabCase(value) {
 	return value.replace(/[A-Z]/g, function(match) {
@@ -95,11 +116,16 @@ var HeadlessDataTableController = class {
 	columnOrder = [];
 	selectableRows = false;
 	selectableRowsSingle = false;
+	paginationEmitOnReset = false;
+	paginationResetOnFilterChange = false;
 	currentPage = 1;
 	rowsPerPage = 10;
 	sortDirection = "asc";
 	activeSortColumn = null;
 	selectedKeys = createSafeDictionary();
+	hasSeenRows = false;
+	pageOption;
+	optionsApplied = false;
 	onSortChange = null;
 	onSelectionChange = null;
 	onPageChange = null;
@@ -112,6 +138,10 @@ var HeadlessDataTableController = class {
 		});
 	}
 	update(options) {
+		var previousColumns = this.columns;
+		var initialized = this.optionsApplied;
+		var filtersChanged = initialized && ((options.globalFilter || "") !== this.globalFilter || (options.columnFilters || []) !== this.columnFilters && (Object.keys(options.columnFilters || []).length > 0 || Object.keys(this.columnFilters || []).length > 0));
+		var reset = false;
 		this.columns = options.columns || [];
 		this.data = options.data || [];
 		this.keyField = options.keyField || this.keyField || "id";
@@ -125,15 +155,25 @@ var HeadlessDataTableController = class {
 		this.columnOrder = options.columnOrder || [];
 		this.selectableRows = !!options.selectableRows;
 		this.selectableRowsSingle = !!options.selectableRowsSingle;
-		this.currentPage = options.page || this.currentPage || 1;
-		this.rowsPerPage = options.perPage || this.rowsPerPage || 10;
+		this.paginationEmitOnReset = !!options.paginationEmitOnReset;
+		this.paginationResetOnFilterChange = !!options.paginationResetOnFilterChange;
+		this.optionsApplied = true;
+		if (options.page !== void 0 && options.page !== this.pageOption) this.hasSeenRows = false;
+		this.pageOption = options.page;
+		this.currentPage = toPage(options.page, toPage(this.currentPage, 1));
+		this.rowsPerPage = toPageSize(options.perPage, toPageSize(this.rowsPerPage, 10));
 		this.onSortChange = options.onSortChange || null;
 		this.onSelectionChange = options.onSelectionChange || null;
 		this.onPageChange = options.onPageChange || null;
 		this.onRowsPerPageChange = options.onRowsPerPageChange || null;
 		this.onStateChange = options.onStateChange || null;
 		if (options.selectedKeys) this.selectedKeys = copySafeDictionary(options.selectedKeys);
-		this.ensureValidPage();
+		if (this.activeSortColumn && this.columns !== previousColumns) this.activeSortColumn = this.findColumn(this.getColumnKey(this.activeSortColumn), this.flatColumns) || this.activeSortColumn;
+		if (this.paginationResetOnFilterChange && filtersChanged && this.pagination && !this.paginationServer) {
+			reset = this.currentPage !== 1;
+			this.currentPage = 1;
+		}
+		if ((this.ensureValidPage() || reset) && this.paginationEmitOnReset && initialized) this.emitPageChange();
 		return this;
 	}
 	get flatColumns() {
@@ -211,12 +251,17 @@ var HeadlessDataTableController = class {
 		return true;
 	}
 	get state() {
+		var column = this.activeSortColumn;
 		return {
 			globalFilter: this.globalFilter,
 			columnFilters: this.columnFilters,
 			columnVisibility: this.columnVisibility,
 			columnOrder: this.columnOrder,
-			groupBy: []
+			groupBy: [],
+			page: this.currentPage,
+			rowsPerPage: this.rowsPerPage,
+			sortColumnId: column ? columnStateId(column) : null,
+			sortDirection: this.sortDirection
 		};
 	}
 	getColumnKey(column) {
@@ -251,6 +296,7 @@ var HeadlessDataTableController = class {
 		return !!this.selectedKeys[this.getRowKey(row)];
 	}
 	toggleSort(column) {
+		var previousPage = this.currentPage;
 		if (!column.sortable) return;
 		if (this.activeSortColumn === column) this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
 		else {
@@ -263,6 +309,7 @@ var HeadlessDataTableController = class {
 			direction: this.sortDirection,
 			rows: this.sortedRows
 		});
+		this.emitPageReset(previousPage);
 		this.emitState();
 	}
 	toggleRowSelection(row) {
@@ -289,15 +336,12 @@ var HeadlessDataTableController = class {
 		this.emitSelection();
 	}
 	changePage(page) {
-		this.currentPage = clamp(page, 1, this.totalPages);
-		if (this.onPageChange) this.onPageChange({
-			page: this.currentPage,
-			totalRows: this.totalRows
-		});
+		this.currentPage = clamp(toPage(page, 1), 1, this.totalPages);
+		this.emitPageChange();
 		this.emitState();
 	}
 	changeRowsPerPage(rowsPerPage) {
-		this.rowsPerPage = Number(rowsPerPage) || this.rowsPerPage;
+		this.rowsPerPage = toPageSize(rowsPerPage, toPageSize(this.rowsPerPage, 10));
 		this.currentPage = 1;
 		if (this.onRowsPerPageChange) this.onRowsPerPageChange({
 			rowsPerPage: this.rowsPerPage,
@@ -306,17 +350,21 @@ var HeadlessDataTableController = class {
 		this.emitState();
 	}
 	setGlobalFilter(value) {
+		var previousPage = this.currentPage;
 		this.globalFilter = value || "";
 		this.currentPage = 1;
 		this.ensureValidPage();
+		this.emitPageReset(previousPage);
 		this.emitState();
 	}
 	setColumnFilter(columnId, value) {
 		var filters = this.getColumnFilterMap();
+		var previousPage = this.currentPage;
 		filters[String(columnId)] = value;
 		this.columnFilters = filters;
 		this.currentPage = 1;
 		this.ensureValidPage();
+		this.emitPageReset(previousPage);
 		this.emitState();
 	}
 	flattenColumns(columns) {
@@ -391,7 +439,19 @@ var HeadlessDataTableController = class {
 		return output;
 	}
 	ensureValidPage() {
-		this.currentPage = clamp(this.currentPage || 1, 1, this.totalPages);
+		var previousPage = this.currentPage;
+		this.hasSeenRows = this.hasSeenRows || this.totalRows > 0;
+		if (this.hasSeenRows) this.currentPage = clamp(this.currentPage || 1, 1, this.totalPages);
+		return !Object.is(previousPage, this.currentPage);
+	}
+	emitPageChange() {
+		if (this.onPageChange) this.onPageChange({
+			page: this.currentPage,
+			totalRows: this.totalRows
+		});
+	}
+	emitPageReset(previousPage) {
+		if (this.paginationEmitOnReset && this.currentPage !== previousPage) this.emitPageChange();
 	}
 	emitSelection() {
 		if (this.onSelectionChange) this.onSelectionChange({
@@ -419,22 +479,22 @@ const DATA_TABLE_TEMPLATE = `
     {{ contextMessage.message }}
   </div>
 
-  <div *ngIf="progressPending" class="adtc-state adtc-loading" role="status" aria-live="polite">
-    Loading...
+  <div *ngIf="progressPending" class="adtc-state adtc-loading" role="status" aria-live="polite" [attr.style]="loadingStyleText">
+    {{ localize('', 'loadingText') }}
   </div>
 
   <div *ngIf="!progressPending && !hasRows" class="adtc-state" role="status" aria-live="polite">
     {{ noDataText }}
   </div>
 
-  <div *ngIf="!progressPending && hasRows">
+  <div *ngIf="!progressPending && hasRows" #adtcRows>
       <div [attr.class]="wrapperClassName">
       <div [attr.class]="scrollClassName" [attr.style]="scrollStyleText">
         <table
           class="adtc-table"
           role="grid"
           [attr.aria-label]="tableAriaLabel"
-          [attr.aria-rowcount]="totalRows"
+          [attr.aria-rowcount]="ariaRowCount"
           [attr.aria-colcount]="expandedColspan">
           <thead *ngIf="!noTableHead">
             <tr *ngIf="hasColumnGroups" role="row">
@@ -442,7 +502,7 @@ const DATA_TABLE_TEMPLATE = `
                 <input
                   *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
                   type="checkbox"
-                  [attr.aria-label]="selectAllAriaLabel"
+                  [attr.aria-label]="getSelectAllAriaLabel()"
                   [attr.aria-checked]="selectAllAriaChecked"
                   [indeterminate]="someRowsSelected"
                   [checked]="allRowsSelected"
@@ -462,7 +522,7 @@ const DATA_TABLE_TEMPLATE = `
                 <input
                   *ngIf="!selectableRowsSingle && !selectableRowsNoSelectAll"
                   type="checkbox"
-                  [attr.aria-label]="selectAllAriaLabel"
+                  [attr.aria-label]="getSelectAllAriaLabel()"
                   [attr.aria-checked]="selectAllAriaChecked"
                   [indeterminate]="someRowsSelected"
                   [checked]="allRowsSelected"
@@ -488,7 +548,7 @@ const DATA_TABLE_TEMPLATE = `
 	                  (click)="toggleSort(column)">
                   <span>{{ column.name }}</span>
                   <span *ngIf="column.sortable" [attr.class]="getSortIndicatorClassName(column)">
-                    {{ activeSortColumn === column ? (sortDirection === 'asc' ? 'Asc' : 'Desc') : 'Sort' }}
+                    {{ getSortIndicatorText(column) }}
                   </span>
                 </button>
               </th>
@@ -496,8 +556,8 @@ const DATA_TABLE_TEMPLATE = `
           </thead>
 
           <tbody>
-            <ng-template ngFor let-row [ngForOf]="displayedRows" let-rowIndex="index">
-              <tr *ngIf="isGroupRow(row)" class="adtc-group-row" role="row" [attr.id]="getGroupRowId(row)">
+            <ng-template ngFor let-row [ngForOf]="displayedRows" [ngForTrackBy]="rowTrackBy" let-rowIndex="index">
+              <tr *ngIf="isGroupRow(row)" class="adtc-group-row" role="row" [attr.id]="getGroupRowId(row)" [attr.aria-rowindex]="getRowAriaIndex(rowIndex)">
                 <td class="adtc-group-cell" [attr.colspan]="expandedColspan" role="gridcell">
                   <button
                     type="button"
@@ -511,13 +571,14 @@ const DATA_TABLE_TEMPLATE = `
                   </button>
                   <strong>{{ row.groupLabel }}</strong>
                   <span>{{ row.groupValue }}</span>
-                  <em>{{ row.leafRows.length }} rows</em>
+                  <em>{{ getGroupRowCountText(row) }}</em>
                 </td>
               </tr>
 
               <tr
                 *ngIf="!isGroupRow(row)"
                 role="row"
+                [attr.aria-rowindex]="getRowAriaIndex(rowIndex)"
                 [attr.class]="getRowClassName(row)"
                 [attr.style]="getRowStyleText(row)"
                 [attr.tabindex]="getRowTabIndex(row)"
@@ -569,6 +630,7 @@ const DATA_TABLE_TEMPLATE = `
                 *ngIf="!isGroupRow(row) && expandableRows && expandableRowTemplate && isRowExpanded(row)"
                 class="adtc-expanded-row"
                 role="row"
+                [attr.aria-rowindex]="getRowAriaIndex(rowIndex) + 1"
                 [attr.id]="getExpandedRowId(row)">
                 <td class="adtc-expanded-cell" [attr.colspan]="expandedColspan" role="gridcell">
                   <ng-template
@@ -583,31 +645,94 @@ const DATA_TABLE_TEMPLATE = `
       </div>
     </div>
 
-    <div *ngIf="showPagination" class="adtc-pagination">
-      <div class="adtc-pagination-meta">
-        Showing {{ startRow }}-{{ endRow }} of {{ totalRows }}
-      </div>
-
-      <div class="adtc-pagination-controls">
-        <label class="adtc-pagination-size">
-          Rows:
-          <select [value]="rowsPerPage" (change)="changeRowsPerPage($any($event.target).value)">
-            <option *ngFor="let size of paginationRowsPerPageOptions" [value]="size">
-              {{ size }}
-            </option>
-          </select>
-        </label>
-
-        <button type="button" (click)="changePage(1)" [disabled]="currentPage === 1">First</button>
-        <button type="button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
-        <span class="adtc-page-indicator">Page {{ currentPage }} of {{ totalPages }}</span>
-        <button type="button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
-        <button type="button" (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">Last</button>
-      </div>
-    </div>
+    <ng-container *ngIf="showPagination && !persistPagination" [ngTemplateOutlet]="adtcPagination"></ng-container>
   </div>
+
+  <ng-container *ngIf="showPersistentPagination" [ngTemplateOutlet]="adtcPagination"></ng-container>
 </div>
+
+<ng-template #adtcPagination>
+  <div class="adtc-pagination" [attr.role]="paginationAriaLabel ? 'navigation' : null" [attr.aria-label]="paginationAriaLabel">
+    <ng-container
+      *ngIf="paginationTemplate; else adtcPaginationContent"
+      [ngTemplateOutlet]="paginationTemplate"
+      [ngTemplateOutletContext]="paginationContext"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #adtcPaginationContent>
+  <div class="adtc-pagination-meta" aria-live="polite" aria-atomic="true">
+    {{ paginationOption('showingText') }} {{ startRow }}-{{ endRow }} {{ paginationOption('rangeSeparatorText') }} {{ totalRows }}
+  </div>
+
+  <div class="adtc-pagination-controls">
+    <label *ngIf="!paginationHideRowsPerPage && !paginationOption('noRowsPerPage')" class="adtc-pagination-size">
+      {{ paginationOption('rowsPerPageText') }}
+      <select [value]="rowsPerPage" [attr.aria-label]="localize('pagination', 'rowsPerPageAriaLabel') || null" (change)="changeRowsPerPage($any($event.target).value)">
+        <option
+          *ngFor="let size of rowsPerPageOptions; let index = index; let last = last; let sizes = ngForOf"
+          [value]="size"
+          [selected]="size === rowsPerPage && sizes.indexOf(size) === index">
+          {{ getRowsPerPageOptionLabel(size, last) }}
+        </option>
+      </select>
+    </label>
+
+    <button type="button" (click)="changePage(1); keepPagerFocus($event)" [disabled]="currentPage === 1" [attr.aria-label]="localize('pagination', 'firstPageAriaLabel') || null">{{ paginationOption('firstPageText') }}</button>
+    <button type="button" (click)="changePage(currentPage - 1); keepPagerFocus($event)" [disabled]="currentPage === 1" [attr.aria-label]="localize('pagination', 'previousPageAriaLabel') || null">{{ paginationOption('previousPageText') }}</button>
+    <span class="adtc-page-indicator">{{ paginationOption('pageText') }} {{ currentPage }} {{ paginationOption('rangeSeparatorText') }} {{ totalPages }}</span>
+    <button type="button" (click)="changePage(currentPage + 1); keepPagerFocus($event)" [disabled]="currentPage === totalPages" [attr.aria-label]="localize('pagination', 'nextPageAriaLabel') || null">{{ paginationOption('nextPageText') }}</button>
+    <button type="button" (click)="changePage(totalPages); keepPagerFocus($event)" [disabled]="currentPage === totalPages" [attr.aria-label]="localize('pagination', 'lastPageAriaLabel') || null">{{ paginationOption('lastPageText') }}</button>
+  </div>
+</ng-template>
 `;
+const DEFAULT_PAGINATION_OPTIONS = {
+	noRowsPerPage: false,
+	rowsPerPageText: "Rows:",
+	rangeSeparatorText: "of",
+	selectAllRowsItem: false,
+	selectAllRowsItemText: "All",
+	showingText: "Showing",
+	pageText: "Page",
+	firstPageText: "First",
+	previousPageText: "Prev",
+	nextPageText: "Next",
+	lastPageText: "Last"
+};
+const DEFAULT_LOCALIZATION = {
+	pagination: { navigationAriaLabel: "{table} pagination" },
+	expandable: {
+		expandRowAriaLabel: "Expand details for row {row}",
+		collapseRowAriaLabel: "Collapse details for row {row}"
+	},
+	loadingText: "Loading...",
+	tableAriaLabel: "Data table",
+	sort: {
+		ascendingText: "Asc",
+		descendingText: "Desc",
+		unsortedText: "Sort",
+		sortAscendingAriaLabel: "Sort {column} ascending",
+		sortDescendingAriaLabel: "Sort {column} descending",
+		columnAriaLabel: "{column} column"
+	},
+	selection: {
+		selectAllRowsAriaLabel: "Select all rows",
+		selectAllVisibleRowsAriaLabel: "Select all visible rows",
+		selectRowAriaLabel: "Select row {row}",
+		deselectRowAriaLabel: "Clear selection for row {row}",
+		chooseRowAriaLabel: "Choose row {row}"
+	},
+	grouping: {
+		rowCountText: "{count} rows",
+		expandGroupAriaLabel: "Expand group {label} {value}",
+		collapseGroupAriaLabel: "Collapse group {label} {value}"
+	}
+};
+const DEFAULT_CONTEXT_MESSAGE = {
+	singular: "item",
+	plural: "items",
+	message: "selected"
+};
 var DataTableComponent = class DataTableComponent {
 	columns = [];
 	data = [];
@@ -615,6 +740,7 @@ var DataTableComponent = class DataTableComponent {
 	title = "";
 	ariaLabel = "";
 	keyboardRows = true;
+	trackBy = null;
 	pagination = false;
 	paginationServer = false;
 	paginationDefaultPage = 1;
@@ -627,6 +753,15 @@ var DataTableComponent = class DataTableComponent {
 		25,
 		30
 	];
+	paginationHideRowsPerPage = false;
+	paginationComponentOptions = {};
+	paginationResetDefaultPage = false;
+	paginationServerOptions = null;
+	paginationTemplate = null;
+	keepPinnedRows = false;
+	persistPagination = false;
+	paginationResetOnFilterChange = false;
+	paginationEmitOnReset = false;
 	selectableRows = false;
 	selectableRowsSingle = false;
 	selectableRowsHighlight = false;
@@ -680,11 +815,8 @@ var DataTableComponent = class DataTableComponent {
 	virtualStartIndex = 0;
 	virtualRowCount = 25;
 	theme = "default";
-	contextMessage = {
-		singular: "item",
-		plural: "items",
-		message: "selected"
-	};
+	contextMessage = { ...DEFAULT_CONTEXT_MESSAGE };
+	localization = {};
 	sortChange = new EventEmitter();
 	selectedRowsChange = new EventEmitter();
 	pageChange = new EventEmitter();
@@ -704,71 +836,127 @@ var DataTableComponent = class DataTableComponent {
 	rowsPerPage = 10;
 	sortDirection = "asc";
 	activeSortColumn = null;
+	rowTrackBy = (index, row) => {
+		if (this.isGroupRow(row)) return "group:" + row.groupKey;
+		return this.trackBy ? this.trackBy(index, row) : row;
+	};
 	selectedKeys = createSafeDictionary();
 	expandedKeys = createSafeDictionary();
 	collapsedGroupKeys = createSafeDictionary();
+	hasSeenRows = false;
+	renderPass = false;
+	derivedDepth = 0;
+	derivedCache = createSafeDictionary();
+	derivedInputs = null;
+	loadingHeight = 0;
+	rowsBlock;
+	columnCopies = /* @__PURE__ */ new WeakMap();
+	groupRowsByKey = createSafeDictionary();
+	selectedRowCache = /* @__PURE__ */ new Map();
+	pagerChangePage = (page) => this.changePage(page);
+	pagerChangeRowsPerPage = (size) => this.changeRowsPerPage(size);
 	ngOnChanges(changes) {
-		if (changes["paginationPerPage"]) this.rowsPerPage = this.paginationPerPage;
-		if (changes["paginationDefaultPage"]) this.currentPage = this.paginationDefaultPage;
+		var pageBefore = this.currentPage;
+		var later = (name) => !!changes[name] && !changes[name].firstChange;
+		var resetToDefault = later("paginationResetDefaultPage");
+		var emitPage = resetToDefault;
+		var cleared;
+		this.invalidateDerivedState();
+		if (changes["paginationPerPage"]) this.rowsPerPage = toPageSize(this.paginationPerPage, toPageSize(this.rowsPerPage, 10));
+		if (changes["paginationDefaultPage"] || resetToDefault) {
+			this.currentPage = toPage(this.paginationDefaultPage, 1);
+			this.hasSeenRows = false;
+		}
+		if (this.paginationResetOnFilterChange && this.isClientPaginated && (later("globalFilter") || later("columnFilters"))) {
+			this.currentPage = 1;
+			emitPage = emitPage || this.paginationEmitOnReset;
+		}
 		if (changes["clearSelectedRows"] && !changes["clearSelectedRows"].firstChange) {
 			this.selectedKeys = createSafeDictionary();
+			this.selectedRowCache.clear();
 			this.emitSelectionState();
 		}
-		if (changes["columns"] || changes["defaultSortFieldId"] || changes["defaultSortAsc"]) this.applyDefaultSort();
+		if (changes["columns"] || changes["defaultSortFieldId"] || changes["defaultSortAsc"]) {
+			if (!this.applyDefaultSort() && changes["columns"] && this.activeSortColumn) this.activeSortColumn = this.findColumn(this.getColumnKey(this.activeSortColumn)) || this.activeSortColumn;
+		}
 		if (changes["data"] || changes["selectableRowSelected"]) this.syncProgrammaticSelection();
 		if (changes["data"] || changes["expandableRowExpanded"]) this.syncProgrammaticExpansion();
-		this.ensureValidPage();
+		if (this.ensureValidPage() && this.paginationEmitOnReset) emitPage = true;
+		this.invalidateDerivedState();
+		if (emitPage && this.currentPage !== pageBefore) {
+			cleared = resetToDefault && this.clearServerSelection("persistSelectedOnPageChange");
+			this.emitPageChange();
+			if (cleared) this.emitSelectionState();
+		}
+	}
+	ngDoCheck() {
+		this.invalidateDerivedState();
+		this.renderPass = true;
+		if (this.persistPagination && this.progressPending && this.rowsBlock) this.loadingHeight = this.rowsBlock.nativeElement.offsetHeight || 0;
+		if (!this.progressPending && this.ensureValidPage() && this.paginationEmitOnReset) {
+			this.emitPageChange();
+			this.invalidateDerivedState();
+		}
+	}
+	ngAfterViewChecked() {
+		this.renderPass = false;
 	}
 	get flatColumns() {
-		return this.flattenColumns(this.columns);
+		return this.derivedValue("flatColumns", () => this.flattenColumns(this.columns));
 	}
 	get visibleColumns() {
-		var columns = this.flatColumns.filter((column) => {
-			return !column.omit && this.isColumnVisible(column);
-		});
-		var order = this.columnOrder || [];
-		var ordered = [];
-		var used = createSafeDictionary();
-		var i;
-		var j;
-		var key;
-		for (i = 0; i < order.length; i += 1) {
-			key = String(order[i]);
-			for (j = 0; j < columns.length; j += 1) if (!used[this.getColumnKey(columns[j])] && this.getColumnKey(columns[j]) === key) {
-				ordered.push(columns[j]);
-				used[key] = true;
-				break;
+		return this.derivedValue("visibleColumns", () => {
+			var columns = this.flatColumns.filter((column) => {
+				return !column.omit && this.isColumnVisible(column);
+			});
+			var order = this.columnOrder || [];
+			var ordered = [];
+			var used = createSafeDictionary();
+			var i;
+			var j;
+			var key;
+			for (i = 0; i < order.length; i += 1) {
+				key = String(order[i]);
+				for (j = 0; j < columns.length; j += 1) if (!used[this.getColumnKey(columns[j])] && this.getColumnKey(columns[j]) === key) {
+					ordered.push(columns[j]);
+					used[key] = true;
+					break;
+				}
 			}
-		}
-		for (i = 0; i < columns.length; i += 1) {
-			key = this.getColumnKey(columns[i]);
-			if (!used[key]) ordered.push(columns[i]);
-		}
-		return ordered;
+			for (i = 0; i < columns.length; i += 1) {
+				key = this.getColumnKey(columns[i]);
+				if (!used[key]) ordered.push(columns[i]);
+			}
+			return ordered;
+		});
 	}
 	get hasColumnGroups() {
-		var columns = this.visibleColumns;
-		var i = 0;
-		for (; i < columns.length; i += 1) if (columns[i].group) return true;
-		return false;
+		return this.derivedValue("hasColumnGroups", () => {
+			var columns = this.visibleColumns;
+			var i = 0;
+			for (; i < columns.length; i += 1) if (columns[i].group) return true;
+			return false;
+		});
 	}
 	get columnGroups() {
-		var groups = [];
-		var columns = this.visibleColumns;
-		var i;
-		var label;
-		var current = null;
-		for (i = 0; i < columns.length; i += 1) {
-			label = String(columns[i].group || "");
-			if (!current || current.name !== label) {
-				current = {
-					name: label,
-					colspan: 1
-				};
-				groups.push(current);
-			} else current.colspan += 1;
-		}
-		return groups;
+		return this.derivedValue("columnGroups", () => {
+			var groups = [];
+			var columns = this.visibleColumns;
+			var i;
+			var label;
+			var current = null;
+			for (i = 0; i < columns.length; i += 1) {
+				label = String(columns[i].group || "");
+				if (!current || current.name !== label) {
+					current = {
+						name: label,
+						colspan: 1
+					};
+					groups.push(current);
+				} else current.colspan += 1;
+			}
+			return groups;
+		});
 	}
 	get shellClassName() {
 		return this.joinClasses(["adtc-shell", this.theme === "dark" ? "adtc-theme-dark" : ""]);
@@ -800,114 +988,222 @@ var DataTableComponent = class DataTableComponent {
 		return styleObjectToString(this.getCellStyle(column)) || null;
 	}
 	get tableAriaLabel() {
-		return this.ariaLabel || this.title || "Data table";
+		return this.ariaLabel || this.title || this.localize("", "tableAriaLabel");
+	}
+	localize(group, key) {
+		var source = this.localization || {};
+		var fallback = DEFAULT_LOCALIZATION;
+		var value;
+		if (group) {
+			source = source[group] || {};
+			fallback = fallback[group];
+		}
+		value = source[key];
+		return value === void 0 || value === null ? fallback[key] : value;
+	}
+	paginationOption(key) {
+		var value = this.paginationComponentOptions ? this.paginationComponentOptions[key] : void 0;
+		return value === void 0 || value === null ? DEFAULT_PAGINATION_OPTIONS[key] : value;
 	}
 	get pinnedTopDisplayRows() {
-		return this.getPinnedRows("top");
+		return this.derivedValue("pinnedTopDisplayRows", () => this.getPinnedRows("top"));
 	}
 	get pinnedBottomDisplayRows() {
-		return this.getPinnedRows("bottom");
+		return this.derivedValue("pinnedBottomDisplayRows", () => this.getPinnedRows("bottom"));
 	}
 	get filteredPinnedTopRows() {
-		return this.filterPinnedRows(this.pinnedTopDisplayRows);
+		return this.derivedValue("filteredPinnedTopRows", () => this.filterPinnedRows(this.pinnedTopDisplayRows));
 	}
 	get filteredPinnedBottomRows() {
-		return this.filterPinnedRows(this.pinnedBottomDisplayRows);
+		return this.derivedValue("filteredPinnedBottomRows", () => this.filterPinnedRows(this.pinnedBottomDisplayRows));
 	}
 	get unpinnedRows() {
-		var pinned = createSafeDictionary();
-		var top = this.pinnedTopDisplayRows;
-		var bottom = this.pinnedBottomDisplayRows;
-		var rows = [];
-		var i = 0;
-		for (; i < top.length; i += 1) pinned[this.getRowKey(top[i])] = true;
-		for (i = 0; i < bottom.length; i += 1) pinned[this.getRowKey(bottom[i])] = true;
-		for (i = 0; i < this.data.length; i += 1) if (!pinned[this.getRowKey(this.data[i])]) rows.push(this.data[i]);
-		return rows;
+		return this.derivedValue("unpinnedRows", () => {
+			var pinned = createSafeDictionary();
+			var top = this.pinnedTopDisplayRows;
+			var bottom = this.pinnedBottomDisplayRows;
+			var rows = [];
+			var i = 0;
+			for (; i < top.length; i += 1) pinned[this.getRowKey(top[i])] = true;
+			for (i = 0; i < bottom.length; i += 1) pinned[this.getRowKey(bottom[i])] = true;
+			for (i = 0; i < this.data.length; i += 1) if (!pinned[this.getRowKey(this.data[i])]) rows.push(this.data[i]);
+			return rows;
+		});
 	}
 	get filteredRows() {
-		if (this.manualFiltering) return this.unpinnedRows.slice(0);
-		return this.applyFilters(this.unpinnedRows);
+		return this.derivedValue("filteredRows", () => {
+			if (this.manualFiltering) return this.unpinnedRows.slice(0);
+			return this.applyFilters(this.unpinnedRows);
+		});
 	}
 	get sortedRows() {
-		if (this.sortServer || this.manualSorting) return this.filteredRows.slice(0);
-		return sortRows(this.filteredRows, this.activeSortColumn, this.sortDirection);
+		return this.derivedValue("sortedRows", () => {
+			if (this.sortServer || this.manualSorting) return this.filteredRows.slice(0);
+			return sortRows(this.filteredRows, this.activeSortColumn, this.sortDirection);
+		});
 	}
 	get groupedRows() {
-		var groups = this.normalizedGrouping;
-		if (!groups.length) return this.sortedRows;
-		return this.buildGroupedRows(this.sortedRows, groups, 0, "");
+		return this.derivedValue("groupedRows", () => {
+			var groups = this.normalizedGrouping;
+			var previous = this.groupRowsByKey;
+			this.groupRowsByKey = createSafeDictionary();
+			if (!groups.length) return this.sortedRows;
+			return this.buildGroupedRows(this.sortedRows, groups, 0, "", previous);
+		});
 	}
 	get bodyRows() {
-		var rows = [];
-		var top = this.filteredPinnedTopRows;
-		var bottom = this.filteredPinnedBottomRows;
-		var center = this.groupedRows;
-		var i = 0;
-		for (; i < top.length; i += 1) rows.push(top[i]);
-		for (i = 0; i < center.length; i += 1) rows.push(center[i]);
-		for (i = 0; i < bottom.length; i += 1) rows.push(bottom[i]);
-		return rows;
+		return this.derivedValue("bodyRows", () => {
+			var rows = [];
+			var top = this.filteredPinnedTopRows;
+			var bottom = this.filteredPinnedBottomRows;
+			var center = this.groupedRows;
+			var i = 0;
+			for (; i < top.length; i += 1) rows.push(top[i]);
+			for (i = 0; i < center.length; i += 1) rows.push(center[i]);
+			for (i = 0; i < bottom.length; i += 1) rows.push(bottom[i]);
+			return rows;
+		});
 	}
 	get displayedRows() {
-		var start;
-		var rows = this.bodyRows;
-		if (this.pagination && !this.paginationServer && !this.manualPagination) {
-			start = (this.currentPage - 1) * this.rowsPerPage;
-			rows = rows.slice(start, start + this.rowsPerPage);
-		}
-		if (this.virtualRows) {
-			start = Math.max(0, this.virtualStartIndex || 0);
-			rows = rows.slice(start, start + Math.max(1, this.virtualRowCount || 25));
-		}
-		return rows;
+		return this.derivedValue("displayedRows", () => {
+			var start;
+			var rows = this.bodyRows;
+			if (this.isClientPaginated) {
+				start = (this.currentPage - 1) * this.rowsPerPage;
+				rows = this.keepPinnedRows ? this.filteredPinnedTopRows.concat(this.groupedRows.slice(start, start + this.rowsPerPage), this.filteredPinnedBottomRows) : rows.slice(start, start + this.rowsPerPage);
+			}
+			if (this.virtualRows) {
+				start = Math.max(0, this.virtualStartIndex || 0);
+				rows = rows.slice(start, start + Math.max(1, this.virtualRowCount || 25));
+			}
+			return rows;
+		});
 	}
 	get hasRows() {
-		return this.bodyRows.length > 0;
+		return this.derivedValue("hasRows", () => this.bodyRows.length > 0);
 	}
 	get totalRows() {
-		return this.paginationServer || this.manualPagination ? this.paginationTotalRows || this.data.length : this.bodyRows.length;
+		return this.derivedValue("totalRows", () => {
+			if (this.paginationServer || this.manualPagination) return this.paginationTotalRows || this.data.length;
+			return this.keepPinnedRows && this.pagination ? this.groupedRows.length : this.bodyRows.length;
+		});
 	}
 	get totalPages() {
-		return Math.max(1, Math.ceil(Math.max(this.totalRows, 1) / this.rowsPerPage));
+		return this.derivedValue("totalPages", () => Math.max(1, Math.ceil(Math.max(this.totalRows, 1) / this.rowsPerPage)));
 	}
 	get startRow() {
-		if (!this.totalRows) return 0;
-		return (this.currentPage - 1) * this.rowsPerPage + 1;
+		return this.derivedValue("startRow", () => {
+			if (!this.totalRows) return 0;
+			return (this.currentPage - 1) * this.rowsPerPage + 1;
+		});
 	}
 	get endRow() {
-		if (!this.totalRows) return 0;
-		return Math.min(this.currentPage * this.rowsPerPage, this.totalRows);
+		return this.derivedValue("endRow", () => {
+			if (!this.totalRows) return 0;
+			return Math.min(this.currentPage * this.rowsPerPage, this.totalRows);
+		});
+	}
+	get rowsPerPageOptions() {
+		var source = (this.paginationRowsPerPageOptions || []).concat(this.rowsPerPage);
+		var all = this.allRowsOptionValue;
+		var options = [];
+		var size;
+		var i = 0;
+		for (; i < source.length; i += 1) {
+			size = toPageSize(source[i], 0);
+			if (size && options.indexOf(size) === -1 && (i < source.length - 1 || size !== all)) options.push(size);
+		}
+		options.sort((left, right) => left - right);
+		return all ? options.concat(all) : options;
+	}
+	getRowsPerPageOptionLabel(size, last) {
+		var all = this.allRowsOptionValue;
+		return all && (last === void 0 ? size === all : last) ? this.paginationOption("selectAllRowsItemText") : size;
+	}
+	get paginationContext() {
+		var context = {
+			currentPage: this.currentPage,
+			totalPages: this.totalPages,
+			rowsPerPage: this.rowsPerPage,
+			rowCount: Number(this.totalRows),
+			startRow: this.startRow,
+			endRow: this.endRow,
+			rowsPerPageOptions: this.rowsPerPageOptions,
+			changePage: this.pagerChangePage,
+			changeRowsPerPage: this.pagerChangeRowsPerPage
+		};
+		context.$implicit = context;
+		return context;
+	}
+	getRowAriaIndex(rowIndex) {
+		var index = rowIndex + (this.virtualRows ? Math.max(0, this.virtualStartIndex || 0) : 0);
+		var start = this.pagination ? (this.currentPage - 1) * this.rowsPerPage : 0;
+		var details = this.detailRowsBefore;
+		var top;
+		var pageRows;
+		if (this.keepsPinnedRows) {
+			top = this.filteredPinnedTopRows.length;
+			pageRows = Math.max(0, Math.min(this.rowsPerPage, this.groupedRows.length - start));
+			if (index >= top) index += index < top + pageRows ? start : this.groupedRows.length - pageRows;
+		} else index += start;
+		return this.headerRowCount + index + 1 + (details ? details[this.isClientPaginated ? index : index - start] || 0 : 0);
+	}
+	get ariaRowCount() {
+		var details = this.detailRowsBefore;
+		return this.headerRowCount + (this.keepsPinnedRows ? this.bodyRows.length : Number(this.totalRows)) + (details ? details[details.length - 1] : 0);
 	}
 	get selectedRows() {
-		var rows = [];
-		var i = 0;
-		for (; i < this.data.length; i += 1) if (this.selectedKeys[this.getRowKey(this.data[i])]) rows.push(this.data[i]);
-		return rows;
+		return this.derivedValue("selectedRows", () => {
+			var rows = [];
+			var persist = this.persistsSelectedRows;
+			var key;
+			var i = 0;
+			for (; i < this.data.length; i += 1) {
+				key = this.getRowKey(this.data[i]);
+				if (this.selectedKeys[key]) {
+					if (persist) this.selectedRowCache.set(key, this.data[i]);
+					else rows.push(this.data[i]);
+				}
+			}
+			if (persist) this.selectedRowCache.forEach((row, cachedKey) => {
+				if (this.selectedKeys[cachedKey]) rows.push(row);
+				else this.selectedRowCache.delete(cachedKey);
+			});
+			return rows;
+		});
 	}
 	get selectedCount() {
-		return this.selectedRows.length;
+		return this.derivedValue("selectedCount", () => this.selectedRows.length);
 	}
 	get selectionScopeRows() {
-		return this.selectableRowsVisibleOnly ? this.onlyLeafRows(this.displayedRows) : this.onlyLeafRows(this.bodyRows);
+		return this.derivedValue("selectionScopeRows", () => {
+			return this.selectableRowsVisibleOnly ? this.onlyLeafRows(this.displayedRows) : this.onlyLeafRows(this.bodyRows);
+		});
 	}
 	get allRowsSelected() {
-		var selectableRows = this.getSelectableRows();
-		var i;
-		if (!selectableRows.length) return false;
-		for (i = 0; i < selectableRows.length; i += 1) if (!this.selectedKeys[this.getRowKey(selectableRows[i])]) return false;
-		return true;
+		return this.derivedValue("allRowsSelected", () => {
+			var selectableRows = this.getSelectableRows();
+			var i;
+			if (!selectableRows.length) return false;
+			for (i = 0; i < selectableRows.length; i += 1) if (!this.selectedKeys[this.getRowKey(selectableRows[i])]) return false;
+			return true;
+		});
 	}
 	get someRowsSelected() {
-		var selectableRows = this.getSelectableRows();
-		var selected = 0;
-		var i;
-		if (!selectableRows.length || this.allRowsSelected) return false;
-		for (i = 0; i < selectableRows.length; i += 1) if (this.selectedKeys[this.getRowKey(selectableRows[i])]) selected += 1;
-		return selected > 0;
+		return this.derivedValue("someRowsSelected", () => {
+			var selectableRows = this.getSelectableRows();
+			var selected = 0;
+			var i;
+			if (!selectableRows.length || this.allRowsSelected) return false;
+			for (i = 0; i < selectableRows.length; i += 1) if (this.selectedKeys[this.getRowKey(selectableRows[i])]) selected += 1;
+			return selected > 0;
+		});
 	}
 	get selectAllAriaLabel() {
 		return this.selectableRowsVisibleOnly ? "Select all visible rows" : "Select all rows";
+	}
+	getSelectAllAriaLabel() {
+		return this.localize("selection", this.selectableRowsVisibleOnly ? "selectAllVisibleRowsAriaLabel" : "selectAllRowsAriaLabel");
 	}
 	get selectAllAriaChecked() {
 		if (this.allRowsSelected) return "true";
@@ -918,6 +1214,17 @@ var DataTableComponent = class DataTableComponent {
 	}
 	get showPagination() {
 		return this.pagination && !this.progressPending && this.totalRows > 0;
+	}
+	get showPersistentPagination() {
+		return this.persistPagination && this.pagination && this.totalRows > 0 && (this.progressPending || this.hasRows);
+	}
+	get loadingStyleText() {
+		return this.persistPagination && this.loadingHeight ? "min-height: " + this.loadingHeight + "px; box-sizing: border-box" : null;
+	}
+	get paginationAriaLabel() {
+		var texts = this.localization && this.localization.pagination;
+		if (!(!!texts && texts.navigationAriaLabel !== void 0 && texts.navigationAriaLabel !== null) && !this.ariaLabel && !this.title) return null;
+		return fillPlaceholders(this.localize("pagination", "navigationAriaLabel"), { table: this.tableAriaLabel }) || null;
 	}
 	get expandedColspan() {
 		return this.visibleColumns.length + (this.selectableRows ? 1 : 0) + (this.expandableRows && !this.expandableRowsHideExpander ? 1 : 0);
@@ -932,9 +1239,12 @@ var DataTableComponent = class DataTableComponent {
 	}
 	getSortButtonAriaLabel(column) {
 		var name = String(column.name || column.header || this.getColumnKey(column));
-		if (!column.sortable) return name + " column";
-		if (this.activeSortColumn !== column) return "Sort " + name + " ascending";
-		return this.sortDirection === "asc" ? "Sort " + name + " descending" : "Sort " + name + " ascending";
+		var key = !column.sortable ? "columnAriaLabel" : this.activeSortColumn === column && this.sortDirection === "asc" ? "sortDescendingAriaLabel" : "sortAscendingAriaLabel";
+		return fillPlaceholders(this.localize("sort", key), { column: name });
+	}
+	getSortIndicatorText(column) {
+		if (this.activeSortColumn !== column) return this.localize("sort", "unsortedText");
+		return this.localize("sort", this.sortDirection === "asc" ? "ascendingText" : "descendingText");
 	}
 	getRowAriaSelected(row) {
 		return this.selectableRows ? String(this.isRowSelected(row)) : null;
@@ -943,10 +1253,12 @@ var DataTableComponent = class DataTableComponent {
 		return this.keyboardRows && this.isKeyboardInteractiveRow(row) ? 0 : null;
 	}
 	getRowSelectionAriaLabel(row, rowIndex) {
-		return (this.selectableRowsSingle ? "Choose" : this.isRowSelected(row) ? "Clear selection for" : "Select") + " row " + this.getRowAccessibleLabel(row, rowIndex);
+		var key = this.selectableRowsSingle ? "chooseRowAriaLabel" : this.isRowSelected(row) ? "deselectRowAriaLabel" : "selectRowAriaLabel";
+		return fillPlaceholders(this.localize("selection", key), { row: this.getRowAccessibleLabel(row, rowIndex) });
 	}
 	getRowExpandAriaLabel(row, rowIndex) {
-		return (this.isRowExpanded(row) ? "Collapse details for" : "Expand details for") + " row " + this.getRowAccessibleLabel(row, rowIndex);
+		var key = this.isRowExpanded(row) ? "collapseRowAriaLabel" : "expandRowAriaLabel";
+		return fillPlaceholders(this.localize("expandable", key), { row: this.getRowAccessibleLabel(row, rowIndex) });
 	}
 	getExpandedRowId(row) {
 		return "adtc-expanded-" + this.sanitizeId(this.getRowKey(row));
@@ -955,7 +1267,14 @@ var DataTableComponent = class DataTableComponent {
 		return "adtc-group-" + this.sanitizeId(row && row.groupKey ? row.groupKey : "group");
 	}
 	getGroupToggleAriaLabel(row) {
-		return (this.isGroupRowExpanded(row) ? "Collapse group" : "Expand group") + " " + row.groupLabel + " " + row.groupValue;
+		var key = this.isGroupRowExpanded(row) ? "collapseGroupAriaLabel" : "expandGroupAriaLabel";
+		return fillPlaceholders(this.localize("grouping", key), {
+			label: row.groupLabel,
+			value: row.groupValue
+		});
+	}
+	getGroupRowCountText(row) {
+		return fillPlaceholders(this.localize("grouping", "rowCountText"), { count: row.leafRows.length });
 	}
 	getCellContext(row, column, rowIndex) {
 		return {
@@ -974,6 +1293,9 @@ var DataTableComponent = class DataTableComponent {
 		};
 	}
 	toggleSort(column) {
+		var previousPage = this.currentPage;
+		var cleared;
+		this.invalidateDerivedState();
 		if (!column.sortable) return;
 		if (this.activeSortColumn === column) this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
 		else {
@@ -981,16 +1303,22 @@ var DataTableComponent = class DataTableComponent {
 			this.sortDirection = "asc";
 		}
 		this.currentPage = 1;
+		cleared = this.clearServerSelection("persistSelectedOnSort");
 		this.sortChange.emit({
 			column,
 			direction: this.sortDirection,
 			rows: this.sortedRows
 		});
+		this.emitPageReset(previousPage);
+		if (cleared) this.emitSelectionState();
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	toggleAllRows(checked) {
-		var rows = this.getSelectableRows();
+		var rows;
 		var i;
+		this.invalidateDerivedState();
+		rows = this.getSelectableRows();
 		if (checked) {
 			if (this.selectableRowsSingle && rows.length) {
 				this.selectedKeys = createSafeDictionary();
@@ -998,9 +1326,11 @@ var DataTableComponent = class DataTableComponent {
 			} else for (i = 0; i < rows.length; i += 1) this.selectedKeys[this.getRowKey(rows[i])] = true;
 		} else for (i = 0; i < rows.length; i += 1) delete this.selectedKeys[this.getRowKey(rows[i])];
 		this.emitSelectionState();
+		this.invalidateDerivedState();
 	}
 	toggleRowSelection(row) {
 		var key;
+		this.invalidateDerivedState();
 		if (this.isSelectableDisabled(row)) return;
 		key = this.getRowKey(row);
 		if (this.selectableRowsSingle) {
@@ -1009,6 +1339,7 @@ var DataTableComponent = class DataTableComponent {
 		} else if (this.selectedKeys[key]) delete this.selectedKeys[key];
 		else this.selectedKeys[key] = true;
 		this.emitSelectionState();
+		this.invalidateDerivedState();
 	}
 	isRowSelected(row) {
 		return !!this.selectedKeys[this.getRowKey(row)];
@@ -1064,15 +1395,50 @@ var DataTableComponent = class DataTableComponent {
 		this.rowMouseLeave.emit(row);
 	}
 	changePage(page) {
-		this.currentPage = clamp(page, 1, this.totalPages);
-		this.pageChange.emit({
-			page: this.currentPage,
-			totalRows: this.totalRows
-		});
+		var previousPage = this.currentPage;
+		var cleared;
+		this.invalidateDerivedState();
+		this.currentPage = clamp(toPage(page, 1), 1, this.totalPages);
+		cleared = this.currentPage !== previousPage && this.clearServerSelection("persistSelectedOnPageChange");
+		this.emitPageChange();
+		if (cleared) this.emitSelectionState();
 		this.emitTableState();
+		this.invalidateDerivedState();
+	}
+	keepPagerFocus(event) {
+		var button = event && event.currentTarget;
+		var doc = button && button.ownerDocument;
+		if (!doc) return;
+		setTimeout(() => {
+			var buttons = button.parentNode ? Array.prototype.slice.call(button.parentNode.querySelectorAll("button")) : [];
+			var index = buttons.indexOf(button);
+			var step = index < buttons.length / 2 ? 1 : -1;
+			var i;
+			if (!button.disabled || index === -1 || doc.activeElement && doc.activeElement !== button && doc.activeElement !== doc.body) return;
+			for (i = index + step; i >= 0 && i < buttons.length; i += step) if (!buttons[i].disabled) {
+				buttons[i].focus();
+				this.ignoreKeyRepeat(buttons[i]);
+				return;
+			}
+		}, 0);
+	}
+	ignoreKeyRepeat(button) {
+		var guard = (event) => {
+			if (event.type === "keydown" && event.repeat) {
+				event.preventDefault();
+				return;
+			}
+			button.removeEventListener("keydown", guard);
+			button.removeEventListener("keyup", guard);
+			button.removeEventListener("blur", guard);
+		};
+		button.addEventListener("keydown", guard);
+		button.addEventListener("keyup", guard);
+		button.addEventListener("blur", guard);
 	}
 	changeRowsPerPage(value) {
-		this.rowsPerPage = Number(value) || this.paginationPerPage;
+		this.invalidateDerivedState();
+		this.rowsPerPage = toPageSize(value, toPageSize(this.paginationPerPage, 10));
 		this.currentPage = 1;
 		this.rowsPerPageChange.emit({
 			rowsPerPage: this.rowsPerPage,
@@ -1080,9 +1446,11 @@ var DataTableComponent = class DataTableComponent {
 		});
 		this.ensureValidPage();
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	toggleRowExpansion(row) {
 		var key;
+		this.invalidateDerivedState();
 		if (this.isExpandableDisabled(row)) return;
 		key = this.getRowKey(row);
 		if (this.expandedKeys[key]) delete this.expandedKeys[key];
@@ -1091,6 +1459,7 @@ var DataTableComponent = class DataTableComponent {
 			expanded: !!this.expandedKeys[key],
 			row
 		});
+		this.invalidateDerivedState();
 	}
 	isRowExpanded(row) {
 		return !!this.expandedKeys[this.getRowKey(row)];
@@ -1105,41 +1474,57 @@ var DataTableComponent = class DataTableComponent {
 		return !this.collapsedGroupKeys[row.groupKey];
 	}
 	toggleGroupRow(row) {
+		this.invalidateDerivedState();
 		if (!this.isGroupRow(row)) return;
 		if (this.collapsedGroupKeys[row.groupKey]) delete this.collapsedGroupKeys[row.groupKey];
 		else this.collapsedGroupKeys[row.groupKey] = true;
+		this.invalidateDerivedState();
 	}
 	setGlobalFilter(value) {
+		var previousPage = this.currentPage;
+		this.invalidateDerivedState();
 		this.globalFilter = value || "";
 		this.currentPage = 1;
 		this.globalFilterChange.emit(this.globalFilter);
+		this.emitPageReset(previousPage);
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	setColumnFilter(columnId, value) {
 		var filters = this.getColumnFilterMap();
+		var previousPage = this.currentPage;
+		this.invalidateDerivedState();
 		filters[String(columnId)] = value;
 		this.columnFilters = filters;
 		this.currentPage = 1;
 		this.columnFiltersChange.emit(this.columnFilters);
+		this.emitPageReset(previousPage);
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	setColumnVisibility(columnId, visible) {
 		var next = copySafeDictionary(this.columnVisibility);
+		this.invalidateDerivedState();
 		next[String(columnId)] = visible;
 		this.columnVisibility = next;
 		this.columnVisibilityChange.emit(this.columnVisibility);
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	setColumnOrder(order) {
+		this.invalidateDerivedState();
 		this.columnOrder = order || [];
 		this.columnOrderChange.emit(this.columnOrder);
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	setGrouping(grouping) {
+		this.invalidateDerivedState();
 		this.grouping = grouping || [];
 		this.groupBy = grouping || [];
 		this.groupingChange.emit(this.normalizedGrouping);
 		this.emitTableState();
+		this.invalidateDerivedState();
 	}
 	getColumnUniqueValues(columnId) {
 		var column = this.findColumn(columnId);
@@ -1230,27 +1615,45 @@ var DataTableComponent = class DataTableComponent {
 		return merged;
 	}
 	getRowKey(row) {
-		var key = row && row[this.keyField] !== void 0 ? row[this.keyField] : this.data.indexOf(row);
+		var key = row && row[this.keyField] !== void 0 ? row[this.keyField] : this.getDataIndex(row);
 		return String(key);
+	}
+	getDataIndex(row) {
+		var index;
+		if (!this.renderPass && !this.derivedDepth) return this.data.indexOf(row);
+		index = this.derivedValue("dataIndex", () => {
+			var indexes = /* @__PURE__ */ new Map();
+			var i = this.data.length - 1;
+			for (; i >= 0; i -= 1) indexes.set(this.data[i], i);
+			return indexes;
+		}).get(row);
+		return index === void 0 || row !== row ? -1 : index;
 	}
 	getColumnKey(column) {
 		return String(column.id !== void 0 && column.id !== null ? column.id : column.accessorKey || column.selector || column.name);
 	}
 	flattenColumns(columns) {
 		var output = [];
+		var copied = /* @__PURE__ */ new Set();
 		var i;
 		var child;
 		var j;
 		for (i = 0; i < columns.length; i += 1) if (columns[i].columns && columns[i].columns.length) for (j = 0; j < columns[i].columns.length; j += 1) {
 			child = columns[i].columns[j];
-			output.push(child.group ? child : this.withInheritedGroup(child, columns[i].header || columns[i].name));
+			output.push(child.group ? child : this.withInheritedGroup(child, columns[i].header || columns[i].name, copied));
 		}
 		else output.push(columns[i]);
 		return output;
 	}
-	withInheritedGroup(column, group) {
-		var copy = createSafeDictionary();
+	withInheritedGroup(column, group, copied) {
+		var copy = this.columnCopies.get(column);
 		var key;
+		if (!copy || copied.has(column)) {
+			copy = createSafeDictionary();
+			if (!copied.has(column)) this.columnCopies.set(column, copy);
+		}
+		copied.add(column);
+		for (key in copy) if (!hasOwnKey(column, key)) delete copy[key];
 		for (key in column) if (hasOwnKey(column, key)) copy[key] = column[key];
 		copy.group = group;
 		return copy;
@@ -1269,15 +1672,18 @@ var DataTableComponent = class DataTableComponent {
 		var columnFilters = this.getColumnFilterMap();
 		var key;
 		var column;
-		if (global) filtered = filtered.filter((row) => this.matchesGlobalFilter(row, global));
+		var columns;
+		if (global) {
+			columns = this.visibleColumns;
+			filtered = filtered.filter((row) => this.matchesGlobalFilter(row, global, columns));
+		}
 		for (key in columnFilters) if (hasOwnKey(columnFilters, key) && columnFilters[key] !== null && columnFilters[key] !== void 0 && columnFilters[key] !== "") {
 			column = this.findColumn(key);
 			if (column) filtered = filtered.filter((row) => this.matchesColumnFilter(row, column, columnFilters[key]));
 		}
 		return filtered;
 	}
-	matchesGlobalFilter(row, global) {
-		var columns = this.visibleColumns;
+	matchesGlobalFilter(row, global, columns) {
 		var i;
 		var value;
 		for (i = 0; i < columns.length; i += 1) {
@@ -1321,7 +1727,7 @@ var DataTableComponent = class DataTableComponent {
 		if (Array.isArray(source)) return source;
 		return source === null || source === void 0 || source === "" ? [] : [source];
 	}
-	buildGroupedRows(rows, groups, depth, parentKey) {
+	buildGroupedRows(rows, groups, depth, parentKey, previous) {
 		var column = this.findColumn(groups[depth]);
 		var buckets = createSafeDictionary();
 		var order = [];
@@ -1343,18 +1749,19 @@ var DataTableComponent = class DataTableComponent {
 		}
 		for (i = 0; i < order.length; i += 1) {
 			key = parentKey + String(groups[depth]) + ":" + order[i];
-			groupRow = {
+			groupRow = previous[key] || {
 				__adtcGroup: true,
-				groupKey: key,
-				groupColumn: groups[depth],
-				groupLabel: column.name || groups[depth],
-				groupValue: order[i],
-				depth,
-				leafRows: buckets[order[i]]
+				groupKey: key
 			};
+			groupRow.groupColumn = groups[depth];
+			groupRow.groupLabel = column.name || groups[depth];
+			groupRow.groupValue = order[i];
+			groupRow.depth = depth;
+			groupRow.leafRows = buckets[order[i]];
+			this.groupRowsByKey[key] = groupRow;
 			output.push(groupRow);
 			if (!this.collapsedGroupKeys[key]) {
-				children = depth + 1 < groups.length ? this.buildGroupedRows(buckets[order[i]], groups, depth + 1, key + "|") : buckets[order[i]];
+				children = depth + 1 < groups.length ? this.buildGroupedRows(buckets[order[i]], groups, depth + 1, key + "|", previous) : buckets[order[i]];
 				output = output.concat(children);
 			}
 		}
@@ -1492,6 +1899,7 @@ var DataTableComponent = class DataTableComponent {
 		return String(value || "row").replace(/[^a-zA-Z0-9_-]/g, "-");
 	}
 	emitSelectionState() {
+		this.invalidateDerivedState();
 		this.selectedRowsChange.emit({
 			allSelected: this.allRowsSelected,
 			selectedCount: this.selectedCount,
@@ -1499,18 +1907,71 @@ var DataTableComponent = class DataTableComponent {
 		});
 	}
 	emitTableState() {
+		var column = this.activeSortColumn;
 		this.tableStateChange.emit({
 			globalFilter: this.globalFilter,
 			columnFilters: this.columnFilters,
 			columnVisibility: this.columnVisibility,
 			columnOrder: this.columnOrder,
-			groupBy: this.normalizedGrouping
+			groupBy: this.normalizedGrouping,
+			page: this.currentPage,
+			rowsPerPage: this.rowsPerPage,
+			sortColumnId: column ? columnStateId(column) : null,
+			sortDirection: this.sortDirection
 		});
+	}
+	emitPageChange() {
+		this.pageChange.emit({
+			page: this.currentPage,
+			totalRows: this.totalRows
+		});
+	}
+	emitPageReset(previousPage) {
+		if (this.paginationEmitOnReset && this.currentPage !== previousPage) this.emitPageChange();
+	}
+	get isClientPaginated() {
+		return this.pagination && !this.paginationServer && !this.manualPagination;
+	}
+	get keepsPinnedRows() {
+		return this.keepPinnedRows && this.isClientPaginated;
+	}
+	get headerRowCount() {
+		return this.noTableHead ? 0 : this.hasColumnGroups ? 2 : 1;
+	}
+	get allRowsOptionValue() {
+		return this.paginationOption("selectAllRowsItem") ? toPageSize(this.totalRows, 0) : 0;
+	}
+	get detailRowsBefore() {
+		return this.derivedValue("detailRowsBefore", () => {
+			var rows;
+			var counts = [0];
+			var i;
+			if (!this.expandableRows || !this.expandableRowTemplate || !Object.keys(this.expandedKeys).length) return null;
+			rows = this.bodyRows;
+			for (i = 0; i < rows.length; i += 1) counts.push(counts[i] + (!this.isGroupRow(rows[i]) && this.isRowExpanded(rows[i]) ? 1 : 0));
+			return counts;
+		});
+	}
+	get persistsSelectedRows() {
+		return !!(this.paginationServer && this.paginationServerOptions && this.paginationServerOptions.persistSelectedOnPageChange === true);
+	}
+	clearServerSelection(keep) {
+		var options = this.paginationServerOptions;
+		if (!this.paginationServer || !options || options[keep] === true || !Object.keys(this.selectedKeys).length) return false;
+		this.selectedKeys = createSafeDictionary();
+		this.selectedRowCache.clear();
+		return true;
 	}
 	syncProgrammaticSelection() {
 		var next = createSafeDictionary();
+		var current = createSafeDictionary();
+		var key;
 		var i;
 		if (!this.selectableRowSelected) return;
+		if (this.persistsSelectedRows) {
+			for (i = 0; i < this.data.length; i += 1) current[this.getRowKey(this.data[i])] = true;
+			for (key in this.selectedKeys) if (!current[key]) next[key] = true;
+		}
 		for (i = 0; i < this.data.length; i += 1) if (this.selectableRowSelected(this.data[i])) next[this.getRowKey(this.data[i])] = true;
 		this.selectedKeys = next;
 		this.emitSelectionState();
@@ -1523,20 +1984,89 @@ var DataTableComponent = class DataTableComponent {
 		this.expandedKeys = next;
 	}
 	applyDefaultSort() {
+		var columns = this.flatColumns;
 		var i;
 		var column;
-		if (this.defaultSortFieldId === null || this.defaultSortFieldId === void 0) return;
-		for (i = 0; i < this.columns.length; i += 1) {
-			column = this.columns[i];
+		if (this.defaultSortFieldId === null || this.defaultSortFieldId === void 0) return false;
+		for (i = 0; i < columns.length; i += 1) {
+			column = columns[i];
 			if (column.id === this.defaultSortFieldId || column.sortField === this.defaultSortFieldId) {
 				this.activeSortColumn = column;
 				this.sortDirection = this.defaultSortAsc ? "asc" : "desc";
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	ensureValidPage() {
-		this.currentPage = clamp(this.currentPage, 1, this.totalPages);
+		var previousPage = this.currentPage;
+		this.hasSeenRows = this.hasSeenRows || this.totalRows > 0;
+		if (this.hasSeenRows) this.currentPage = clamp(this.currentPage, 1, this.totalPages);
+		return !Object.is(previousPage, this.currentPage);
+	}
+	derivedValue(name, compute) {
+		var inputs;
+		var previous;
+		var i;
+		if (!this.renderPass && !this.derivedDepth) this.derivedInputs = null;
+		inputs = [
+			this.data,
+			this.data ? this.data.length : 0,
+			this.columns,
+			this.keyField,
+			this.globalFilter,
+			this.columnFilters,
+			this.columnVisibility,
+			this.hiddenColumns,
+			this.columnOrder,
+			this.groupBy,
+			this.grouping,
+			this.pinnedTopRows,
+			this.pinnedBottomRows,
+			this.rowPinning,
+			this.rowPinning && this.rowPinning.top,
+			this.rowPinning && this.rowPinning.bottom,
+			this.manualFiltering,
+			this.manualSorting,
+			this.manualPagination,
+			this.sortServer,
+			this.pagination,
+			this.paginationServer,
+			this.paginationTotalRows,
+			this.virtualRows,
+			this.virtualStartIndex,
+			this.virtualRowCount,
+			this.selectableRowsVisibleOnly,
+			this.selectableRowDisabled,
+			this.currentPage,
+			this.rowsPerPage,
+			this.activeSortColumn,
+			this.sortDirection,
+			this.selectedKeys,
+			this.keepPinnedRows,
+			this.paginationServerOptions,
+			this.expandableRows,
+			this.expandableRowTemplate,
+			this.expandedKeys
+		];
+		previous = this.derivedInputs;
+		for (i = 0; previous && i < inputs.length; i += 1) if (!Object.is(inputs[i], previous[i])) previous = null;
+		if (!previous) {
+			this.derivedCache = createSafeDictionary();
+			this.derivedInputs = inputs;
+		}
+		if (!(name in this.derivedCache)) {
+			this.derivedDepth += 1;
+			try {
+				this.derivedCache[name] = compute();
+			} finally {
+				this.derivedDepth -= 1;
+			}
+		}
+		return this.derivedCache[name];
+	}
+	invalidateDerivedState() {
+		this.derivedInputs = null;
 	}
 	mergeColumnSize(column, style) {
 		var merged = createSafeDictionary();
@@ -1576,24 +2106,42 @@ var DataTableComponent = class DataTableComponent {
 		target: i0.ɵɵFactoryTarget.Component
 	});
 	static ɵcmp = i0.ɵɵngDeclareComponent({
-		minVersion: "14.0.0",
+		minVersion: "16.1.0",
 		version: "22.2.4",
 		type: DataTableComponent,
 		isStandalone: false,
 		selector: "stackline-data-table",
 		inputs: {
-			columns: "columns",
-			data: "data",
+			columns: [
+				"columns",
+				"columns",
+				(value) => value ?? []
+			],
+			data: [
+				"data",
+				"data",
+				(value) => value ?? []
+			],
 			keyField: "keyField",
 			title: "title",
 			ariaLabel: "ariaLabel",
 			keyboardRows: "keyboardRows",
+			trackBy: "trackBy",
 			pagination: "pagination",
 			paginationServer: "paginationServer",
 			paginationDefaultPage: "paginationDefaultPage",
 			paginationPerPage: "paginationPerPage",
 			paginationTotalRows: "paginationTotalRows",
 			paginationRowsPerPageOptions: "paginationRowsPerPageOptions",
+			paginationHideRowsPerPage: "paginationHideRowsPerPage",
+			paginationComponentOptions: "paginationComponentOptions",
+			paginationResetDefaultPage: "paginationResetDefaultPage",
+			paginationServerOptions: "paginationServerOptions",
+			paginationTemplate: "paginationTemplate",
+			keepPinnedRows: "keepPinnedRows",
+			persistPagination: "persistPagination",
+			paginationResetOnFilterChange: "paginationResetOnFilterChange",
+			paginationEmitOnReset: "paginationEmitOnReset",
 			selectableRows: "selectableRows",
 			selectableRowsSingle: "selectableRowsSingle",
 			selectableRowsHighlight: "selectableRowsHighlight",
@@ -1620,7 +2168,11 @@ var DataTableComponent = class DataTableComponent {
 			fixedHeader: "fixedHeader",
 			fixedHeaderScrollHeight: "fixedHeaderScrollHeight",
 			noDataText: "noDataText",
-			conditionalRowStyles: "conditionalRowStyles",
+			conditionalRowStyles: [
+				"conditionalRowStyles",
+				"conditionalRowStyles",
+				(value) => value ?? []
+			],
 			defaultSortFieldId: "defaultSortFieldId",
 			defaultSortAsc: "defaultSortAsc",
 			sortServer: "sortServer",
@@ -1629,7 +2181,11 @@ var DataTableComponent = class DataTableComponent {
 			manualPagination: "manualPagination",
 			globalFilter: "globalFilter",
 			columnFilters: "columnFilters",
-			hiddenColumns: "hiddenColumns",
+			hiddenColumns: [
+				"hiddenColumns",
+				"hiddenColumns",
+				(value) => value ?? []
+			],
 			columnVisibility: "columnVisibility",
 			columnOrder: "columnOrder",
 			columnPinning: "columnPinning",
@@ -1644,7 +2200,12 @@ var DataTableComponent = class DataTableComponent {
 			virtualStartIndex: "virtualStartIndex",
 			virtualRowCount: "virtualRowCount",
 			theme: "theme",
-			contextMessage: "contextMessage"
+			contextMessage: [
+				"contextMessage",
+				"contextMessage",
+				(value) => value ?? { ...DEFAULT_CONTEXT_MESSAGE }
+			],
+			localization: "localization"
 		},
 		outputs: {
 			sortChange: "sortChange",
@@ -1663,11 +2224,17 @@ var DataTableComponent = class DataTableComponent {
 			groupingChange: "groupingChange",
 			tableStateChange: "tableStateChange"
 		},
+		viewQueries: [{
+			propertyName: "rowsBlock",
+			first: true,
+			predicate: ["adtcRows"],
+			descendants: true
+		}],
 		usesOnChanges: true,
 		ngImport: i0,
-		template: "\n<div [attr.class]=\"shellClassName\">\n  <div *ngIf=\"title && !noHeader\" class=\"adtc-header\">\n    <h3>{{ title }}</h3>\n  </div>\n\n  <div *ngIf=\"showContextBar\" class=\"adtc-context\">\n    <strong>{{ selectedCount }}</strong>\n    {{ selectedCount === 1 ? contextMessage.singular : contextMessage.plural }}\n    {{ contextMessage.message }}\n  </div>\n\n  <div *ngIf=\"progressPending\" class=\"adtc-state adtc-loading\" role=\"status\" aria-live=\"polite\">\n    Loading...\n  </div>\n\n  <div *ngIf=\"!progressPending && !hasRows\" class=\"adtc-state\" role=\"status\" aria-live=\"polite\">\n    {{ noDataText }}\n  </div>\n\n  <div *ngIf=\"!progressPending && hasRows\">\n      <div [attr.class]=\"wrapperClassName\">\n      <div [attr.class]=\"scrollClassName\" [attr.style]=\"scrollStyleText\">\n        <table\n          class=\"adtc-table\"\n          role=\"grid\"\n          [attr.aria-label]=\"tableAriaLabel\"\n          [attr.aria-rowcount]=\"totalRows\"\n          [attr.aria-colcount]=\"expandedColspan\">\n          <thead *ngIf=\"!noTableHead\">\n            <tr *ngIf=\"hasColumnGroups\" role=\"row\">\n              <th *ngIf=\"selectableRows\" class=\"adtc-select-col\" rowspan=\"2\" scope=\"col\" role=\"columnheader\">\n                <input\n                  *ngIf=\"!selectableRowsSingle && !selectableRowsNoSelectAll\"\n                  type=\"checkbox\"\n                  [attr.aria-label]=\"selectAllAriaLabel\"\n                  [attr.aria-checked]=\"selectAllAriaChecked\"\n                  [indeterminate]=\"someRowsSelected\"\n                  [checked]=\"allRowsSelected\"\n                  (click)=\"$event.stopPropagation()\"\n                  (change)=\"toggleAllRows($any($event.target).checked)\" />\n              </th>\n\n              <th *ngIf=\"expandableRows && !expandableRowsHideExpander\" class=\"adtc-expand-col\" rowspan=\"2\" scope=\"col\" role=\"columnheader\"></th>\n\n              <th *ngFor=\"let group of columnGroups\" class=\"adtc-group-header\" [attr.colspan]=\"group.colspan\" scope=\"colgroup\" role=\"columnheader\">\n                {{ group.name }}\n              </th>\n            </tr>\n\n            <tr role=\"row\">\n              <th *ngIf=\"selectableRows && !hasColumnGroups\" class=\"adtc-select-col\" scope=\"col\" role=\"columnheader\">\n                <input\n                  *ngIf=\"!selectableRowsSingle && !selectableRowsNoSelectAll\"\n                  type=\"checkbox\"\n                  [attr.aria-label]=\"selectAllAriaLabel\"\n                  [attr.aria-checked]=\"selectAllAriaChecked\"\n                  [indeterminate]=\"someRowsSelected\"\n                  [checked]=\"allRowsSelected\"\n                  (click)=\"$event.stopPropagation()\"\n                  (change)=\"toggleAllRows($any($event.target).checked)\" />\n              </th>\n\n              <th *ngIf=\"expandableRows && !expandableRowsHideExpander && !hasColumnGroups\" class=\"adtc-expand-col\" scope=\"col\" role=\"columnheader\"></th>\n\n              <th\n                *ngFor=\"let column of visibleColumns\"\n                [attr.class]=\"getHeaderClassName(column)\"\n                [attr.style]=\"getHeaderStyleText(column)\"\n                scope=\"col\"\n                role=\"columnheader\"\n                [attr.aria-sort]=\"getAriaSort(column)\">\n                <button\n                  type=\"button\"\n	                  [attr.class]=\"getSortButtonClassName(column)\"\n	                  [attr.aria-label]=\"getSortButtonAriaLabel(column)\"\n	                  [disabled]=\"!column.sortable\"\n	                  (keydown)=\"handleSortButtonKeydown($event, column)\"\n	                  (click)=\"toggleSort(column)\">\n                  <span>{{ column.name }}</span>\n                  <span *ngIf=\"column.sortable\" [attr.class]=\"getSortIndicatorClassName(column)\">\n                    {{ activeSortColumn === column ? (sortDirection === 'asc' ? 'Asc' : 'Desc') : 'Sort' }}\n                  </span>\n                </button>\n              </th>\n            </tr>\n          </thead>\n\n          <tbody>\n            <ng-template ngFor let-row [ngForOf]=\"displayedRows\" let-rowIndex=\"index\">\n              <tr *ngIf=\"isGroupRow(row)\" class=\"adtc-group-row\" role=\"row\" [attr.id]=\"getGroupRowId(row)\">\n                <td class=\"adtc-group-cell\" [attr.colspan]=\"expandedColspan\" role=\"gridcell\">\n                  <button\n                    type=\"button\"\n                    class=\"adtc-group-toggle\"\n	                    [attr.aria-label]=\"getGroupToggleAriaLabel(row)\"\n	                    [attr.aria-expanded]=\"isGroupRowExpanded(row)\"\n	                    [attr.aria-controls]=\"getGroupRowId(row)\"\n	                    (keydown)=\"handleGroupToggleKeydown($event, row)\"\n	                    (click)=\"toggleGroupRow(row)\">\n                    {{ isGroupRowExpanded(row) ? '-' : '+' }}\n                  </button>\n                  <strong>{{ row.groupLabel }}</strong>\n                  <span>{{ row.groupValue }}</span>\n                  <em>{{ row.leafRows.length }} rows</em>\n                </td>\n              </tr>\n\n              <tr\n                *ngIf=\"!isGroupRow(row)\"\n                role=\"row\"\n                [attr.class]=\"getRowClassName(row)\"\n                [attr.style]=\"getRowStyleText(row)\"\n                [attr.tabindex]=\"getRowTabIndex(row)\"\n                [attr.aria-selected]=\"getRowAriaSelected(row)\"\n                (keydown)=\"handleRowKeydown($event, row)\"\n                (click)=\"handleRowClick(row)\"\n                (dblclick)=\"handleRowDoubleClick(row)\"\n                (mouseenter)=\"handleMouseEnter(row)\"\n                (mouseleave)=\"handleMouseLeave(row)\">\n                <td *ngIf=\"selectableRows\" class=\"adtc-select-col\" role=\"gridcell\">\n                  <input\n                    [type]=\"selectableRowsSingle ? 'radio' : 'checkbox'\"\n                    [attr.aria-label]=\"getRowSelectionAriaLabel(row, rowIndex)\"\n                    [attr.aria-checked]=\"isRowSelected(row)\"\n                    [checked]=\"isRowSelected(row)\"\n                    [disabled]=\"isSelectableDisabled(row)\"\n                    (click)=\"$event.stopPropagation()\"\n                    (change)=\"toggleRowSelection(row)\" />\n                </td>\n\n                <td *ngIf=\"expandableRows && !expandableRowsHideExpander\" class=\"adtc-expand-col\" role=\"gridcell\">\n                  <button\n                    type=\"button\"\n                    class=\"adtc-expander\"\n                    [attr.aria-label]=\"getRowExpandAriaLabel(row, rowIndex)\"\n	                    [attr.aria-expanded]=\"isRowExpanded(row)\"\n	                    [attr.aria-controls]=\"getExpandedRowId(row)\"\n	                    [disabled]=\"isExpandableDisabled(row)\"\n	                    (keydown)=\"handleExpanderKeydown($event, row)\"\n	                    (click)=\"$event.stopPropagation(); toggleRowExpansion(row)\">\n                    {{ isRowExpanded(row) ? '-' : '+' }}\n                  </button>\n                </td>\n\n                <td *ngFor=\"let column of visibleColumns\" [attr.class]=\"getCellClassName(column)\" [attr.style]=\"getCellStyleText(column)\" role=\"gridcell\">\n                  <ng-template [ngIf]=\"column.cellTemplate\">\n                    <ng-template\n                      [ngTemplateOutlet]=\"column.cellTemplate\"\n                      [ngTemplateOutletContext]=\"getCellContext(row, column, rowIndex)\">\n                    </ng-template>\n                  </ng-template>\n                  <ng-template [ngIf]=\"!column.cellTemplate\">\n                    {{ getCellText(row, column, rowIndex) }}\n                  </ng-template>\n                </td>\n              </tr>\n\n              <tr\n                *ngIf=\"!isGroupRow(row) && expandableRows && expandableRowTemplate && isRowExpanded(row)\"\n                class=\"adtc-expanded-row\"\n                role=\"row\"\n                [attr.id]=\"getExpandedRowId(row)\">\n                <td class=\"adtc-expanded-cell\" [attr.colspan]=\"expandedColspan\" role=\"gridcell\">\n                  <ng-template\n                    [ngTemplateOutlet]=\"expandableRowTemplate\"\n                    [ngTemplateOutletContext]=\"getExpandableContext(row, rowIndex)\">\n                  </ng-template>\n                </td>\n              </tr>\n            </ng-template>\n          </tbody>\n        </table>\n      </div>\n    </div>\n\n    <div *ngIf=\"showPagination\" class=\"adtc-pagination\">\n      <div class=\"adtc-pagination-meta\">\n        Showing {{ startRow }}-{{ endRow }} of {{ totalRows }}\n      </div>\n\n      <div class=\"adtc-pagination-controls\">\n        <label class=\"adtc-pagination-size\">\n          Rows:\n          <select [value]=\"rowsPerPage\" (change)=\"changeRowsPerPage($any($event.target).value)\">\n            <option *ngFor=\"let size of paginationRowsPerPageOptions\" [value]=\"size\">\n              {{ size }}\n            </option>\n          </select>\n        </label>\n\n        <button type=\"button\" (click)=\"changePage(1)\" [disabled]=\"currentPage === 1\">First</button>\n        <button type=\"button\" (click)=\"changePage(currentPage - 1)\" [disabled]=\"currentPage === 1\">Prev</button>\n        <span class=\"adtc-page-indicator\">Page {{ currentPage }} of {{ totalPages }}</span>\n        <button type=\"button\" (click)=\"changePage(currentPage + 1)\" [disabled]=\"currentPage === totalPages\">Next</button>\n        <button type=\"button\" (click)=\"changePage(totalPages)\" [disabled]=\"currentPage === totalPages\">Last</button>\n      </div>\n    </div>\n  </div>\n</div>\n",
+		template: "\n<div [attr.class]=\"shellClassName\">\n  <div *ngIf=\"title && !noHeader\" class=\"adtc-header\">\n    <h3>{{ title }}</h3>\n  </div>\n\n  <div *ngIf=\"showContextBar\" class=\"adtc-context\">\n    <strong>{{ selectedCount }}</strong>\n    {{ selectedCount === 1 ? contextMessage.singular : contextMessage.plural }}\n    {{ contextMessage.message }}\n  </div>\n\n  <div *ngIf=\"progressPending\" class=\"adtc-state adtc-loading\" role=\"status\" aria-live=\"polite\" [attr.style]=\"loadingStyleText\">\n    {{ localize('', 'loadingText') }}\n  </div>\n\n  <div *ngIf=\"!progressPending && !hasRows\" class=\"adtc-state\" role=\"status\" aria-live=\"polite\">\n    {{ noDataText }}\n  </div>\n\n  <div *ngIf=\"!progressPending && hasRows\" #adtcRows>\n      <div [attr.class]=\"wrapperClassName\">\n      <div [attr.class]=\"scrollClassName\" [attr.style]=\"scrollStyleText\">\n        <table\n          class=\"adtc-table\"\n          role=\"grid\"\n          [attr.aria-label]=\"tableAriaLabel\"\n          [attr.aria-rowcount]=\"ariaRowCount\"\n          [attr.aria-colcount]=\"expandedColspan\">\n          <thead *ngIf=\"!noTableHead\">\n            <tr *ngIf=\"hasColumnGroups\" role=\"row\">\n              <th *ngIf=\"selectableRows\" class=\"adtc-select-col\" rowspan=\"2\" scope=\"col\" role=\"columnheader\">\n                <input\n                  *ngIf=\"!selectableRowsSingle && !selectableRowsNoSelectAll\"\n                  type=\"checkbox\"\n                  [attr.aria-label]=\"getSelectAllAriaLabel()\"\n                  [attr.aria-checked]=\"selectAllAriaChecked\"\n                  [indeterminate]=\"someRowsSelected\"\n                  [checked]=\"allRowsSelected\"\n                  (click)=\"$event.stopPropagation()\"\n                  (change)=\"toggleAllRows($any($event.target).checked)\" />\n              </th>\n\n              <th *ngIf=\"expandableRows && !expandableRowsHideExpander\" class=\"adtc-expand-col\" rowspan=\"2\" scope=\"col\" role=\"columnheader\"></th>\n\n              <th *ngFor=\"let group of columnGroups\" class=\"adtc-group-header\" [attr.colspan]=\"group.colspan\" scope=\"colgroup\" role=\"columnheader\">\n                {{ group.name }}\n              </th>\n            </tr>\n\n            <tr role=\"row\">\n              <th *ngIf=\"selectableRows && !hasColumnGroups\" class=\"adtc-select-col\" scope=\"col\" role=\"columnheader\">\n                <input\n                  *ngIf=\"!selectableRowsSingle && !selectableRowsNoSelectAll\"\n                  type=\"checkbox\"\n                  [attr.aria-label]=\"getSelectAllAriaLabel()\"\n                  [attr.aria-checked]=\"selectAllAriaChecked\"\n                  [indeterminate]=\"someRowsSelected\"\n                  [checked]=\"allRowsSelected\"\n                  (click)=\"$event.stopPropagation()\"\n                  (change)=\"toggleAllRows($any($event.target).checked)\" />\n              </th>\n\n              <th *ngIf=\"expandableRows && !expandableRowsHideExpander && !hasColumnGroups\" class=\"adtc-expand-col\" scope=\"col\" role=\"columnheader\"></th>\n\n              <th\n                *ngFor=\"let column of visibleColumns\"\n                [attr.class]=\"getHeaderClassName(column)\"\n                [attr.style]=\"getHeaderStyleText(column)\"\n                scope=\"col\"\n                role=\"columnheader\"\n                [attr.aria-sort]=\"getAriaSort(column)\">\n                <button\n                  type=\"button\"\n	                  [attr.class]=\"getSortButtonClassName(column)\"\n	                  [attr.aria-label]=\"getSortButtonAriaLabel(column)\"\n	                  [disabled]=\"!column.sortable\"\n	                  (keydown)=\"handleSortButtonKeydown($event, column)\"\n	                  (click)=\"toggleSort(column)\">\n                  <span>{{ column.name }}</span>\n                  <span *ngIf=\"column.sortable\" [attr.class]=\"getSortIndicatorClassName(column)\">\n                    {{ getSortIndicatorText(column) }}\n                  </span>\n                </button>\n              </th>\n            </tr>\n          </thead>\n\n          <tbody>\n            <ng-template ngFor let-row [ngForOf]=\"displayedRows\" [ngForTrackBy]=\"rowTrackBy\" let-rowIndex=\"index\">\n              <tr *ngIf=\"isGroupRow(row)\" class=\"adtc-group-row\" role=\"row\" [attr.id]=\"getGroupRowId(row)\" [attr.aria-rowindex]=\"getRowAriaIndex(rowIndex)\">\n                <td class=\"adtc-group-cell\" [attr.colspan]=\"expandedColspan\" role=\"gridcell\">\n                  <button\n                    type=\"button\"\n                    class=\"adtc-group-toggle\"\n	                    [attr.aria-label]=\"getGroupToggleAriaLabel(row)\"\n	                    [attr.aria-expanded]=\"isGroupRowExpanded(row)\"\n	                    [attr.aria-controls]=\"getGroupRowId(row)\"\n	                    (keydown)=\"handleGroupToggleKeydown($event, row)\"\n	                    (click)=\"toggleGroupRow(row)\">\n                    {{ isGroupRowExpanded(row) ? '-' : '+' }}\n                  </button>\n                  <strong>{{ row.groupLabel }}</strong>\n                  <span>{{ row.groupValue }}</span>\n                  <em>{{ getGroupRowCountText(row) }}</em>\n                </td>\n              </tr>\n\n              <tr\n                *ngIf=\"!isGroupRow(row)\"\n                role=\"row\"\n                [attr.aria-rowindex]=\"getRowAriaIndex(rowIndex)\"\n                [attr.class]=\"getRowClassName(row)\"\n                [attr.style]=\"getRowStyleText(row)\"\n                [attr.tabindex]=\"getRowTabIndex(row)\"\n                [attr.aria-selected]=\"getRowAriaSelected(row)\"\n                (keydown)=\"handleRowKeydown($event, row)\"\n                (click)=\"handleRowClick(row)\"\n                (dblclick)=\"handleRowDoubleClick(row)\"\n                (mouseenter)=\"handleMouseEnter(row)\"\n                (mouseleave)=\"handleMouseLeave(row)\">\n                <td *ngIf=\"selectableRows\" class=\"adtc-select-col\" role=\"gridcell\">\n                  <input\n                    [type]=\"selectableRowsSingle ? 'radio' : 'checkbox'\"\n                    [attr.aria-label]=\"getRowSelectionAriaLabel(row, rowIndex)\"\n                    [attr.aria-checked]=\"isRowSelected(row)\"\n                    [checked]=\"isRowSelected(row)\"\n                    [disabled]=\"isSelectableDisabled(row)\"\n                    (click)=\"$event.stopPropagation()\"\n                    (change)=\"toggleRowSelection(row)\" />\n                </td>\n\n                <td *ngIf=\"expandableRows && !expandableRowsHideExpander\" class=\"adtc-expand-col\" role=\"gridcell\">\n                  <button\n                    type=\"button\"\n                    class=\"adtc-expander\"\n                    [attr.aria-label]=\"getRowExpandAriaLabel(row, rowIndex)\"\n	                    [attr.aria-expanded]=\"isRowExpanded(row)\"\n	                    [attr.aria-controls]=\"getExpandedRowId(row)\"\n	                    [disabled]=\"isExpandableDisabled(row)\"\n	                    (keydown)=\"handleExpanderKeydown($event, row)\"\n	                    (click)=\"$event.stopPropagation(); toggleRowExpansion(row)\">\n                    {{ isRowExpanded(row) ? '-' : '+' }}\n                  </button>\n                </td>\n\n                <td *ngFor=\"let column of visibleColumns\" [attr.class]=\"getCellClassName(column)\" [attr.style]=\"getCellStyleText(column)\" role=\"gridcell\">\n                  <ng-template [ngIf]=\"column.cellTemplate\">\n                    <ng-template\n                      [ngTemplateOutlet]=\"column.cellTemplate\"\n                      [ngTemplateOutletContext]=\"getCellContext(row, column, rowIndex)\">\n                    </ng-template>\n                  </ng-template>\n                  <ng-template [ngIf]=\"!column.cellTemplate\">\n                    {{ getCellText(row, column, rowIndex) }}\n                  </ng-template>\n                </td>\n              </tr>\n\n              <tr\n                *ngIf=\"!isGroupRow(row) && expandableRows && expandableRowTemplate && isRowExpanded(row)\"\n                class=\"adtc-expanded-row\"\n                role=\"row\"\n                [attr.aria-rowindex]=\"getRowAriaIndex(rowIndex) + 1\"\n                [attr.id]=\"getExpandedRowId(row)\">\n                <td class=\"adtc-expanded-cell\" [attr.colspan]=\"expandedColspan\" role=\"gridcell\">\n                  <ng-template\n                    [ngTemplateOutlet]=\"expandableRowTemplate\"\n                    [ngTemplateOutletContext]=\"getExpandableContext(row, rowIndex)\">\n                  </ng-template>\n                </td>\n              </tr>\n            </ng-template>\n          </tbody>\n        </table>\n      </div>\n    </div>\n\n    <ng-container *ngIf=\"showPagination && !persistPagination\" [ngTemplateOutlet]=\"adtcPagination\"></ng-container>\n  </div>\n\n  <ng-container *ngIf=\"showPersistentPagination\" [ngTemplateOutlet]=\"adtcPagination\"></ng-container>\n</div>\n\n<ng-template #adtcPagination>\n  <div class=\"adtc-pagination\" [attr.role]=\"paginationAriaLabel ? 'navigation' : null\" [attr.aria-label]=\"paginationAriaLabel\">\n    <ng-container\n      *ngIf=\"paginationTemplate; else adtcPaginationContent\"\n      [ngTemplateOutlet]=\"paginationTemplate\"\n      [ngTemplateOutletContext]=\"paginationContext\"></ng-container>\n  </div>\n</ng-template>\n\n<ng-template #adtcPaginationContent>\n  <div class=\"adtc-pagination-meta\" aria-live=\"polite\" aria-atomic=\"true\">\n    {{ paginationOption('showingText') }} {{ startRow }}-{{ endRow }} {{ paginationOption('rangeSeparatorText') }} {{ totalRows }}\n  </div>\n\n  <div class=\"adtc-pagination-controls\">\n    <label *ngIf=\"!paginationHideRowsPerPage && !paginationOption('noRowsPerPage')\" class=\"adtc-pagination-size\">\n      {{ paginationOption('rowsPerPageText') }}\n      <select [value]=\"rowsPerPage\" [attr.aria-label]=\"localize('pagination', 'rowsPerPageAriaLabel') || null\" (change)=\"changeRowsPerPage($any($event.target).value)\">\n        <option\n          *ngFor=\"let size of rowsPerPageOptions; let index = index; let last = last; let sizes = ngForOf\"\n          [value]=\"size\"\n          [selected]=\"size === rowsPerPage && sizes.indexOf(size) === index\">\n          {{ getRowsPerPageOptionLabel(size, last) }}\n        </option>\n      </select>\n    </label>\n\n    <button type=\"button\" (click)=\"changePage(1); keepPagerFocus($event)\" [disabled]=\"currentPage === 1\" [attr.aria-label]=\"localize('pagination', 'firstPageAriaLabel') || null\">{{ paginationOption('firstPageText') }}</button>\n    <button type=\"button\" (click)=\"changePage(currentPage - 1); keepPagerFocus($event)\" [disabled]=\"currentPage === 1\" [attr.aria-label]=\"localize('pagination', 'previousPageAriaLabel') || null\">{{ paginationOption('previousPageText') }}</button>\n    <span class=\"adtc-page-indicator\">{{ paginationOption('pageText') }} {{ currentPage }} {{ paginationOption('rangeSeparatorText') }} {{ totalPages }}</span>\n    <button type=\"button\" (click)=\"changePage(currentPage + 1); keepPagerFocus($event)\" [disabled]=\"currentPage === totalPages\" [attr.aria-label]=\"localize('pagination', 'nextPageAriaLabel') || null\">{{ paginationOption('nextPageText') }}</button>\n    <button type=\"button\" (click)=\"changePage(totalPages); keepPagerFocus($event)\" [disabled]=\"currentPage === totalPages\" [attr.aria-label]=\"localize('pagination', 'lastPageAriaLabel') || null\">{{ paginationOption('lastPageText') }}</button>\n  </div>\n</ng-template>\n",
 		isInline: true,
-		styles: [":host{display:block}.adtc-shell{background:#fff;border:1px solid #d6dee8;border-radius:6px;color:#17324d;font-family:inherit;overflow:hidden}.adtc-theme-dark{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-header,.adtc-context,.adtc-pagination{padding:10px 12px}.adtc-header{background:#fbfcfe;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-header{background:#162438;border-bottom-color:#2b3c56}.adtc-header h3{color:#142842;font-size:14px;font-weight:700;line-height:1.25;margin:0}.adtc-context{background:#eaf5fd;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-context{background:#183555;border-bottom-color:#2b3c56}.adtc-responsive{overflow-x:auto}.adtc-scroll{overflow:auto}.adtc-fixed-header thead th{position:sticky;top:0;z-index:2}.adtc-table{border-collapse:collapse;font-size:13px;line-height:1.35;min-width:100%;table-layout:fixed;width:100%}.adtc-responsive .adtc-table{min-width:720px}.adtc-table thead th{background:#f7f9fc;border-bottom:1px solid #cbd6e2;border-right:1px solid #e7edf4;color:#405874;font-size:12px;font-weight:700;padding:0;text-align:left;vertical-align:middle}.adtc-table thead th:last-child{border-right:0}.adtc-group-header{padding:8px 10px!important;text-align:center}.adtc-theme-dark .adtc-table thead th{background:#162438;border-bottom-color:#3f5678;color:#b0c1d8}.adtc-table td{border-bottom:1px solid #d9e2ec;border-right:1px solid #eef3f7;color:inherit;height:38px;padding:7px 10px;vertical-align:middle}.adtc-table td:last-child{border-right:0}.adtc-theme-dark .adtc-table td{border-bottom-color:#2b3c56;border-right-color:#243650}.adtc-theme-dark .adtc-table thead th{border-right-color:#243650}.adtc-row-hoverable:hover td{background:#f2f8fd}.adtc-theme-dark .adtc-row-hoverable:hover td{background:#183555}.adtc-row-pointer td{cursor:pointer}.adtc-row:focus{outline:2px solid rgba(12,115,184,.34);outline-offset:-2px}.adtc-row:focus td{background:#eef7ff}.adtc-row-striped:nth-child(odd) td{background:#fbfcfe}.adtc-theme-dark .adtc-row-striped:nth-child(odd) td{background:#142238}.adtc-row-dense td{height:32px;padding:5px 9px}.adtc-row-selected td{background:#e9f4fd}.adtc-row-pinned-top td,.adtc-row-pinned-bottom td{background:#f3f8fc;font-weight:600}.adtc-theme-dark .adtc-row-pinned-top td,.adtc-theme-dark .adtc-row-pinned-bottom td{background:#183555}.adtc-theme-dark .adtc-row-selected td{background:#1e4268}.adtc-align-right{text-align:right}.adtc-align-center{text-align:center}.adtc-nowrap{white-space:nowrap}.adtc-wrap{white-space:normal}.adtc-sort-button{align-items:center;background:transparent;border:0;color:inherit;cursor:default;display:inline-flex;font:inherit;justify-content:flex-start;min-height:36px;padding:8px 10px;text-align:left;width:100%}.adtc-sort-button:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:-2px}.adtc-sort-button span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adtc-sortable{cursor:pointer}.adtc-sort-right{justify-content:flex-end;text-align:right}.adtc-sort-center{justify-content:center;text-align:center}.adtc-sort-indicator{color:#8395a8;flex:0 0 auto;font-size:9px;margin-left:6px;max-width:0;opacity:0;overflow:hidden;text-transform:uppercase;transition:max-width .16s ease,opacity .16s ease;white-space:nowrap}.adtc-sort-indicator.active{color:#0c73b8;max-width:36px;opacity:1}.adtc-table thead th:hover .adtc-sort-indicator{max-width:36px;opacity:.72}.adtc-select-col{background:#fbfdff;min-width:54px;padding-left:16px!important;padding-right:16px!important;text-align:center;white-space:nowrap;width:54px}.adtc-expand-col{text-align:center;white-space:nowrap;width:46px}.adtc-select-col input{accent-color:#0c73b8;appearance:none;background:#fff;border:1px solid #9fb0c3;border-radius:3px;cursor:pointer;display:block;height:16px;margin:0 auto;position:relative;vertical-align:middle;width:16px}.adtc-select-col input[type=radio]{border-radius:999px}.adtc-select-col input:checked{background:#0c73b8;border-color:#0c73b8}.adtc-select-col input[type=checkbox]:checked:after{border:solid #ffffff;border-width:0 2px 2px 0;content:\"\";height:8px;left:5px;position:absolute;top:1px;transform:rotate(45deg);width:4px}.adtc-select-col input[type=radio]:checked:after{background:#fff;border-radius:999px;content:\"\";height:6px;left:4px;position:absolute;top:4px;width:6px}.adtc-select-col input:disabled{background:#eef2f6;border-color:#c6d0dc;cursor:not-allowed;opacity:.7}.adtc-select-col input:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:2px}.adtc-expander{align-items:center;background:transparent;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-theme-dark .adtc-expander{border-color:#3f5678;color:#7cc7ff}.adtc-expander:disabled{cursor:not-allowed;opacity:.45}.adtc-expanded-row td{background:#f8fafc}.adtc-theme-dark .adtc-expanded-row td{background:#162438}.adtc-expanded-cell{padding:12px}.adtc-group-row td{background:#eef6fd;border-bottom:1px solid #d9e2ec;color:#17324d;padding:8px 10px}.adtc-theme-dark .adtc-group-row td{background:#183555;border-bottom-color:#2b3c56;color:#eef4fb}.adtc-group-cell{align-items:center;display:flex;gap:8px;min-width:0}.adtc-group-cell em{color:#59708a;flex:0 0 auto;font-size:12px;font-style:normal;margin-left:auto;white-space:nowrap}.adtc-group-toggle{align-items:center;background:#fff;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;flex:0 0 auto;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-pinned-left{box-shadow:2px 0 #0c73b814}.adtc-pinned-right{box-shadow:-2px 0 #0c73b814}.adtc-pagination{align-items:center;border-top:1px solid #d9e2ec;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}.adtc-theme-dark .adtc-pagination{border-top-color:#2b3c56}.adtc-pagination-meta{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-pagination-meta{color:#b0c1d8}.adtc-pagination-controls{align-items:center;display:flex;flex-wrap:wrap;gap:6px}.adtc-pagination-size{align-items:center;color:#59708a;display:inline-flex;gap:6px;font-size:12px}.adtc-pagination select,.adtc-pagination button{background:#fff;border:1px solid #d9e2ec;border-radius:6px;color:#17324d;font-size:12px;min-height:30px;padding:5px 9px}.adtc-pagination select{min-width:64px}.adtc-theme-dark .adtc-pagination select,.adtc-theme-dark .adtc-pagination button{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-pagination button:disabled{cursor:not-allowed;opacity:.45}.adtc-page-indicator{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-page-indicator{color:#b0c1d8}.adtc-state{color:#59708a;padding:32px 16px;text-align:center}.adtc-theme-dark .adtc-state{color:#b0c1d8}\n"],
+		styles: [":host{display:block}.adtc-shell{background:#fff;border:1px solid #d6dee8;border-radius:6px;color:#17324d;font-family:inherit;overflow:hidden}.adtc-theme-dark{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-header,.adtc-context,.adtc-pagination{padding:10px 12px}.adtc-header{background:#fbfcfe;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-header{background:#162438;border-bottom-color:#2b3c56}.adtc-header h3{color:#142842;font-size:14px;font-weight:700;line-height:1.25;margin:0}.adtc-context{background:#eaf5fd;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-context{background:#183555;border-bottom-color:#2b3c56}.adtc-responsive{overflow-x:auto}.adtc-scroll{overflow:auto}.adtc-fixed-header thead th{position:sticky;top:0;z-index:2}.adtc-table{border-collapse:collapse;font-size:13px;line-height:1.35;min-width:100%;table-layout:fixed;width:100%}.adtc-responsive .adtc-table{min-width:720px}.adtc-table thead th{background:#f7f9fc;border-bottom:1px solid #cbd6e2;border-right:1px solid #e7edf4;color:#405874;font-size:12px;font-weight:700;padding:0;text-align:left;vertical-align:middle}.adtc-table thead th:last-child{border-right:0}.adtc-group-header{padding:8px 10px!important;text-align:center}.adtc-theme-dark .adtc-table thead th{background:#162438;border-bottom-color:#3f5678;color:#b0c1d8}.adtc-table td{border-bottom:1px solid #d9e2ec;border-right:1px solid #eef3f7;color:inherit;height:38px;padding:7px 10px;vertical-align:middle}.adtc-table td:last-child{border-right:0}.adtc-theme-dark .adtc-table td{border-bottom-color:#2b3c56;border-right-color:#243650}.adtc-theme-dark .adtc-table thead th{border-right-color:#243650}.adtc-row-hoverable:hover td{background:#f2f8fd}.adtc-theme-dark .adtc-row-hoverable:hover td{background:#183555}.adtc-row-pointer td{cursor:pointer}.adtc-row:focus{outline:2px solid rgba(12,115,184,.34);outline-offset:-2px}.adtc-row:focus td{background:#eef7ff}.adtc-row-striped:nth-child(odd) td{background:#fbfcfe}.adtc-theme-dark .adtc-row-striped:nth-child(odd) td{background:#142238}.adtc-row-dense td{height:32px;padding:5px 9px}.adtc-row-selected td{background:#e9f4fd}.adtc-row-pinned-top td,.adtc-row-pinned-bottom td{background:#f3f8fc;font-weight:600}.adtc-theme-dark .adtc-row-pinned-top td,.adtc-theme-dark .adtc-row-pinned-bottom td{background:#183555}.adtc-theme-dark .adtc-row-selected td{background:#1e4268}.adtc-align-right{text-align:right}.adtc-align-center{text-align:center}.adtc-nowrap{white-space:nowrap}.adtc-wrap{white-space:normal}.adtc-sort-button{align-items:center;background:transparent;border:0;color:inherit;cursor:default;display:inline-flex;font:inherit;justify-content:flex-start;min-height:36px;padding:8px 10px;text-align:left;width:100%}.adtc-sort-button:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:-2px}.adtc-sort-button span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adtc-sortable{cursor:pointer}.adtc-sort-right{justify-content:flex-end;text-align:right}.adtc-sort-center{justify-content:center;text-align:center}.adtc-sort-indicator{color:#8395a8;flex:0 0 auto;font-size:9px;margin-left:6px;max-width:0;opacity:0;overflow:hidden;text-transform:uppercase;transition:max-width .16s ease,opacity .16s ease;white-space:nowrap}.adtc-sort-indicator.active{color:#0c73b8;max-width:36px;opacity:1}.adtc-table thead th:hover .adtc-sort-indicator{max-width:36px;opacity:.72}.adtc-select-col{background:#fbfdff;min-width:54px;padding-left:16px!important;padding-right:16px!important;text-align:center;white-space:nowrap;width:54px}.adtc-expand-col{text-align:center;white-space:nowrap;width:46px}.adtc-select-col input{accent-color:#0c73b8;appearance:none;background:#fff;border:1px solid #9fb0c3;border-radius:3px;cursor:pointer;display:block;height:16px;margin:0 auto;position:relative;vertical-align:middle;width:16px}.adtc-select-col input[type=radio]{border-radius:999px}.adtc-select-col input:checked{background:#0c73b8;border-color:#0c73b8}.adtc-select-col input[type=checkbox]:checked:after{border:solid #ffffff;border-width:0 2px 2px 0;content:\"\";height:8px;left:5px;position:absolute;top:1px;transform:rotate(45deg);width:4px}.adtc-select-col input[type=radio]:checked:after{background:#fff;border-radius:999px;content:\"\";height:6px;left:4px;position:absolute;top:4px;width:6px}.adtc-select-col input:disabled{background:#eef2f6;border-color:#c6d0dc;cursor:not-allowed;opacity:.7}.adtc-select-col input:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:2px}.adtc-expander{align-items:center;background:transparent;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-theme-dark .adtc-expander{border-color:#3f5678;color:#7cc7ff}.adtc-expander:disabled{cursor:not-allowed;opacity:.45}.adtc-expanded-row td{background:#f8fafc}.adtc-theme-dark .adtc-expanded-row td{background:#162438}.adtc-expanded-cell{padding:12px}.adtc-group-row td{background:#eef6fd;border-bottom:1px solid #d9e2ec;color:#17324d;padding:8px 10px}.adtc-theme-dark .adtc-group-row td{background:#183555;border-bottom-color:#2b3c56;color:#eef4fb}.adtc-group-cell{align-items:center;display:flex;gap:8px;min-width:0}.adtc-group-cell em{color:#59708a;flex:0 0 auto;font-size:12px;font-style:normal;margin-left:auto;white-space:nowrap}.adtc-group-toggle{align-items:center;background:#fff;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;flex:0 0 auto;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-pinned-left{box-shadow:2px 0 #0c73b814}.adtc-pinned-right{box-shadow:-2px 0 #0c73b814}.adtc-pagination{align-items:center;border-top:1px solid #d9e2ec;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}.adtc-theme-dark .adtc-pagination{border-top-color:#2b3c56}.adtc-pagination-meta{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-pagination-meta{color:#b0c1d8}.adtc-pagination-controls{align-items:center;display:flex;flex-wrap:wrap;gap:6px}.adtc-pagination-size{align-items:center;color:#59708a;display:inline-flex;gap:6px;font-size:12px}.adtc-theme-dark .adtc-pagination-size{color:#b0c1d8}.adtc-pagination select,.adtc-pagination button{background:#fff;border:1px solid #d9e2ec;border-radius:6px;color:#17324d;font-size:12px;min-height:30px;padding:5px 9px}.adtc-pagination select{min-width:64px}.adtc-theme-dark .adtc-pagination select,.adtc-theme-dark .adtc-pagination button{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-pagination button:disabled{cursor:not-allowed;opacity:.45}.adtc-page-indicator{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-page-indicator{color:#b0c1d8}.adtc-state{color:#59708a;padding:32px 16px;text-align:center}.adtc-theme-dark .adtc-state{color:#b0c1d8}\n"],
 		dependencies: [
 			{
 				kind: "directive",
@@ -1699,7 +2266,8 @@ var DataTableComponent = class DataTableComponent {
 					"ngTemplateOutletInjector"
 				]
 			}
-		]
+		],
+		changeDetection: i0.ChangeDetectionStrategy.Eager
 	});
 };
 i0.ɵɵngDeclareClassMetadata({
@@ -1713,22 +2281,39 @@ i0.ɵɵngDeclareClassMetadata({
 			standalone: false,
 			selector: "stackline-data-table",
 			template: DATA_TABLE_TEMPLATE,
-			styles: [":host{display:block}.adtc-shell{background:#fff;border:1px solid #d6dee8;border-radius:6px;color:#17324d;font-family:inherit;overflow:hidden}.adtc-theme-dark{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-header,.adtc-context,.adtc-pagination{padding:10px 12px}.adtc-header{background:#fbfcfe;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-header{background:#162438;border-bottom-color:#2b3c56}.adtc-header h3{color:#142842;font-size:14px;font-weight:700;line-height:1.25;margin:0}.adtc-context{background:#eaf5fd;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-context{background:#183555;border-bottom-color:#2b3c56}.adtc-responsive{overflow-x:auto}.adtc-scroll{overflow:auto}.adtc-fixed-header thead th{position:sticky;top:0;z-index:2}.adtc-table{border-collapse:collapse;font-size:13px;line-height:1.35;min-width:100%;table-layout:fixed;width:100%}.adtc-responsive .adtc-table{min-width:720px}.adtc-table thead th{background:#f7f9fc;border-bottom:1px solid #cbd6e2;border-right:1px solid #e7edf4;color:#405874;font-size:12px;font-weight:700;padding:0;text-align:left;vertical-align:middle}.adtc-table thead th:last-child{border-right:0}.adtc-group-header{padding:8px 10px!important;text-align:center}.adtc-theme-dark .adtc-table thead th{background:#162438;border-bottom-color:#3f5678;color:#b0c1d8}.adtc-table td{border-bottom:1px solid #d9e2ec;border-right:1px solid #eef3f7;color:inherit;height:38px;padding:7px 10px;vertical-align:middle}.adtc-table td:last-child{border-right:0}.adtc-theme-dark .adtc-table td{border-bottom-color:#2b3c56;border-right-color:#243650}.adtc-theme-dark .adtc-table thead th{border-right-color:#243650}.adtc-row-hoverable:hover td{background:#f2f8fd}.adtc-theme-dark .adtc-row-hoverable:hover td{background:#183555}.adtc-row-pointer td{cursor:pointer}.adtc-row:focus{outline:2px solid rgba(12,115,184,.34);outline-offset:-2px}.adtc-row:focus td{background:#eef7ff}.adtc-row-striped:nth-child(odd) td{background:#fbfcfe}.adtc-theme-dark .adtc-row-striped:nth-child(odd) td{background:#142238}.adtc-row-dense td{height:32px;padding:5px 9px}.adtc-row-selected td{background:#e9f4fd}.adtc-row-pinned-top td,.adtc-row-pinned-bottom td{background:#f3f8fc;font-weight:600}.adtc-theme-dark .adtc-row-pinned-top td,.adtc-theme-dark .adtc-row-pinned-bottom td{background:#183555}.adtc-theme-dark .adtc-row-selected td{background:#1e4268}.adtc-align-right{text-align:right}.adtc-align-center{text-align:center}.adtc-nowrap{white-space:nowrap}.adtc-wrap{white-space:normal}.adtc-sort-button{align-items:center;background:transparent;border:0;color:inherit;cursor:default;display:inline-flex;font:inherit;justify-content:flex-start;min-height:36px;padding:8px 10px;text-align:left;width:100%}.adtc-sort-button:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:-2px}.adtc-sort-button span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adtc-sortable{cursor:pointer}.adtc-sort-right{justify-content:flex-end;text-align:right}.adtc-sort-center{justify-content:center;text-align:center}.adtc-sort-indicator{color:#8395a8;flex:0 0 auto;font-size:9px;margin-left:6px;max-width:0;opacity:0;overflow:hidden;text-transform:uppercase;transition:max-width .16s ease,opacity .16s ease;white-space:nowrap}.adtc-sort-indicator.active{color:#0c73b8;max-width:36px;opacity:1}.adtc-table thead th:hover .adtc-sort-indicator{max-width:36px;opacity:.72}.adtc-select-col{background:#fbfdff;min-width:54px;padding-left:16px!important;padding-right:16px!important;text-align:center;white-space:nowrap;width:54px}.adtc-expand-col{text-align:center;white-space:nowrap;width:46px}.adtc-select-col input{accent-color:#0c73b8;appearance:none;background:#fff;border:1px solid #9fb0c3;border-radius:3px;cursor:pointer;display:block;height:16px;margin:0 auto;position:relative;vertical-align:middle;width:16px}.adtc-select-col input[type=radio]{border-radius:999px}.adtc-select-col input:checked{background:#0c73b8;border-color:#0c73b8}.adtc-select-col input[type=checkbox]:checked:after{border:solid #ffffff;border-width:0 2px 2px 0;content:\"\";height:8px;left:5px;position:absolute;top:1px;transform:rotate(45deg);width:4px}.adtc-select-col input[type=radio]:checked:after{background:#fff;border-radius:999px;content:\"\";height:6px;left:4px;position:absolute;top:4px;width:6px}.adtc-select-col input:disabled{background:#eef2f6;border-color:#c6d0dc;cursor:not-allowed;opacity:.7}.adtc-select-col input:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:2px}.adtc-expander{align-items:center;background:transparent;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-theme-dark .adtc-expander{border-color:#3f5678;color:#7cc7ff}.adtc-expander:disabled{cursor:not-allowed;opacity:.45}.adtc-expanded-row td{background:#f8fafc}.adtc-theme-dark .adtc-expanded-row td{background:#162438}.adtc-expanded-cell{padding:12px}.adtc-group-row td{background:#eef6fd;border-bottom:1px solid #d9e2ec;color:#17324d;padding:8px 10px}.adtc-theme-dark .adtc-group-row td{background:#183555;border-bottom-color:#2b3c56;color:#eef4fb}.adtc-group-cell{align-items:center;display:flex;gap:8px;min-width:0}.adtc-group-cell em{color:#59708a;flex:0 0 auto;font-size:12px;font-style:normal;margin-left:auto;white-space:nowrap}.adtc-group-toggle{align-items:center;background:#fff;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;flex:0 0 auto;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-pinned-left{box-shadow:2px 0 #0c73b814}.adtc-pinned-right{box-shadow:-2px 0 #0c73b814}.adtc-pagination{align-items:center;border-top:1px solid #d9e2ec;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}.adtc-theme-dark .adtc-pagination{border-top-color:#2b3c56}.adtc-pagination-meta{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-pagination-meta{color:#b0c1d8}.adtc-pagination-controls{align-items:center;display:flex;flex-wrap:wrap;gap:6px}.adtc-pagination-size{align-items:center;color:#59708a;display:inline-flex;gap:6px;font-size:12px}.adtc-pagination select,.adtc-pagination button{background:#fff;border:1px solid #d9e2ec;border-radius:6px;color:#17324d;font-size:12px;min-height:30px;padding:5px 9px}.adtc-pagination select{min-width:64px}.adtc-theme-dark .adtc-pagination select,.adtc-theme-dark .adtc-pagination button{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-pagination button:disabled{cursor:not-allowed;opacity:.45}.adtc-page-indicator{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-page-indicator{color:#b0c1d8}.adtc-state{color:#59708a;padding:32px 16px;text-align:center}.adtc-theme-dark .adtc-state{color:#b0c1d8}\n"]
+			changeDetection: ChangeDetectionStrategy.Eager,
+			styles: [":host{display:block}.adtc-shell{background:#fff;border:1px solid #d6dee8;border-radius:6px;color:#17324d;font-family:inherit;overflow:hidden}.adtc-theme-dark{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-header,.adtc-context,.adtc-pagination{padding:10px 12px}.adtc-header{background:#fbfcfe;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-header{background:#162438;border-bottom-color:#2b3c56}.adtc-header h3{color:#142842;font-size:14px;font-weight:700;line-height:1.25;margin:0}.adtc-context{background:#eaf5fd;border-bottom:1px solid #d9e2ec}.adtc-theme-dark .adtc-context{background:#183555;border-bottom-color:#2b3c56}.adtc-responsive{overflow-x:auto}.adtc-scroll{overflow:auto}.adtc-fixed-header thead th{position:sticky;top:0;z-index:2}.adtc-table{border-collapse:collapse;font-size:13px;line-height:1.35;min-width:100%;table-layout:fixed;width:100%}.adtc-responsive .adtc-table{min-width:720px}.adtc-table thead th{background:#f7f9fc;border-bottom:1px solid #cbd6e2;border-right:1px solid #e7edf4;color:#405874;font-size:12px;font-weight:700;padding:0;text-align:left;vertical-align:middle}.adtc-table thead th:last-child{border-right:0}.adtc-group-header{padding:8px 10px!important;text-align:center}.adtc-theme-dark .adtc-table thead th{background:#162438;border-bottom-color:#3f5678;color:#b0c1d8}.adtc-table td{border-bottom:1px solid #d9e2ec;border-right:1px solid #eef3f7;color:inherit;height:38px;padding:7px 10px;vertical-align:middle}.adtc-table td:last-child{border-right:0}.adtc-theme-dark .adtc-table td{border-bottom-color:#2b3c56;border-right-color:#243650}.adtc-theme-dark .adtc-table thead th{border-right-color:#243650}.adtc-row-hoverable:hover td{background:#f2f8fd}.adtc-theme-dark .adtc-row-hoverable:hover td{background:#183555}.adtc-row-pointer td{cursor:pointer}.adtc-row:focus{outline:2px solid rgba(12,115,184,.34);outline-offset:-2px}.adtc-row:focus td{background:#eef7ff}.adtc-row-striped:nth-child(odd) td{background:#fbfcfe}.adtc-theme-dark .adtc-row-striped:nth-child(odd) td{background:#142238}.adtc-row-dense td{height:32px;padding:5px 9px}.adtc-row-selected td{background:#e9f4fd}.adtc-row-pinned-top td,.adtc-row-pinned-bottom td{background:#f3f8fc;font-weight:600}.adtc-theme-dark .adtc-row-pinned-top td,.adtc-theme-dark .adtc-row-pinned-bottom td{background:#183555}.adtc-theme-dark .adtc-row-selected td{background:#1e4268}.adtc-align-right{text-align:right}.adtc-align-center{text-align:center}.adtc-nowrap{white-space:nowrap}.adtc-wrap{white-space:normal}.adtc-sort-button{align-items:center;background:transparent;border:0;color:inherit;cursor:default;display:inline-flex;font:inherit;justify-content:flex-start;min-height:36px;padding:8px 10px;text-align:left;width:100%}.adtc-sort-button:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:-2px}.adtc-sort-button span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adtc-sortable{cursor:pointer}.adtc-sort-right{justify-content:flex-end;text-align:right}.adtc-sort-center{justify-content:center;text-align:center}.adtc-sort-indicator{color:#8395a8;flex:0 0 auto;font-size:9px;margin-left:6px;max-width:0;opacity:0;overflow:hidden;text-transform:uppercase;transition:max-width .16s ease,opacity .16s ease;white-space:nowrap}.adtc-sort-indicator.active{color:#0c73b8;max-width:36px;opacity:1}.adtc-table thead th:hover .adtc-sort-indicator{max-width:36px;opacity:.72}.adtc-select-col{background:#fbfdff;min-width:54px;padding-left:16px!important;padding-right:16px!important;text-align:center;white-space:nowrap;width:54px}.adtc-expand-col{text-align:center;white-space:nowrap;width:46px}.adtc-select-col input{accent-color:#0c73b8;appearance:none;background:#fff;border:1px solid #9fb0c3;border-radius:3px;cursor:pointer;display:block;height:16px;margin:0 auto;position:relative;vertical-align:middle;width:16px}.adtc-select-col input[type=radio]{border-radius:999px}.adtc-select-col input:checked{background:#0c73b8;border-color:#0c73b8}.adtc-select-col input[type=checkbox]:checked:after{border:solid #ffffff;border-width:0 2px 2px 0;content:\"\";height:8px;left:5px;position:absolute;top:1px;transform:rotate(45deg);width:4px}.adtc-select-col input[type=radio]:checked:after{background:#fff;border-radius:999px;content:\"\";height:6px;left:4px;position:absolute;top:4px;width:6px}.adtc-select-col input:disabled{background:#eef2f6;border-color:#c6d0dc;cursor:not-allowed;opacity:.7}.adtc-select-col input:focus{outline:2px solid rgba(12,115,184,.28);outline-offset:2px}.adtc-expander{align-items:center;background:transparent;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-theme-dark .adtc-expander{border-color:#3f5678;color:#7cc7ff}.adtc-expander:disabled{cursor:not-allowed;opacity:.45}.adtc-expanded-row td{background:#f8fafc}.adtc-theme-dark .adtc-expanded-row td{background:#162438}.adtc-expanded-cell{padding:12px}.adtc-group-row td{background:#eef6fd;border-bottom:1px solid #d9e2ec;color:#17324d;padding:8px 10px}.adtc-theme-dark .adtc-group-row td{background:#183555;border-bottom-color:#2b3c56;color:#eef4fb}.adtc-group-cell{align-items:center;display:flex;gap:8px;min-width:0}.adtc-group-cell em{color:#59708a;flex:0 0 auto;font-size:12px;font-style:normal;margin-left:auto;white-space:nowrap}.adtc-group-toggle{align-items:center;background:#fff;border:1px solid #d9e2ec;border-radius:999px;color:#0c73b8;cursor:pointer;display:inline-flex;flex:0 0 auto;font-size:14px;font-weight:700;height:26px;justify-content:center;line-height:1;padding:0;width:26px}.adtc-pinned-left{box-shadow:2px 0 #0c73b814}.adtc-pinned-right{box-shadow:-2px 0 #0c73b814}.adtc-pagination{align-items:center;border-top:1px solid #d9e2ec;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}.adtc-theme-dark .adtc-pagination{border-top-color:#2b3c56}.adtc-pagination-meta{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-pagination-meta{color:#b0c1d8}.adtc-pagination-controls{align-items:center;display:flex;flex-wrap:wrap;gap:6px}.adtc-pagination-size{align-items:center;color:#59708a;display:inline-flex;gap:6px;font-size:12px}.adtc-theme-dark .adtc-pagination-size{color:#b0c1d8}.adtc-pagination select,.adtc-pagination button{background:#fff;border:1px solid #d9e2ec;border-radius:6px;color:#17324d;font-size:12px;min-height:30px;padding:5px 9px}.adtc-pagination select{min-width:64px}.adtc-theme-dark .adtc-pagination select,.adtc-theme-dark .adtc-pagination button{background:#111c2d;border-color:#2b3c56;color:#eef4fb}.adtc-pagination button:disabled{cursor:not-allowed;opacity:.45}.adtc-page-indicator{color:#59708a;font-size:12px}.adtc-theme-dark .adtc-page-indicator{color:#b0c1d8}.adtc-state{color:#59708a;padding:32px 16px;text-align:center}.adtc-theme-dark .adtc-state{color:#b0c1d8}\n"]
 		}]
 	}],
 	propDecorators: {
-		columns: [{ type: Input }],
-		data: [{ type: Input }],
+		columns: [{
+			type: Input,
+			args: [{ transform: (value) => value ?? [] }]
+		}],
+		data: [{
+			type: Input,
+			args: [{ transform: (value) => value ?? [] }]
+		}],
 		keyField: [{ type: Input }],
 		title: [{ type: Input }],
 		ariaLabel: [{ type: Input }],
 		keyboardRows: [{ type: Input }],
+		trackBy: [{ type: Input }],
 		pagination: [{ type: Input }],
 		paginationServer: [{ type: Input }],
 		paginationDefaultPage: [{ type: Input }],
 		paginationPerPage: [{ type: Input }],
 		paginationTotalRows: [{ type: Input }],
 		paginationRowsPerPageOptions: [{ type: Input }],
+		paginationHideRowsPerPage: [{ type: Input }],
+		paginationComponentOptions: [{ type: Input }],
+		paginationResetDefaultPage: [{ type: Input }],
+		paginationServerOptions: [{ type: Input }],
+		paginationTemplate: [{ type: Input }],
+		keepPinnedRows: [{ type: Input }],
+		persistPagination: [{ type: Input }],
+		paginationResetOnFilterChange: [{ type: Input }],
+		paginationEmitOnReset: [{ type: Input }],
 		selectableRows: [{ type: Input }],
 		selectableRowsSingle: [{ type: Input }],
 		selectableRowsHighlight: [{ type: Input }],
@@ -1755,7 +2340,10 @@ i0.ɵɵngDeclareClassMetadata({
 		fixedHeader: [{ type: Input }],
 		fixedHeaderScrollHeight: [{ type: Input }],
 		noDataText: [{ type: Input }],
-		conditionalRowStyles: [{ type: Input }],
+		conditionalRowStyles: [{
+			type: Input,
+			args: [{ transform: (value) => value ?? [] }]
+		}],
 		defaultSortFieldId: [{ type: Input }],
 		defaultSortAsc: [{ type: Input }],
 		sortServer: [{ type: Input }],
@@ -1764,7 +2352,10 @@ i0.ɵɵngDeclareClassMetadata({
 		manualPagination: [{ type: Input }],
 		globalFilter: [{ type: Input }],
 		columnFilters: [{ type: Input }],
-		hiddenColumns: [{ type: Input }],
+		hiddenColumns: [{
+			type: Input,
+			args: [{ transform: (value) => value ?? [] }]
+		}],
 		columnVisibility: [{ type: Input }],
 		columnOrder: [{ type: Input }],
 		columnPinning: [{ type: Input }],
@@ -1779,7 +2370,11 @@ i0.ɵɵngDeclareClassMetadata({
 		virtualStartIndex: [{ type: Input }],
 		virtualRowCount: [{ type: Input }],
 		theme: [{ type: Input }],
-		contextMessage: [{ type: Input }],
+		contextMessage: [{
+			type: Input,
+			args: [{ transform: (value) => value ?? { ...DEFAULT_CONTEXT_MESSAGE } }]
+		}],
+		localization: [{ type: Input }],
 		sortChange: [{ type: Output }],
 		selectedRowsChange: [{ type: Output }],
 		pageChange: [{ type: Output }],
@@ -1794,7 +2389,11 @@ i0.ɵɵngDeclareClassMetadata({
 		columnVisibilityChange: [{ type: Output }],
 		columnOrderChange: [{ type: Output }],
 		groupingChange: [{ type: Output }],
-		tableStateChange: [{ type: Output }]
+		tableStateChange: [{ type: Output }],
+		rowsBlock: [{
+			type: ViewChild,
+			args: ["adtcRows"]
+		}]
 	}
 });
 var DataTableModule = class DataTableModule {
