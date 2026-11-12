@@ -13,7 +13,7 @@ export var EXAMPLE_MENU: ExampleMenuItem[] = [
   { order: '05', id: 'programmatic-selection', title: 'Programmatic selection', summary: 'Preselect rows from a predicate supplied by the app.' },
   { order: '06', id: 'disabled-selection', title: 'Disabled selectable rows', summary: 'Block selection for locked rows while keeping the table interactive.' },
   { order: '07', id: 'client-pagination', title: 'Client pagination', summary: 'The component slices local data and emits page changes.' },
-  { order: '08', id: 'server-pagination', title: 'Server pagination', summary: 'The app owns slicing and passes total rows to the component.' },
+  { order: '08', id: 'server-pagination', title: 'Server pagination', summary: 'The app owns slicing and sorting, passes total rows, and keeps the pager on screen while a page loads.' },
   { order: '09', id: 'visible-page-selection', title: 'Visible page selection', summary: 'Select all only touches the currently rendered page.' },
   { order: '10', id: 'fixed-header', title: 'Fixed header', summary: 'Scrollable table body with sticky header support.' },
   { order: '11', id: 'conditional-styles', title: 'Conditional styles', summary: 'Apply row classes or styles from row data.' },
@@ -32,7 +32,7 @@ export var EXAMPLE_MENU: ExampleMenuItem[] = [
   { order: '24', id: 'column-visibility', title: 'Column visibility', summary: 'Hide or show columns with columnVisibility and hiddenColumns compatibility.' },
   { order: '25', id: 'column-ordering', title: 'Column ordering', summary: 'Render columns in a controlled order without mutating the source columns.' },
   { order: '26', id: 'column-pinning', title: 'Column pinning', summary: 'Sticky left and right columns for wide admin grids.' },
-  { order: '27', id: 'row-pinning', title: 'Row pinning', summary: 'Pin important rows to the top or bottom while keeping the rest sortable.' },
+  { order: '27', id: 'row-pinning', title: 'Row pinning', summary: 'Pin important rows to the top or bottom while keeping the rest sortable, and keep them on every page with keepPinnedRows.' },
   { order: '28', id: 'grouping', title: 'Grouping', summary: 'Group rows by a column and expand or collapse each group.' },
   { order: '29', id: 'header-groups', title: 'Header groups', summary: 'Use nested column definitions to render grouped headers.' },
   { order: '30', id: 'faceting', title: 'Faceted values', summary: 'Read unique value counts from the component after filtering.' },
@@ -45,5 +45,8 @@ export var EXAMPLE_MENU: ExampleMenuItem[] = [
   { order: '37', id: 'headless-html', title: 'Headless custom HTML', summary: 'Use the exported table controller while rendering every element with custom application HTML.' },
   { order: '38', id: 'http-client-data', title: 'HttpClient data', summary: 'Load table rows through Angular HttpClient and keep the table declarative.' },
   { order: '39', id: 'animated-rows', title: 'Animated rows', summary: 'Use Angular animations around table refreshes without changing the table contract.' },
-  { order: '40', id: 'async-pipe-stream', title: 'Async pipe stream', summary: 'Bind a BehaviorSubject stream through the async pipe for push-style dashboards.' }
+  { order: '40', id: 'async-pipe-stream', title: 'Async pipe stream', summary: 'Bind a BehaviorSubject stream through the async pipe for push-style dashboards.' },
+  { order: '41', id: 'hide-rows-per-page', title: 'Hide rows-per-page selector', summary: 'Hide the rows-per-page selector with paginationHideRowsPerPage or paginationComponentOptions.noRowsPerPage.' },
+  { order: '42', id: 'pagination-options', title: 'Pagination options', summary: 'Translate the pager texts and labels (pt-BR here) and add an All option to the rows-per-page selector.' },
+  { order: '43', id: 'custom-pagination-template', title: 'Custom pagination template', summary: 'Replace the pager content with an Angular template; the context carries the page state and the changePage and changeRowsPerPage actions.' }
 ];

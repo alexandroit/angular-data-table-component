@@ -1,0 +1,36 @@
+<ng-template #numberedPager let-pager>
+  <div class="custom-pager">
+    <span class="custom-pager-range" aria-live="polite" aria-atomic="true">{{ pager.startRow }}-{{ pager.endRow }} of {{ pager.rowCount }} orders</span>
+    <button type="button" [disabled]="pager.currentPage === 1" (click)="step(pager, pager.currentPage - 1, $event)">Previous</button>
+    <button
+      *ngFor="let page of getPageNumbers(pager.totalPages)"
+      type="button"
+      [attr.aria-label]="'Page ' + page"
+      [attr.aria-current]="page === pager.currentPage ? 'page' : null"
+      (click)="selectPage(pager, page)">
+      {{ page }}
+    </button>
+    <button type="button" [disabled]="pager.currentPage === pager.totalPages" (click)="step(pager, pager.currentPage + 1, $event)">Next</button>
+    <label class="custom-pager-size">
+      Per page
+      <select (change)="pager.changeRowsPerPage($any($event.target).value)">
+        <option *ngFor="let size of pager.rowsPerPageOptions" [value]="size" [selected]="size === pager.rowsPerPage">{{ size }}</option>
+      </select>
+    </label>
+  </div>
+</ng-template>
+
+<example-shell
+  exampleId="custom-pagination-template" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Numbered pager"
+    [columns]="orderColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="4"
+    [paginationRowsPerPageOptions]="pageSizes"
+    [paginationTemplate]="numberedPager"
+    (pageChange)="record('custom pager page', $event)"
+    (rowsPerPageChange)="record('custom pager rowsPerPage', $event)">
+  </stackline-data-table>
+</example-shell>

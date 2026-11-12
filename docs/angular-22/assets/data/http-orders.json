@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "order": "SO-1001",
+    "customer": "Acme Studio",
+    "status": "Paid",
+    "total": 1840,
+    "region": "Canada",
+    "channel": "Online",
+    "notes": "Priority customer with same-day fulfilment."
+  },
+  {
+    "id": 2,
+    "order": "SO-1002",
+    "customer": "Northwind",
+    "status": "Pending",
+    "total": 920,
+    "region": "United States",
+    "channel": "Partner",
+    "notes": "Waiting for tax document confirmation."
+  },
+  {
+    "id": 3,
+    "order": "SO-1003",
+    "customer": "Blue Harbor",
+    "status": "Paid",
+    "total": 1430,
+    "region": "Brazil",
+    "channel": "Online",
+    "notes": "Includes fragile packaging."
+  },
+  {
+    "id": 4,
+    "order": "SO-1004",
+    "customer": "Greenline",
+    "status": "Review",
+    "total": 680,
+    "region": "Portugal",
+    "channel": "Retail",
+    "notes": "Manual review because of address mismatch."
+  },
+  {
+    "id": 5,
+    "order": "SO-1005",
+    "customer": "Bright Labs",
+    "status": "Paid",
+    "total": 2210,
+    "region": "Mexico",
+    "channel": "Online",
+    "notes": "Large order approved by sales operations."
+  },
+  {
+    "id": 6,
+    "order": "SO-1006",
+    "customer": "Nova Foods",
+    "status": "Pending",
+    "total": 1140,
+    "region": "Colombia",
+    "channel": "Partner",
+    "notes": "Awaiting inventory allocation."
+  },
+  {
+    "id": 7,
+    "order": "SO-1007",
+    "customer": "Summit Health",
+    "status": "Paid",
+    "total": 3150,
+    "region": "Chile",
+    "channel": "Direct",
+    "notes": "Requires split shipment across two warehouses."
+  },
+  {
+    "id": 8,
+    "order": "SO-1008",
+    "customer": "Cedar Works",
+    "status": "Review",
+    "total": 760,
+    "region": "Argentina",
+    "channel": "Retail",
+    "notes": "New customer validation in progress."
+  },
+  {
+    "id": 9,
+    "order": "SO-1009",
+    "customer": "Orion Retail",
+    "status": "Paid",
+    "total": 1980,
+    "region": "Canada",
+    "channel": "Direct",
+    "notes": "Invoice already synchronized with accounting."
+  },
+  {
+    "id": 10,
+    "order": "SO-1010",
+    "customer": "Lima Market",
+    "status": "Pending",
+    "total": 540,
+    "region": "Peru",
+    "channel": "Online",
+    "notes": "Payment retry scheduled."
+  },
+  {
+    "id": 11,
+    "order": "SO-1011",
+    "customer": "Costa Norte",
+    "status": "Paid",
+    "total": 2875,
+    "region": "Uruguay",
+    "channel": "Direct",
+    "notes": "Customer requested weekend delivery."
+  },
+  {
+    "id": 12,
+    "order": "SO-1012",
+    "customer": "Pacific Tools",
+    "status": "Review",
+    "total": 1320,
+    "region": "Ecuador",
+    "channel": "Partner",
+    "notes": "Needs compliance approval before release."
+  }
+]

@@ -51,7 +51,7 @@ test('documentation exposes all examples without stale framework copy', () => {
   );
   const componentFiles = fs.readdirSync(path.join(docsRoot, 'src/app/examples'));
 
-  assert.equal((menu.match(/order: '/g) || []).length, 40);
+  assert.equal((menu.match(/order: '/g) || []).length, 43);
   assert.ok(componentFiles.length > 0);
   assert.doesNotMatch(menu, /Angular 4|legacy/i);
 
@@ -63,5 +63,26 @@ test('documentation exposes all examples without stale framework copy', () => {
   ]) {
     const source = fs.readFileSync(path.join(docsRoot, relative), 'utf8');
     assert.doesNotMatch(source, /22\.0\.0|22\.0\.2|Angular 4|legacy/i, relative);
+  }
+});
+
+test('every menu example is rendered, has source panels and is counted in llms-full.txt', () => {
+  const menu = fs.readFileSync(path.join(docsRoot, 'src/app/shared/example-menu.ts'), 'utf8');
+  const app = fs.readFileSync(path.join(docsRoot, 'src/app/app.component.html'), 'utf8');
+  const ids = Array.from(menu.matchAll(/id: '([^']+)'/g), (match) => match[1]);
+
+  for (const id of ids) {
+    for (const extension of ['html', 'ts']) {
+      const source = path.join(docsRoot, `src/app/examples/${id}/${id}.component.${extension}`);
+      assert.ok(fs.existsSync(source), `${source} feeds the source panel of ${id}.`);
+    }
+    assert.ok(app.includes(`*ngSwitchCase="'${id}'"`), `app.component.html must render ${id}.`);
+  }
+
+  for (const file of [
+    path.join(root, 'docs/llms-full.txt'),
+    path.join(docsRoot, 'public/llms-full.txt')
+  ]) {
+    assert.ok(fs.readFileSync(file, 'utf8').includes(`contains ${ids.length} runnable examples`), file);
   }
 });

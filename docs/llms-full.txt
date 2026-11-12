@@ -1,4 +1,4 @@
-# @stackline/angular-data-table-component 22.1.7
+# @stackline/angular-data-table-component 22.2.0
 
 @stackline/angular-data-table-component is an Angular 22 NgModule library for data-heavy application screens. It includes a styled table component and a view-independent controller for custom Angular markup.
 
@@ -37,6 +37,10 @@ The 22.x package line accepts @angular/common and @angular/core versions >=22.0.
 - DataTableExpandableContext
 - ConditionalStyle
 - HeadlessDataTableOptions
+- DataTablePaginationOptions
+- DataTablePaginationServerOptions
+- DataTablePaginationContext
+- DataTableLocalization
 
 ## Capabilities
 
@@ -46,6 +50,9 @@ The component supports client and controlled sorting, filtering, and pagination;
 
 - columns, data, keyField
 - pagination, paginationServer, paginationPerPage, paginationTotalRows
+- paginationRowsPerPageOptions, paginationHideRowsPerPage, paginationComponentOptions, paginationTemplate
+- paginationServerOptions, paginationResetDefaultPage, paginationResetOnFilterChange, paginationEmitOnReset
+- persistPagination, keepPinnedRows, localization, trackBy
 - sortServer, manualSorting, manualFiltering, manualPagination
 - globalFilter, columnFilters
 - selectableRows, selectableRowsSingle, selectableRowsVisibleOnly
@@ -73,7 +80,7 @@ The component supports client and controlled sorting, filtering, and pagination;
 
 ## Examples
 
-The Angular 22 documentation contains 40 runnable examples. Source panels are loaded from the real component HTML and TypeScript files published beside the application.
+The Angular 22 documentation contains 43 runnable examples. Source panels are loaded from the real component HTML and TypeScript files published beside the application.
 
 Documentation: https://alexandro.net/docs/angular/angular-data-table-component/angular-22/
 Repository: https://github.com/alexandroit/angular-data-table-component

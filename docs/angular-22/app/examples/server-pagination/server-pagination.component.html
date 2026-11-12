@@ -1,16 +1,37 @@
 <example-shell
   exampleId="server-pagination" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
-  <stackline-data-table
-    title="Server pagination simulation"
-    [columns]="orderColumns"
-    [data]="serverRows"
-    [pagination]="true"
-    [paginationServer]="true"
-    [paginationTotalRows]="orders.length"
-    [paginationDefaultPage]="serverPage"
-    [paginationPerPage]="serverRowsPerPage"
-    [paginationRowsPerPageOptions]="pageSizes"
-    (pageChange)="changeServerPage($event)"
-    (rowsPerPageChange)="changeServerRowsPerPage($event)">
-  </stackline-data-table>
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="check-field inline-check">
+        <input type="checkbox" [checked]="serverOptions.persistSelectedOnPageChange" (change)="setServerOption('persistSelectedOnPageChange', $any($event.target).checked)" />
+        <span>persistSelectedOnPageChange</span>
+      </label>
+      <label class="check-field inline-check">
+        <input type="checkbox" [checked]="serverOptions.persistSelectedOnSort" (change)="setServerOption('persistSelectedOnSort', $any($event.target).checked)" />
+        <span>persistSelectedOnSort</span>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Server pagination simulation"
+      [columns]="orderColumns"
+      [data]="serverRows"
+      [progressPending]="loading"
+      [pagination]="true"
+      [paginationServer]="true"
+      [paginationTotalRows]="orders.length"
+      [paginationDefaultPage]="serverPage"
+      [paginationPerPage]="serverRowsPerPage"
+      [paginationRowsPerPageOptions]="pageSizes"
+      [paginationServerOptions]="serverOptions"
+      [paginationEmitOnReset]="true"
+      [persistPagination]="true"
+      [sortServer]="true"
+      [selectableRows]="true"
+      [selectableRowsHighlight]="true"
+      (sortChange)="changeServerSort($event)"
+      (pageChange)="changeServerPage($event)"
+      (rowsPerPageChange)="changeServerRowsPerPage($event)"
+      (selectedRowsChange)="recordSelection($event)">
+    </stackline-data-table>
+  </div>
 </example-shell>

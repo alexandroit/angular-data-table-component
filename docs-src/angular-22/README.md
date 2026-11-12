@@ -1,8 +1,8 @@
 # Angular 22 Documentation App
 
 Source for the live `@stackline/angular-data-table-component` Angular 22 examples.
-The app consumes the built `dist` package so documentation validates the same
-package layout that is released.
+The app installs the exact published package version pinned in `package.json`,
+so the examples run the released code.
 
 ```bash
 npm install --ignore-scripts

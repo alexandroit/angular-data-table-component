@@ -1,0 +1,38 @@
+<example-shell
+  exampleId="hide-rows-per-page" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <div class="feature-demo">
+    <div class="filter-toolbar">
+      <label class="check-field inline-check">
+        <input type="checkbox" [checked]="hideRowsPerPage" (change)="setHideRowsPerPage($any($event.target).checked)" />
+        <span>paginationHideRowsPerPage</span>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Fixed page size"
+      [columns]="orderColumns"
+      [data]="orders"
+      [pagination]="true"
+      [paginationPerPage]="5"
+      [paginationHideRowsPerPage]="hideRowsPerPage"
+      (pageChange)="record('paginationHideRowsPerPage page', $event)"
+      (rowsPerPageChange)="record('paginationHideRowsPerPage rowsPerPage', $event)">
+    </stackline-data-table>
+
+    <div class="filter-toolbar">
+      <label class="check-field inline-check">
+        <input type="checkbox" [checked]="paginationOptions.noRowsPerPage" (change)="setNoRowsPerPage($any($event.target).checked)" />
+        <span>paginationComponentOptions.noRowsPerPage</span>
+      </label>
+    </div>
+    <stackline-data-table
+      title="Fixed page size with paginationComponentOptions"
+      [columns]="orderColumns"
+      [data]="orders"
+      [pagination]="true"
+      [paginationPerPage]="5"
+      [paginationComponentOptions]="paginationOptions"
+      (pageChange)="record('noRowsPerPage page', $event)"
+      (rowsPerPageChange)="record('noRowsPerPage rowsPerPage', $event)">
+    </stackline-data-table>
+  </div>
+</example-shell>

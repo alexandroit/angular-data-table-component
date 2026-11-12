@@ -1,0 +1,17 @@
+<example-shell
+  exampleId="pagination-options" [title]="title" [summary]="summary" [dataSnippet]="dataSnippet" [events]="events" (clear)="clearEvents()">
+  <stackline-data-table
+    title="Pedidos"
+    ariaLabel="Tabela de pedidos"
+    [columns]="orderColumns"
+    [data]="orders"
+    [pagination]="true"
+    [paginationPerPage]="5"
+    [paginationRowsPerPageOptions]="pageSizes"
+    [paginationComponentOptions]="paginationOptions"
+    [localization]="localization"
+    (sortChange)="recordSort($event)"
+    (pageChange)="record('page', $event)"
+    (rowsPerPageChange)="record('rowsPerPage', $event)">
+  </stackline-data-table>
+</example-shell>

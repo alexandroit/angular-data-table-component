@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TableExampleBase } from '../../shared/table-example-base';
 import { TableDemoDataService } from '../../services/table-demo-data.service';
@@ -11,6 +11,7 @@ import { TableDemoDataService } from '../../services/table-demo-data.service';
 })
 export class HttpClientDataExampleComponent extends TableExampleBase implements OnInit {
   protected demoData = inject(TableDemoDataService);
+  private changeDetector = inject(ChangeDetectorRef);
   constructor(private http: HttpClient) {
     super();
   }
@@ -37,6 +38,8 @@ export class HttpClientDataExampleComponent extends TableExampleBase implements 
         this.record('http rows loaded', {
           rows: this.orders.length
         });
+        // The response arrives outside a template event, so the view is marked for update.
+        this.changeDetector.markForCheck();
       },
       (error) => {
         this.loading = false;
@@ -44,6 +47,7 @@ export class HttpClientDataExampleComponent extends TableExampleBase implements 
         this.record('http error', {
           status: error && error.status ? error.status : 'unknown'
         });
+        this.changeDetector.markForCheck();
       }
     );
   }

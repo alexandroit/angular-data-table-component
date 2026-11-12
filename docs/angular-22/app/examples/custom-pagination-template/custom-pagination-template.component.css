@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+.custom-pager {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.custom-pager-range {
+  color: #59708a;
+  font-size: 12px;
+  margin-right: auto;
+}
+
+.custom-pager button,
+.custom-pager select {
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 6px;
+  color: #17324d;
+  cursor: pointer;
+  font-size: 12px;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 5px 9px;
+}
+
+.custom-pager button[aria-current='page'] {
+  background: #17324d;
+  border-color: #17324d;
+  color: #ffffff;
+}
+
+.custom-pager button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.custom-pager-size {
+  align-items: center;
+  color: #59708a;
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+}

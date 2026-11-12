@@ -14,6 +14,7 @@ import { ColumnPinningExampleComponent } from './column-pinning/column-pinning.c
 import { ColumnSizingExampleComponent } from './column-sizing/column-sizing.component';
 import { ColumnVisibilityExampleComponent } from './column-visibility/column-visibility.component';
 import { ConditionalStylesExampleComponent } from './conditional-styles/conditional-styles.component';
+import { CustomPaginationTemplateExampleComponent } from './custom-pagination-template/custom-pagination-template.component';
 import { DarkExampleComponent } from './dark/dark.component';
 import { DenseExampleComponent } from './dense/dense.component';
 import { DisabledSelectionExampleComponent } from './disabled-selection/disabled-selection.component';
@@ -27,6 +28,7 @@ import { GroupingExampleComponent } from './grouping/grouping.component';
 import { HeaderGroupsExampleComponent } from './header-groups/header-groups.component';
 import { HeadlessHtmlExampleComponent } from './headless-html/headless-html.component';
 import { HeaderlessExampleComponent } from './headerless/headerless.component';
+import { HideRowsPerPageExampleComponent } from './hide-rows-per-page/hide-rows-per-page.component';
 import { AnimatedRowsExampleComponent } from './animated-rows/animated-rows.component';
 import { AsyncPipeStreamExampleComponent } from './async-pipe-stream/async-pipe-stream.component';
 import { HttpClientDataExampleComponent } from './http-client-data/http-client-data.component';
@@ -35,6 +37,7 @@ import { KitchenSinkExampleComponent } from './kitchen-sink/kitchen-sink.compone
 import { LargeDataPaginationExampleComponent } from './large-data-pagination/large-data-pagination.component';
 import { LoadingExampleComponent } from './loading/loading.component';
 import { MultiSelectionExampleComponent } from './multi-selection/multi-selection.component';
+import { PaginationOptionsExampleComponent } from './pagination-options/pagination-options.component';
 import { ProgrammaticSelectionExampleComponent } from './programmatic-selection/programmatic-selection.component';
 import { ResponsiveWrapExampleComponent } from './responsive-wrap/responsive-wrap.component';
 import { RowEventsExampleComponent } from './row-events/row-events.component';
@@ -62,6 +65,7 @@ import { VisiblePageSelectionExampleComponent } from './visible-page-selection/v
     ColumnSizingExampleComponent,
     ColumnVisibilityExampleComponent,
     ConditionalStylesExampleComponent,
+    CustomPaginationTemplateExampleComponent,
     DarkExampleComponent,
     DenseExampleComponent,
     DisabledSelectionExampleComponent,
@@ -75,6 +79,7 @@ import { VisiblePageSelectionExampleComponent } from './visible-page-selection/v
     HeaderGroupsExampleComponent,
     HeadlessHtmlExampleComponent,
     HeaderlessExampleComponent,
+    HideRowsPerPageExampleComponent,
     AnimatedRowsExampleComponent,
     AsyncPipeStreamExampleComponent,
     HttpClientDataExampleComponent,
@@ -83,6 +88,7 @@ import { VisiblePageSelectionExampleComponent } from './visible-page-selection/v
     LargeDataPaginationExampleComponent,
     LoadingExampleComponent,
     MultiSelectionExampleComponent,
+    PaginationOptionsExampleComponent,
     ProgrammaticSelectionExampleComponent,
     ResponsiveWrapExampleComponent,
     RowEventsExampleComponent,
@@ -104,6 +110,7 @@ import { VisiblePageSelectionExampleComponent } from './visible-page-selection/v
     ColumnSizingExampleComponent,
     ColumnVisibilityExampleComponent,
     ConditionalStylesExampleComponent,
+    CustomPaginationTemplateExampleComponent,
     DarkExampleComponent,
     DenseExampleComponent,
     DisabledSelectionExampleComponent,
@@ -117,6 +124,7 @@ import { VisiblePageSelectionExampleComponent } from './visible-page-selection/v
     HeaderGroupsExampleComponent,
     HeadlessHtmlExampleComponent,
     HeaderlessExampleComponent,
+    HideRowsPerPageExampleComponent,
     AnimatedRowsExampleComponent,
     AsyncPipeStreamExampleComponent,
     HttpClientDataExampleComponent,
@@ -125,6 +133,7 @@ import { VisiblePageSelectionExampleComponent } from './visible-page-selection/v
     LargeDataPaginationExampleComponent,
     LoadingExampleComponent,
     MultiSelectionExampleComponent,
+    PaginationOptionsExampleComponent,
     ProgrammaticSelectionExampleComponent,
     ResponsiveWrapExampleComponent,
     RowEventsExampleComponent,
